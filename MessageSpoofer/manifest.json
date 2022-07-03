@@ -1,0 +1,12 @@
+{
+   "name": "MessageSpooofer",
+   "version": "1.0.0",
+   "description": "Change what people say.",
+   "authors": [
+      {
+         "name": "NotMarek",
+         "id": "206299359007080450"
+      }
+   ],
+	"color": "#ff0069"
+}

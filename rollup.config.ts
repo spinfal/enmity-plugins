@@ -5,7 +5,7 @@ import json from "@rollup/plugin-json";
 
 import { defineConfig } from "rollup";
 
-const plugins = ["MessageSpoofer"];
+const plugins = ["MessageSpoofer", "NoDelete"];
 
 export default plugins.map((name) => {
     return defineConfig({

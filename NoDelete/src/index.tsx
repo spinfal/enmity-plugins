@@ -1,69 +1,81 @@
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { getByProps, getModule } from "enmity/metro";
+import { getByProps } from "enmity/metro";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 const MessageStore = getByProps("getMessage", "getMessages");
 const ChannelStore = getByProps("getChannel", "getDMFromUserId");
-const SelectedChannelStore = getByProps("getLastSelectedChannelId");
-const DispatcherModule = getModule((e) => e.dispatch && !e.getCurrentUser);
-const Patcher = create("logger");
+const FluxDispatcher = getByProps(
+    "_currentDispatchActionType",
+    "_subscriptions",
+    "_waitQueue"
+);
+const Patcher = create("NoDelete");
 
 const NoDelete: Plugin = {
     ...manifest,
     patches: [],
 
     onStart() {
-        Patcher.before(DispatcherModule, "dispatch", (a0, event, a2) => {
+        // Make sure the MESSAGE_UPDATE and MESSAGE_DELETE action handlers are available
+        for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
+            try {
+                FluxDispatcher.dispatch({
+                    type: handler,
+                    message: {}, // should be enough to wake them up
+                });
+            } catch {}
+        }
+
+        const MessageDelete =
+            FluxDispatcher._orderedActionHandlers.MESSAGE_DELETE.find(
+                (h) => h.name === "MessageStore"
+            );
+
+        const MessageUpdate =
+            FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find(
+                (h) => h.name === "MessageStore"
+            );
+
+        Patcher.before(MessageDelete, "actionHandler", (_, args) => {
+            const originalMessage = MessageStore.getMessage(
+                args[0].channelId,
+                args[0].id
+            );
+            args[0] = {};
             if (
-                event[0].type === "MESSAGE_UPDATE" &&
-                event[0].message.content !== undefined
+                !originalMessage.editedTimestamp ||
+                originalMessage.editedTimestamp._isValid
             ) {
-                const selectedGuild = ChannelStore.getChannel(
-                    SelectedChannelStore.getChannelId()
-                ).guild_id;
-                if (event[0].message.guild_id !== selectedGuild) return;
+                const editEvent = {
+                    type: "MESSAGE_UPDATE",
+                    message: {
+                        ...originalMessage,
+                        edited_timestamp: "invalid_timestamp",
+                        content: originalMessage.content + " `[deleted]`",
+                        guild_id: ChannelStore.getChannel(
+                            originalMessage.channel_id
+                        ).guild_id,
+                    },
+                };
+                FluxDispatcher.dispatch(editEvent);
+            }
+        });
+        
+        Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
+            try {
                 const originalMessage = MessageStore.getMessage(
-                    event[0].message.channel_id,
-                    event[0].message.id
+                    args[0].message.channel_id,
+                    args[0].message.id
                 );
-                event[0].message.content =
+                try {
+                    if (!args[0].edited_timestamp._isValid) return;
+                } catch {}
+                args[0].message.content =
                     originalMessage.content +
                     " `[edited]`\n" +
-                    event[0].message.content;
+                    args[0].message.content;
                 return;
-            }
-
-            if (event[0].type === "MESSAGE_DELETE") {
-                const originalMessage = MessageStore.getMessage(
-                    event[0].channelId,
-                    event[0].id
-                );
-
-                event[0].type = "MESSAGE_UPDATE";
-                event[0].message = {
-                    type: originalMessage.type,
-                    tts: originalMessage.tts,
-                    timestamp: originalMessage.timestamp,
-                    pinned: originalMessage.pinned,
-                    mentions: originalMessage.mentions,
-                    mention_roles: originalMessage.mentionRoles,
-                    mention_everyone: originalMessage.mentionEveryone,
-                    member: originalMessage.author,
-                    id: originalMessage.id,
-                    flags: originalMessage.flags,
-                    embeds: originalMessage.embeds,
-                    edited_timestamp: originalMessage.editedTimestamp,
-                    content: originalMessage.content + " `[deleted]`",
-                    components: originalMessage.components,
-                    channel_id: originalMessage.channel_id,
-                    author: originalMessage.author,
-                    attachments: originalMessage.originalMessage,
-                    guild_id: ChannelStore.getChannel(
-                        originalMessage.channel_id
-                    ).guild_id,
-                };
-                return;
-            }
+            } catch {}
         });
     },
 

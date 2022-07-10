@@ -2,12 +2,16 @@ import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
 import { Messages, React } from "enmity/metro/common";
 import { create } from "enmity/patcher";
-import { Dispatcher } from "enmity/metro/common";
 import manifest from "../manifest.json";
 const MessageStore = getByProps("getMessage", "getMessages");
 const ChannelStore = getByProps("getChannel", "getDMFromUserId");
 const Patcher = create("message-spoofer");
 const Opener = getByProps("openLazy");
+const FluxDispatcher = getByProps(
+    "_currentDispatchActionType",
+    "_subscriptions",
+    "_waitQueue"
+);
 
 const Spoofer: Plugin = {
     ...manifest,
@@ -75,7 +79,7 @@ const Spoofer: Plugin = {
         Patcher.before(Messages, "editMessage", (a0, a1, a2) => {
             if (dirtyEdit) {
                 const originalMessage = MessageStore.getMessage(a1[0], a1[1]);
-                Dispatcher.dirtyDispatch({
+                FluxDispatcher.dispatch({
                     type: "MESSAGE_UPDATE",
                     message: {
                         type: originalMessage.type,

@@ -17,15 +17,33 @@ const NoDelete: Plugin = {
 
     onStart() {
         // Make sure the MESSAGE_UPDATE and MESSAGE_DELETE action handlers are available
-        for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
-            try {
-                FluxDispatcher.dispatch({
-                    type: handler,
-                    message: {}, // should be enough to wake them up
-                });
-            } catch {}
-        }
+        // for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
+        //     try {
+        //         FluxDispatcher.dispatch({
+        //             type: handler,
+        //             message: {}, // should be enough to wake them up
+        //         });
+        //     } catch {}
+        // }
+        // apparently it wasn't
 
+        FluxDispatcher.dispatch({
+            type: "MESSAGE_UPDATE",
+            message: {
+                edited_timestamp: "",
+                content: "",
+                guild_id: "0000000",
+            },
+        });
+
+        FluxDispatcher.dispatch({
+            type: "MESSAGE_DELETE",
+            message: {
+                channel_id: "",
+                id: "",
+            },
+        });
+        
         const MessageDelete =
             FluxDispatcher._orderedActionHandlers.MESSAGE_DELETE.find(
                 (h) => h.name === "MessageStore"

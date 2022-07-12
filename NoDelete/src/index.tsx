@@ -69,7 +69,7 @@ const NoDelete: Plugin = {
                 } catch {}
             });
         };
-        setTimeout(() => plugin(), 300); // give Flux some time to initialize -- 300ms should be more than enough
+        setTimeout(() => {plugin()}, 300); // give Flux some time to initialize -- 300ms should be more than enough
         // Make sure the MESSAGE_UPDATE and MESSAGE_DELETE action handlers are available
         // for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
         //     try {

@@ -22,7 +22,6 @@ const NoDelete: Plugin = {
                 );
             if (!MessageDelete) {
                 console.error("MessageDelete not found");
-                setTimeout(this.onStart, 300);
                 return;
             }
             const MessageUpdate =

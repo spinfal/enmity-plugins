@@ -20,7 +20,6 @@ const Spoofer: Plugin = {
         let dirtyEdit = false;
         Patcher.before(Opener, "openLazy", (_, [component, sheet]) => {
             if (sheet === "MessageLongPressActionSheet") {
-                console.log(JSON.stringify(component));
                 component.then((instance) => {
                     let func = instance.default;
                     instance.default = function (
@@ -82,23 +81,12 @@ const Spoofer: Plugin = {
                 FluxDispatcher.dispatch({
                     type: "MESSAGE_UPDATE",
                     message: {
-                        type: originalMessage.type,
-                        tts: originalMessage.tts,
-                        timestamp: originalMessage.timestamp,
-                        pinned: originalMessage.pinned,
-                        mentions: originalMessage.mentions,
+                        ...originalMessage,
+                        ...a1[2],
+                        edited_timestamp: originalMessage.editedTimestamp,
                         mention_roles: originalMessage.mentionRoles,
                         mention_everyone: originalMessage.mentionEveryone,
                         member: originalMessage.author,
-                        id: originalMessage.id,
-                        flags: originalMessage.flags,
-                        embeds: originalMessage.embeds,
-                        edited_timestamp: originalMessage.editedTimestamp,
-                        content: a1[2].content,
-                        components: originalMessage.components,
-                        channel_id: originalMessage.channel_id,
-                        author: originalMessage.author,
-                        attachments: originalMessage.originalMessage,
                         guild_id: ChannelStore.getChannel(
                             originalMessage.channel_id
                         ).guild_id,

@@ -15,15 +15,13 @@ const NoDelete: Plugin = {
     ...manifest,
     patches: [],
 
-    onStart() {
+    async onStart() {
+        const plugin = () => {
             const MessageDelete =
                 FluxDispatcher._orderedActionHandlers.MESSAGE_DELETE.find(
                     (h) => h.name === "MessageStore"
                 );
-            if (!MessageDelete) {
-                console.error("MessageDelete not found");
-                return;
-            }
+
             const MessageUpdate =
                 FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find(
                     (h) => h.name === "MessageStore"
@@ -70,7 +68,8 @@ const NoDelete: Plugin = {
                     return;
                 } catch {}
             });
-        // setTimeout(() => {plugin()}, 300); // give Flux some time to initialize -- 300ms should be more than enough
+        };
+        setTimeout(() => {plugin()}, 300); // give Flux some time to initialize -- 300ms should be more than enough
         // Make sure the MESSAGE_UPDATE and MESSAGE_DELETE action handlers are available
         // for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
         //     try {

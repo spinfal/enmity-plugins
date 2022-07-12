@@ -85,6 +85,7 @@ const NoDelete: Plugin = {
                         return;
                     } catch {}
                 });
+                console.log("NoDelete delayed start successful.");
             } catch (e) {
                 if (attempt < attempts) {
                     console.warn(

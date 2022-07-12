@@ -89,9 +89,9 @@ const NoDelete: Plugin = {
             } catch (e) {
                 if (attempt < attempts) {
                     console.warn(
-                        `NoDelete failed to start. Trying again in ${attempt}s.`
+                        `NoDelete failed to start. Trying again in ${attempt}0s.`
                     );
-                    setTimeout(plugin, attempt * 1000);
+                    setTimeout(plugin, attempt * 10000);
                 } else {
                     console.error(`NoDelete failed to start. Giving up.`);
                 }

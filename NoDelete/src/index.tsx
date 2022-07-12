@@ -27,6 +27,8 @@ const NoDelete: Plugin = {
         // }
         // apparently it wasn't
 
+
+        console.log("NoDelete", FluxDispatcher);
         FluxDispatcher.dispatch({
             type: "MESSAGE_UPDATE",
             message: {

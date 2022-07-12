@@ -2,21 +2,23 @@ import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
-const MessageStore = getByProps("getMessage", "getMessages");
-const ChannelStore = getByProps("getChannel", "getDMFromUserId");
-const FluxDispatcher = getByProps(
-    "_currentDispatchActionType",
-    "_subscriptions",
-    "_waitQueue"
-);
+
 const Patcher = create("NoDelete");
 
 const NoDelete: Plugin = {
     ...manifest,
     patches: [],
 
-    async onStart() {
+    onStart() {
         const plugin = () => {
+            const MessageStore = getByProps("getMessage", "getMessages");
+            const ChannelStore = getByProps("getChannel", "getDMFromUserId");
+            const FluxDispatcher = getByProps(
+                "_currentDispatchActionType",
+                "_subscriptions",
+                "_waitQueue"
+            );
+            console.log("NoDelete delayed start.");
             const MessageDelete =
                 FluxDispatcher._orderedActionHandlers.MESSAGE_DELETE.find(
                     (h) => h.name === "MessageStore"

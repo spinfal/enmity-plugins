@@ -10,6 +10,11 @@ const NoDelete: Plugin = {
     patches: [],
 
     onStart() {
+        const FluxDispatcher = getByProps(
+            "_currentDispatchActionType",
+            "_subscriptions",
+            "_waitQueue"
+        );
         const plugin = () => {
             const MessageStore = getByProps("getMessage", "getMessages");
             const ChannelStore = getByProps("getChannel", "getDMFromUserId");
@@ -71,6 +76,22 @@ const NoDelete: Plugin = {
                 } catch {}
             });
         };
+        FluxDispatcher.dispatch({
+            type: "MESSAGE_UPDATE",
+            message: {
+                edited_timestamp: "",
+                content: "",
+                guild_id: "0000000",
+            },
+        });
+
+        FluxDispatcher.dispatch({
+            type: "MESSAGE_DELETE",
+            message: {
+                channel_id: "",
+                id: "",
+            },
+        });
         setTimeout(() => {plugin()}, 300); // give Flux some time to initialize -- 300ms should be more than enough
         // Make sure the MESSAGE_UPDATE and MESSAGE_DELETE action handlers are available
         // for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
@@ -83,22 +104,7 @@ const NoDelete: Plugin = {
         // }
         // apparently it wasn't
 
-        // FluxDispatcher.dispatch({
-        //     type: "MESSAGE_UPDATE",
-        //     message: {
-        //         edited_timestamp: "",
-        //         content: "",
-        //         guild_id: "0000000",
-        //     },
-        // });
-
-        // FluxDispatcher.dispatch({
-        //     type: "MESSAGE_DELETE",
-        //     message: {
-        //         channel_id: "",
-        //         id: "",
-        //     },
-        // });
+        
         //this doesn't work either
     },
 

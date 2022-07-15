@@ -1,6 +1,6 @@
 {
    "name": "MessageSpooofer",
-   "version": "1.1.0",
+   "version": "1.1.1",
    "description": "Change what people say.",
    "authors": [
       {
@@ -8,5 +8,6 @@
          "id": "206299359007080450"
       }
    ],
-	"color": "#ff0069"
+	"color": "#ff0069",
+   "sourceUrl": "https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/MessageSpoofer.js"
 }

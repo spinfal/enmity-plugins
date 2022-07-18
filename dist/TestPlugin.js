@@ -1,0 +1,1 @@
+function e(...t){return window.enmity.modules.getByProps(...t)}window.enmity.modules.common;function n(t){return window.enmity.patcher.create(t)}e("getMessage","getMessages"),e("getChannel","getDMFromUserId"),n("message-spoofer"),e("openLazy"),e("_currentDispatchActionType","_subscriptions","_waitQueue");

@@ -1,6 +1,7 @@
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
 import { create } from "enmity/patcher";
+import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 const Patcher = create("HideBlockedMessages");
 const FluxDispatcher = getByProps(
@@ -13,23 +14,19 @@ const BlockedStore = getByProps("isBlocked", "isFriend");
 const HideBlockedMessages: Plugin = {
     ...manifest,
     onStart() {
-        FluxDispatcher.dispatch({
-            type: "LOAD_MESSAGES_SUCCESS",
-            channelId: "000000000000000000",
-            messages: [],
-            isBefore: false,
-            isAfter: false,
-            hasMoreBefore: false,
-            hasMoreAfter: false,
-            limit: 25,
-            jump: undefined,
-            isStale: false,
-            truncate: undefined,
-        }); // make sure LoadMessagesSuccess is alive
-        const LoadMessagesSuccess =
-            FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
-                (h) => h.name === "MessageStore"
-            );
+        Toasts.open({
+            content: "Waiting for LOAD_MESSAGES_SUCCESS.",
+        });
+
+        let LoadMessagesSuccess = null;
+        while (!LoadMessagesSuccess)
+            LoadMessagesSuccess =
+                FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
+                    (h) => h.name === "MessageStore"
+                ); // wait for LOAD_MESSAGES_SUCCESS
+        Toasts.open({
+            content: "LOAD_MESSAGES_SUCCESS acquired.",
+        });
         // const MessageCreate = FluxDispatcher._orderedActionHandlers.MESSAGE_CREATE.find((h) => h.name === "MessageStore");
         // const MessageUpdate = FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find((h) => h.name === "MessageStore");
         Patcher.before(LoadMessagesSuccess, "actionHandler", (_, args: any) => {

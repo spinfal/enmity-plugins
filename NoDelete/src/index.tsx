@@ -19,13 +19,13 @@ const NoDelete: Plugin = {
         let attempts = 3;
         const plugin = () => {
             try {
-                FluxDispatcher.dispatch({
-                    type: "MESSAGE_DELETE",
-                    message: {
-                        channel_id: "0000000000",
-                        id: "00000000000",
-                    },
-                });
+                // FluxDispatcher.dispatch({
+                //     type: "MESSAGE_DELETE",
+                //     message: {
+                //         channel_id: "0000000000",
+                //         id: "00000000000",
+                //     },
+                // });
                 attempt++;
                 // FluxDispatcher.dispatch({
                 //     type: "MESSAGE_UPDATE",

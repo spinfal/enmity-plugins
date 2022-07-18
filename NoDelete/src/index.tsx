@@ -19,6 +19,22 @@ const NoDelete: Plugin = {
         let attempts = 3;
         const plugin = () => {
             try {
+                FluxDispatcher.dispatch({
+                    type: "MESSAGE_UPDATE",
+                    message: {
+                        edited_timestamp: "",
+                        content: "",
+                        guild_id: "0000000",
+                    },
+                });
+        
+                FluxDispatcher.dispatch({
+                    type: "MESSAGE_DELETE",
+                    message: {
+                        channel_id: "",
+                        id: "",
+                    },
+                });
                 attempt++;
                 const MessageStore = getByProps("getMessage", "getMessages");
                 const ChannelStore = getByProps(
@@ -113,22 +129,7 @@ const NoDelete: Plugin = {
                 }
             }
         };
-        FluxDispatcher.dispatch({
-            type: "MESSAGE_UPDATE",
-            message: {
-                edited_timestamp: "",
-                content: "",
-                guild_id: "0000000",
-            },
-        });
-
-        FluxDispatcher.dispatch({
-            type: "MESSAGE_DELETE",
-            message: {
-                channel_id: "",
-                id: "",
-            },
-        });
+        
         setTimeout(() => {
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough

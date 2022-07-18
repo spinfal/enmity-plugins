@@ -5,9 +5,11 @@ jobs:
     name: "Build all plugins"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm install
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node_version: 18
+          cache: npm
       - name: Run build
         run: npm run build
       - uses: stefanzweifel/git-auto-commit-action@v4

@@ -10,6 +10,7 @@ jobs:
         with:
           node-version: 18
           cache: npm
+          cache-dependency-path: package-lock.json
       - name: Run build
         run: npm run build
       - uses: stefanzweifel/git-auto-commit-action@v4

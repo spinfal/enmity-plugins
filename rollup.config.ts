@@ -5,7 +5,7 @@ import json from "@rollup/plugin-json";
 import { writeFileSync } from "fs";
 import { defineConfig } from "rollup";
 
-const plugins = ["MessageSpoofer", "NoDelete", "TestPlugin"];
+const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages"];
 export default () => {
   let readme = "# Marek's Enmity plugins\n\n";
 

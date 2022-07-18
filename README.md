@@ -9,7 +9,7 @@
 [Compiled](https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/NoDelete.js)
 
 [Source](https://github.com/notmarek/enmity-plugins/tree/master/NoDelete)
-## TestPlugin
-[Compiled](https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/TestPlugin.js)
+## HideBlockedMessages
+[Compiled](https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/HideBlockedMessages.js)
 
-[Source](https://github.com/notmarek/enmity-plugins/tree/master/TestPlugin)
+[Source](https://github.com/notmarek/enmity-plugins/tree/master/HideBlockedMessages)

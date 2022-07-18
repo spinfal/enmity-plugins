@@ -17,9 +17,6 @@ export default () => {
     `;
     return defineConfig({
       input: `${name}/src/index.tsx`,
-      transform(code, id) {
-        console.log(code);
-      },
       output: [
         {
           file: `dist/${name}.js`,

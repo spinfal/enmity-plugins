@@ -2,6 +2,7 @@ import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
 import { Messages, React } from "enmity/metro/common";
 import { create } from "enmity/patcher";
+import * as Assets from "enmity/api/assets";
 import manifest from "../manifest.json";
 const MessageStore = getByProps("getMessage", "getMessages");
 const ChannelStore = getByProps("getChannel", "getDMFromUserId");
@@ -53,7 +54,7 @@ const Spoofer: Plugin = {
                                     );
                                 }}
                                 message="Spoof edit"
-                                iconSource={582}
+                                iconSource={Assets.getIDByName("ic_message_retry")}
                             />
                         );
                         og.props.children.props.children.props.children[1].unshift(

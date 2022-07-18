@@ -20,22 +20,23 @@ const NoDelete: Plugin = {
         const plugin = () => {
             try {
                 FluxDispatcher.dispatch({
-                    type: "MESSAGE_UPDATE",
-                    message: {
-                        edited_timestamp: "",
-                        content: "",
-                        guild_id: "0000000",
-                    },
-                });
-        
-                FluxDispatcher.dispatch({
                     type: "MESSAGE_DELETE",
                     message: {
-                        channel_id: "",
-                        id: "",
+                        channel_id: "0000000000",
+                        id: "00000000000",
                     },
                 });
                 attempt++;
+                // FluxDispatcher.dispatch({
+                //     type: "MESSAGE_UPDATE",
+                //     message: {
+                //         edited_timestamp: "",
+                //         content: "",
+                //         guild_id: "0000000",
+                //     },
+                // });
+        
+
                 const MessageStore = getByProps("getMessage", "getMessages");
                 const ChannelStore = getByProps(
                     "getChannel",

@@ -22,10 +22,14 @@ const HideBlockedMessages: Plugin = {
         let LoadMessagesSuccess = null;
         while (LoadMessagesSuccess === null) {
             try {
-                LoadMessagesSuccess =
-                    FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
-                        (h) => h.name === "MessageStore"
-                    ); // wait for LOAD_MESSAGES_SUCCESS
+                setTimeout(
+                    () =>
+                        (LoadMessagesSuccess =
+                            FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
+                                (h) => h.name === "MessageStore"
+                            )),
+                    500
+                );
             } catch {}
         }
         Toasts.open({

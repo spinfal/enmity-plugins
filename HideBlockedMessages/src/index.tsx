@@ -1,5 +1,6 @@
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
+import * as Assets from "enmity/api/assets";
 import { create } from "enmity/patcher";
 import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
@@ -19,13 +20,17 @@ const HideBlockedMessages: Plugin = {
         });
 
         let LoadMessagesSuccess = null;
-        while (!LoadMessagesSuccess)
-            LoadMessagesSuccess =
-                FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
-                    (h) => h.name === "MessageStore"
-                ); // wait for LOAD_MESSAGES_SUCCESS
+        while (LoadMessagesSuccess === null) {
+            try {
+                LoadMessagesSuccess =
+                    FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
+                        (h) => h.name === "MessageStore"
+                    ); // wait for LOAD_MESSAGES_SUCCESS
+            } catch {}
+        }
         Toasts.open({
             content: "LOAD_MESSAGES_SUCCESS acquired.",
+            source: Assets.getIDByName("Check"),
         });
         // const MessageCreate = FluxDispatcher._orderedActionHandlers.MESSAGE_CREATE.find((h) => h.name === "MessageStore");
         // const MessageUpdate = FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find((h) => h.name === "MessageStore");

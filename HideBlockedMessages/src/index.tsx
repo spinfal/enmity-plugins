@@ -76,8 +76,8 @@ const HideBlockedMessages: Plugin = {
                     });
                 }
             }
-            setTimeout(lateStartup, 300);
         };
+        setTimeout(lateStartup, 300);
 
         // const MessageCreate = FluxDispatcher._orderedActionHandlers.MESSAGE_CREATE.find((h) => h.name === "MessageStore");
         // const MessageUpdate = FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find((h) => h.name === "MessageStore");

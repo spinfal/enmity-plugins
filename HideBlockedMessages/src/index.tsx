@@ -14,6 +14,9 @@ const HideBlockedMessages: Plugin = {
     ...manifest,
     onStart() {
         FluxDispatcher.dispatch({
+            type: "LOAD_MESSAGES",
+        });
+        FluxDispatcher.dispatch({
             type: "LOAD_MESSAGES_SUCCESS",
             channelId: 0,
             messages: [],
@@ -25,7 +28,7 @@ const HideBlockedMessages: Plugin = {
             jump: undefined,
             isStale: false,
             truncate: undefined,
-        }); // make sure LoadMessages
+        }); // wake up the handler??????
         const LoadMessages =
             FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
                 (h) => h.name === "MessageStore"

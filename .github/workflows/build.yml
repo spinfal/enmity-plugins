@@ -1,0 +1,18 @@
+name: Build all plugins
+on: [push]
+jobs:
+  Build-All:
+    name: "Build all plugins"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run build
+        run: npm run build
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[Bot] build"
+          commit_user_name: BuildBot
+          commit_user_email: no-reply@notmarek.com
+          commit_author: BuildBot <no-reply@notmarek.com>

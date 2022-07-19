@@ -85,6 +85,9 @@ const HideBlockedMessages: Plugin = {
     Patcher.unpatchAll();
   },
   patches: [],
+  getSettingsPanel({ settings }) {
+    return <Settings settings={settings} pluginUrl={manifest.pluginUrl} />;
+  },
 };
 
 registerPlugin(HideBlockedMessages);

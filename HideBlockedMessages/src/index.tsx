@@ -4,6 +4,7 @@ import { create } from "enmity/patcher";
 import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 import * as Assets from "enmity/api/assets";
+import Settings from "./components/settings"
 const Patcher = create("HideBlockedMessages");
 const FluxDispatcher = getByProps(
   "_currentDispatchActionType",

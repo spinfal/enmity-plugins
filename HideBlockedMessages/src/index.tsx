@@ -5,6 +5,7 @@ import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 import * as Assets from "enmity/api/assets";
 import Settings from "./components/settings"
+import { makeStore } from 'enmity/api/settings';
 const Patcher = create("HideBlockedMessages");
 const FluxDispatcher = getByProps(
   "_currentDispatchActionType",
@@ -16,6 +17,7 @@ const BlockedStore = getByProps("isBlocked", "isFriend");
 const HideBlockedMessages: Plugin = {
   ...manifest,
   onStart() {
+    makeStore(this.name);
     FluxDispatcher.dispatch({
       type: "LOAD_MESSAGES",
     });

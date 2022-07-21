@@ -17,10 +17,11 @@ const BlockedStore = getByProps("isBlocked", "isFriend");
 const HideBlockedMessages: Plugin = {
   ...manifest,
   onStart() {
-    makeStore(this.name);
+    const Settings = makeStore(this.name);
     FluxDispatcher.dispatch({
       type: "LOAD_MESSAGES",
     });
+    Settings.set("test", "test");
     FluxDispatcher.dispatch({
       type: "LOAD_MESSAGES_SUCCESS",
       channelId: 0,

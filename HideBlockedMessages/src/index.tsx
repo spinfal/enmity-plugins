@@ -90,7 +90,7 @@ const HideBlockedMessages: Plugin = {
   },
   patches: [],
   getSettingsPanel({ settings }) {
-    return <Settings settings={settings} pluginUrl={manifest.pluginUrl} />;
+    return <Settings settings={settings} />;
   },
 };
 

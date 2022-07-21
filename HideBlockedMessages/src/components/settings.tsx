@@ -10,7 +10,11 @@ interface SettingsProps {
 export default ({ settings, pluginUrl }: SettingsProps) => {
   return (
     <ScrollView>
-        <UpdateButton pluginUrl={pluginUrl} />
+        <FormRow
+        label="Hello World"
+        trailing={FormRow.Arrow}
+        onPress={() => console.log('hell')}
+        />
     </ScrollView>
   );
 };

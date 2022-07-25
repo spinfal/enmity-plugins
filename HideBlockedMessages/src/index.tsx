@@ -8,7 +8,7 @@ import Settings from "./components/settings";
 import { React } from "enmity/metro/common";
 import { makeStore } from "enmity/api/settings";
 import { ScrollView } from "enmity/components";
-import UpdateButton from "../../../common/components/updateButton";
+import UpdateButton from "../../common/components/updateButton";
 const Patcher = create("HideBlockedMessages");
 const FluxDispatcher = getByProps(
   "_currentDispatchActionType",

@@ -6,7 +6,7 @@ import { React, Theme, Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 import * as Assets from "enmity/api/assets";
 import { Image, TouchableOpacity, View } from "enmity/components";
-import { wrapInHooks } from "enmity/utilities";
+import { default as wrapInHooks } from "./wrapInHooks";
 
 interface Badge {
     name: string;

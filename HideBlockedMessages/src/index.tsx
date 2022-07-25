@@ -4,9 +4,11 @@ import { create } from "enmity/patcher";
 import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 import * as Assets from "enmity/api/assets";
-import Settings from "./components/settings"
-import { React } from 'enmity/metro/common';
-import { makeStore } from 'enmity/api/settings';
+import Settings from "./components/settings";
+import { React } from "enmity/metro/common";
+import { makeStore } from "enmity/api/settings";
+import { ScrollView } from "enmity/components";
+import UpdateButton from "../../../common/components/updateButton";
 const Patcher = create("HideBlockedMessages");
 const FluxDispatcher = getByProps(
   "_currentDispatchActionType",
@@ -91,7 +93,11 @@ const HideBlockedMessages: Plugin = {
   },
   patches: [],
   getSettingsPanel({ settings }) {
-    return <Settings settings={settings} />;
+    return (
+      <ScrollView settings={settings}>
+        <UpdateButton pluginUrl={manifest.sourceUrl} />
+      </ScrollView>
+    );
   },
 };
 

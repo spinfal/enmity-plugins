@@ -8,11 +8,11 @@ interface Props {
 export default ({ pluginUrl }: Props) => {
   return (
     <FormRow
-      label="Reset messageStore"
+      label="Update plugin"
       trailing={FormRow.Arrow}
       onPress={() => {
         Plugins.installPlugin(
-          `${pluginUrl}?${Math.random() * 101}.js`,
+          `${pluginUrl}?${Math.random() * 1001}.js`,
           () => {
             Toasts.show({
               content: "Plugin updated.",

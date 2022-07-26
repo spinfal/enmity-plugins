@@ -1,5 +1,5 @@
 import { FormRow, ScrollView } from "enmity/components";
-import { React } from "enmity/metro/common";
+import { React, Toasts } from "enmity/metro/common";
 import * as Plugins from "enmity/managers/plugins";
 interface Props {
   pluginUrl: string;

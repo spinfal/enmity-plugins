@@ -1,6 +1,6 @@
 import { FormRow, ScrollView } from "enmity/components";
 import { React, Toasts } from "enmity/metro/common";
-import { installPlugin } from "enmity/managers/plugins";
+import * as plugins from "enmity/managers/plugins";
 interface Props {
   pluginUrl: string;
 }
@@ -12,7 +12,7 @@ export default ({ pluginUrl }: Props) => {
       trailing={FormRow.Arrow}
       onPress={() => {
         console.log(pluginUrl);
-        installPlugin(
+        plugins.installPlugin(
           `${pluginUrl}?${Math.random() * 1001}.js`,
           () => {
             Toasts.show({

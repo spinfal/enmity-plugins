@@ -1,13 +1,13 @@
 {
-    "name": "Amongus",
-    "version": "1.sus",
+    "name": "AmongUs",
+    "version": "sus",
     "description": "sus",
     "authors": [
        {
-          "name": "NotMarek",
+          "name": "amogus",
           "id": "206299359007080450"
        }
     ],
      "color": "#ff0069",
-    "sourceUrl": "https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/HideBlockedMessages.js"
+    "sourceUrl": "https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/AmongUs.js"
  }

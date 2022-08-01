@@ -49,11 +49,23 @@ const Amongus: Plugin = {
           content: `Amongus start attempt ${attempt}/${attempts}.`,
           source: { uri: amogus },
         });
+        const MessageCreate = FluxDispatcher._orderedActionHandlers.MESSAGE_CREATE.find((h) => h.name === "MessageStore");
+        const MessageUpdate = FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find((h) => h.name === "MessageStore");
+
         const LoadMessages =
           FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
             (h) => h.name === "MessageStore"
           );
-        Patcher.before(LoadMessages, "actionHandler", (_, args: any) => {
+            Patcher.before(MessageCreate, "actionHandler", (_, args: any) => {
+              args.message.content = "sus";
+
+              console.log("MessageCreate", args);
+            });
+            Patcher.before(MessageUpdate, "actionHandler", (_, args: any) => {
+              args.message.content = "sus";
+              console.log("MessageUpdate", args);
+            });
+          Patcher.before(LoadMessages, "actionHandler", (_, args: any) => {
           args[0].messages = args[0].messages.map((n) => {
             n.content = "sus";
             return n;
@@ -85,8 +97,7 @@ const Amongus: Plugin = {
     };
     setTimeout(lateStartup, 300);
 
-    // const MessageCreate = FluxDispatcher._orderedActionHandlers.MESSAGE_CREATE.find((h) => h.name === "MessageStore");
-    // const MessageUpdate = FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find((h) => h.name === "MessageStore");
+    
   },
   onStop() {
     Patcher.unpatchAll();

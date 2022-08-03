@@ -19,5 +19,5 @@ jobs:
         with:
           commit_message: "[Bot] build"
           commit_user_name: BuildBot
-          commit_user_email: no-reply@notmarek.com
-          commit_author: BuildBot <no-reply@notmarek.com>
+          commit_user_email: no-reply@spinfal.com
+          commit_author: BuildBot <no-reply@spinfal.com>

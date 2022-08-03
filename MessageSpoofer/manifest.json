@@ -4,10 +4,10 @@
    "description": "Change what people say.",
    "authors": [
       {
-         "name": "NotMarek",
-         "id": "206299359007080450"
+         "name": "spinfal",
+         "id": "308440976723148800"
       }
    ],
 	"color": "#ff0069",
-   "sourceUrl": "https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/MessageSpoofer.js"
+   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/MessageSpoofer.js"
 }

@@ -1,13 +1,13 @@
 {
-    "name": "HideBlockedMessages",
-    "version": "1.2.0",
-    "description": "For when you really need to shut someone the f*** up.",
-    "authors": [
-       {
-          "name": "NotMarek",
-          "id": "206299359007080450"
-       }
-    ],
-     "color": "#ff0069",
-    "sourceUrl": "https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/HideBlockedMessages.js"
- }
+   "name": "HideBlockedMessages",
+   "version": "1.2.0",
+   "description": "For when you really need to shut someone the f*** up.",
+   "authors": [
+      {
+         "name": "spinfal",
+         "id": "308440976723148800"
+      }
+   ],
+   "color": "#ff0069",
+   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/HideBlockedMessages.js"
+}

@@ -3,7 +3,7 @@
    "description": "",
    "version": "1.0.0",
    "license": "GPL-3.0",
-   "author": "NotMarek",
+   "author": "spinfal",
    "scripts": {
       "build": "rollup -c --configPlugin esbuild"
    },

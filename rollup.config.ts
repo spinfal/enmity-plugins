@@ -10,7 +10,7 @@ export default () => {
   let readme = "# Marek's Enmity plugins\n\n";
 
   const configs = plugins.map((name) => {
-    readme += `\n## ${name}\n[Compiled](https://raw.githubusercontent.com/notmarek/enmity-plugins/master/dist/${name}.js)\n\n[Source](https://github.com/notmarek/enmity-plugins/tree/master/${name})`;
+    readme += `\n## ${name}\n[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/${name}.js)\n\n[Source](https://github.com/spinfal/enmity-plugins/tree/master/${name})`;
     return defineConfig({
       input: `${name}/src/index.tsx`,
       output: [

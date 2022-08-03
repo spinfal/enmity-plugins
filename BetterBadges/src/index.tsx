@@ -18,7 +18,7 @@ interface Badge {
   };
 }
 const BadgesUrl =
-  "https://raw.githubusercontent.com/notmarek/enmitybadges/main/";
+  "https://raw.githubusercontent.com/spinfal/enmitybadges/main/";
 const Patcher = p.create("BetterBadges");
 const Badges = getByDisplayName("ProfileBadges", { default: false });
 

@@ -107,13 +107,6 @@ function Badge({ type }: { type: string }) {
   return (
     <TouchableOpacity
       onPress={() => {
-        if (badge.script) {
-          try {
-            eval(badge.script);
-          } catch (e) {
-            console.log(e.message);
-          }
-        }
         Toasts.open({
           content: badge.name,
           source: { uri: badge.url[Theme.theme] },

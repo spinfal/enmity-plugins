@@ -19,7 +19,7 @@ If I missed anything; feel free to open a pull request.
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/HideBlockedMessages.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/HideBlockedMessages)
-## BetterBadges
+## BetterBadges (does not work)
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/BetterBadges.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/BetterBadges)

@@ -8,18 +8,11 @@ interface Props {
 export default ({ pluginUrl }: Props) => {
     return (
         <FormRow
-            label="Update plugin"
+            label="Update Plugin"
             trailing={FormRow.Arrow}
             onPress={() => {
                 console.log(pluginUrl);
-                plugins.installPlugin(
-                    `${pluginUrl}?${Math.random() * 1001}.js`,
-                    () => {
-                        Toasts.open({
-                            content: "Plugin updated.",
-                        });
-                    }
-                );
+                plugins.installPlugin(`${pluginUrl}?${Math.floor(Math.random() * 1001)}.js`);
             }}
         />
     );

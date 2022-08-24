@@ -47,6 +47,7 @@ const NoDelete: Plugin = {
                     "_subscriptions",
                     "_waitQueue"
                 );
+                // console.log('[NoDelete Dispatch]', FluxDispatcher);
                 console.log(
                     `NoDelete delayed start attempt ${attempt}/${attempts}.`
                 );
@@ -55,12 +56,12 @@ const NoDelete: Plugin = {
                     source: Assets.getIDByName('ic_staff_guild_icon_blurple'),
                 });
                 const MessageDelete =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_DELETE.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_DELETE.find(
                         (h) => h.name === "MessageStore"
                     );
 
                 const MessageUpdate =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
                         (h) => h.name === "MessageStore"
                     );
 
@@ -112,6 +113,8 @@ const NoDelete: Plugin = {
                     source: Assets.getIDByName('Check'),
                 });
             } catch (e) {
+                console.log('[NoDelete Plugin Error]', e);
+
                 if (attempt < attempts) {
                     console.warn(
                         `NoDelete failed to start. Trying again in ${attempt}0s.`

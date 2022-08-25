@@ -92,6 +92,7 @@ const Spoofer: Plugin = {
                             originalMessage.channel_id
                         ).guild_id,
                     },
+                    log_edit: false
                 });
                 a1 = {} as any;
             }

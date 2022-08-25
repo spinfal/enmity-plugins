@@ -10,11 +10,6 @@ const NoDelete: Plugin = {
     patches: [],
 
     onStart() {
-        const FluxDispatcher = getByProps(
-            "_currentDispatchActionType",
-            "_subscriptions",
-            "_waitQueue"
-        );
         let attempt = 0;
         let attempts = 3;
         const plugin = () => {
@@ -37,15 +32,16 @@ const NoDelete: Plugin = {
                 // });
         
 
+                const FluxDispatcher = getByProps(
+                    "_currentDispatchActionType",
+                    "_subscriptions",
+                    "_actionHandlers",
+                    "_waitQueue"
+                );
                 const MessageStore = getByProps("getMessage", "getMessages");
                 const ChannelStore = getByProps(
                     "getChannel",
                     "getDMFromUserId"
-                );
-                const FluxDispatcher = getByProps(
-                    "_currentDispatchActionType",
-                    "_subscriptions",
-                    "_waitQueue"
                 );
                 // console.log('[NoDelete Dispatch]', FluxDispatcher);
                 console.log(
@@ -53,17 +49,25 @@ const NoDelete: Plugin = {
                 );
                 Toast.open({
                     content: `NoDelete start attempt ${attempt}/${attempts}.`,
-                    source: Assets.getIDByName('ic_staff_guild_icon_blurple'),
+                    source: Assets.getIDByName('debug'),
                 });
-                const MessageDelete =
-                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_DELETE.find(
-                        (h) => h.name === "MessageStore"
-                    );
 
-                const MessageUpdate =
-                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
-                        (h) => h.name === "MessageStore"
-                    );
+                for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
+                    try {
+                        FluxDispatcher.dispatch({
+                            type: handler,
+                            message: {}, // should be enough to wake them up
+                        });
+                    } catch {}
+                }
+
+                const MessageDelete = FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_DELETE.find(
+                    (h) => h.name === "MessageStore"
+                );
+
+                const MessageUpdate = FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
+                    (h) => h.name === "MessageStore"
+                );
 
                 Patcher.before(MessageDelete, "actionHandler", (_, args) => {
                     const originalMessage = MessageStore.getMessage(
@@ -72,8 +76,8 @@ const NoDelete: Plugin = {
                     );
                     args[0] = {};
                     if (
-                        !originalMessage.editedTimestamp ||
-                        originalMessage.editedTimestamp._isValid
+                        !originalMessage?.editedTimestamp ||
+                        originalMessage?.editedTimestamp._isValid
                     ) {
                         const editEvent = {
                             type: "MESSAGE_UPDATE",
@@ -86,6 +90,7 @@ const NoDelete: Plugin = {
                                     originalMessage.channel_id
                                 ).guild_id,
                             },
+                            log_edit: false
                         };
                         FluxDispatcher.dispatch(editEvent);
                     }
@@ -93,6 +98,8 @@ const NoDelete: Plugin = {
 
                 Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
                     try {
+                        if (args[0].log_edit == false) return;
+                        
                         const originalMessage = MessageStore.getMessage(
                             args[0].message.channel_id,
                             args[0].message.id
@@ -101,12 +108,13 @@ const NoDelete: Plugin = {
                             if (!args[0].edited_timestamp._isValid) return;
                         } catch {}
                         args[0].message.content =
-                            originalMessage.content +
+                            originalMessage.content.replace(/`\[edited\]`\n/gm, "") +
                             " `[edited]`\n" +
                             args[0].message.content;
                         return;
                     } catch {}
                 });
+
                 console.log("NoDelete delayed start successful.");
                 Toast.open({
                     content: `NoDelete delayed start successful.`,
@@ -137,18 +145,6 @@ const NoDelete: Plugin = {
         setTimeout(() => {
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
-        // Make sure the MESSAGE_UPDATE and MESSAGE_DELETE action handlers are available
-        // for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
-        //     try {
-        //         FluxDispatcher.dispatch({
-        //             type: handler,
-        //             message: {}, // should be enough to wake them up
-        //         });
-        //     } catch {}
-        // }
-        // apparently it wasn't
-
-        //this doesn't work either
     },
 
     onStop() {

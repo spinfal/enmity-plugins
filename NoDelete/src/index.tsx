@@ -3,6 +3,9 @@ import { getByProps, getModule } from "enmity/metro";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 import * as Assets from "enmity/api/assets";
+import { React } from "enmity/metro/common";
+import { ScrollView } from "enmity/components";
+import UpdateButton from "../../common/components/updateButton";
 const Patcher = create("NoDelete");
 const Toast = getModule(m => m.open !== undefined && m.close !== undefined && !m.openLazy && !m.startDrag && !m.init && !m.openReplay && !m.openChannelCallPopout)
 const NoDelete: Plugin = {
@@ -10,11 +13,6 @@ const NoDelete: Plugin = {
     patches: [],
 
     onStart() {
-        const FluxDispatcher = getByProps(
-            "_currentDispatchActionType",
-            "_subscriptions",
-            "_waitQueue"
-        );
         let attempt = 0;
         let attempts = 3;
         const plugin = () => {
@@ -35,34 +33,46 @@ const NoDelete: Plugin = {
                 //         guild_id: "0000000",
                 //     },
                 // });
-        
 
+
+                const FluxDispatcher = getByProps(
+                    "_currentDispatchActionType",
+                    "_subscriptions",
+                    "_actionHandlers",
+                    "_waitQueue"
+                );
                 const MessageStore = getByProps("getMessage", "getMessages");
                 const ChannelStore = getByProps(
                     "getChannel",
                     "getDMFromUserId"
                 );
-                const FluxDispatcher = getByProps(
-                    "_currentDispatchActionType",
-                    "_subscriptions",
-                    "_waitQueue"
-                );
+                // console.log('[NoDelete Dispatch]', FluxDispatcher);
                 console.log(
                     `NoDelete delayed start attempt ${attempt}/${attempts}.`
                 );
                 Toast.open({
                     content: `NoDelete start attempt ${attempt}/${attempts}.`,
-                    source: Assets.getIDByName('ic_staff_guild_icon_blurple'),
+                    source: Assets.getIDByName('debug'),
                 });
-                const MessageDelete =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_DELETE.find(
-                        (h) => h.name === "MessageStore"
-                    );
 
-                const MessageUpdate =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find(
-                        (h) => h.name === "MessageStore"
-                    );
+                for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
+                    try {
+                        FluxDispatcher.dispatch({
+                            type: handler,
+                            message: {}, // should be enough to wake them up
+                        });
+                    } catch (err) {
+                        console.log('[NoDelete Dispatch Error]', err);
+                    }
+                }
+
+                const MessageDelete = FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_DELETE.find(
+                    (h) => h.name === "MessageStore"
+                );
+
+                const MessageUpdate = FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
+                    (h) => h.name === "MessageStore"
+                );
 
                 Patcher.before(MessageDelete, "actionHandler", (_, args) => {
                     const originalMessage = MessageStore.getMessage(
@@ -71,8 +81,8 @@ const NoDelete: Plugin = {
                     );
                     args[0] = {};
                     if (
-                        !originalMessage.editedTimestamp ||
-                        originalMessage.editedTimestamp._isValid
+                        !originalMessage?.editedTimestamp ||
+                        originalMessage?.editedTimestamp._isValid
                     ) {
                         const editEvent = {
                             type: "MESSAGE_UPDATE",
@@ -85,6 +95,7 @@ const NoDelete: Plugin = {
                                     originalMessage.channel_id
                                 ).guild_id,
                             },
+                            log_edit: false
                         };
                         FluxDispatcher.dispatch(editEvent);
                     }
@@ -92,26 +103,36 @@ const NoDelete: Plugin = {
 
                 Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
                     try {
+                        if (args[0].log_edit == false) return;
+
                         const originalMessage = MessageStore.getMessage(
                             args[0].message.channel_id,
                             args[0].message.id
                         );
+
+                        if (!args[0]?.message?.content) return;
+
                         try {
                             if (!args[0].edited_timestamp._isValid) return;
-                        } catch {}
+                        } catch { }
                         args[0].message.content =
                             originalMessage.content +
                             " `[edited]`\n" +
                             args[0].message.content;
                         return;
-                    } catch {}
+                    } catch (err) {
+                        console.log('[NoDelete Error]', err);
+                    }
                 });
+
                 console.log("NoDelete delayed start successful.");
                 Toast.open({
                     content: `NoDelete delayed start successful.`,
                     source: Assets.getIDByName('Check'),
                 });
-            } catch (e) {
+            } catch (err) {
+                console.log('[NoDelete Plugin Error]', err);
+
                 if (attempt < attempts) {
                     console.warn(
                         `NoDelete failed to start. Trying again in ${attempt}0s.`
@@ -130,26 +151,21 @@ const NoDelete: Plugin = {
                 }
             }
         };
-        
+
         setTimeout(() => {
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
-        // Make sure the MESSAGE_UPDATE and MESSAGE_DELETE action handlers are available
-        // for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
-        //     try {
-        //         FluxDispatcher.dispatch({
-        //             type: handler,
-        //             message: {}, // should be enough to wake them up
-        //         });
-        //     } catch {}
-        // }
-        // apparently it wasn't
-
-        //this doesn't work either
     },
 
     onStop() {
         Patcher.unpatchAll();
+    },
+    getSettingsPanel({ settings }) {
+        return (
+            <ScrollView settings={settings}>
+                <UpdateButton pluginUrl={manifest.sourceUrl} />
+            </ScrollView>
+        );
     },
 };
 

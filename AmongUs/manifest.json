@@ -1,13 +1,13 @@
 {
-    "name": "AmongUs",
-    "version": "sus",
-    "description": "sus",
-    "authors": [
-       {
-          "name": "amogus",
-          "id": "308440976723148800"
-       }
-    ],
-     "color": "#ff0069",
-    "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/AmongUs.js"
- }
+   "name": "AmongUs",
+   "version": "1.0.0",
+   "description": "sus",
+   "authors": [
+      {
+         "name": "amogus",
+         "id": "308440976723148800"
+      }
+   ],
+   "color": "#ff0069",
+   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/AmongUs.js"
+}

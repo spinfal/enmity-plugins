@@ -3,6 +3,9 @@ import { getByProps, getModule } from "enmity/metro";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 import * as Assets from "enmity/api/assets";
+import { React } from "enmity/metro/common";
+import { ScrollView } from "enmity/components";
+import UpdateButton from "../../common/components/updateButton";
 const Patcher = create("NoDelete");
 const Toast = getModule(m => m.open !== undefined && m.close !== undefined && !m.openLazy && !m.startDrag && !m.init && !m.openReplay && !m.openChannelCallPopout)
 const NoDelete: Plugin = {
@@ -149,6 +152,13 @@ const NoDelete: Plugin = {
 
     onStop() {
         Patcher.unpatchAll();
+    },
+    getSettingsPanel({ settings }) {
+        return (
+            <ScrollView settings={settings}>
+                <UpdateButton pluginUrl={manifest.sourceUrl} />
+            </ScrollView>
+        );
     },
 };
 

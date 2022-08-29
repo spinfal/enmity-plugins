@@ -47,18 +47,18 @@ const HideBlockedMessages: Plugin = {
                 );
                 Toasts.open({
                     content: `HideBlockedMessages start attempt ${attempt}/${attempts}.`,
-                    source: Assets.getIDByName("ic_staff_guild_icon_blurple"),
+                    source: Assets.getIDByName("debug"),
                 });
                 const LoadMessages =
-                    FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
                         (h) => h.name === "MessageStore"
                     );
                 const MessageCreate =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_CREATE.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_CREATE.find(
                         (h) => h.name === "MessageStore"
                     );
                 const MessageUpdate =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
                         (h) => h.name === "MessageStore"
                     );
                 const MessageStore = getByProps("getMessage", "getMessages");
@@ -106,7 +106,9 @@ const HideBlockedMessages: Plugin = {
                     content: `HideBlockedMessages delayed start successful.`,
                     source: Assets.getIDByName("Check"),
                 });
-            } catch {
+            } catch (err) {
+                console.log('[HideBlockedMessages Error]', err);
+                
                 if (attempt < attempts) {
                     console.warn(
                         `HideBlockedMessages failed to start. Trying again in ${attempt}0s.`

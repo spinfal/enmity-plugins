@@ -33,7 +33,7 @@ const NoDelete: Plugin = {
                 //         guild_id: "0000000",
                 //     },
                 // });
-        
+
 
                 const FluxDispatcher = getByProps(
                     "_currentDispatchActionType",
@@ -61,7 +61,9 @@ const NoDelete: Plugin = {
                             type: handler,
                             message: {}, // should be enough to wake them up
                         });
-                    } catch {}
+                    } catch (err) {
+                        console.log('[NoDelete Dispatch Error]', err);
+                    }
                 }
 
                 const MessageDelete = FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_DELETE.find(
@@ -102,20 +104,25 @@ const NoDelete: Plugin = {
                 Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
                     try {
                         if (args[0].log_edit == false) return;
-                        
+
                         const originalMessage = MessageStore.getMessage(
                             args[0].message.channel_id,
                             args[0].message.id
                         );
+
+                        if (!args[0]?.message?.content) return;
+
                         try {
                             if (!args[0].edited_timestamp._isValid) return;
-                        } catch {}
+                        } catch { }
                         args[0].message.content =
-                            originalMessage.content.replace(/`\[edited\]`\n/gm, "") +
+                            originalMessage.content +
                             " `[edited]`\n" +
                             args[0].message.content;
                         return;
-                    } catch {}
+                    } catch (err) {
+                        console.log('[NoDelete Error]', err);
+                    }
                 });
 
                 console.log("NoDelete delayed start successful.");
@@ -123,8 +130,8 @@ const NoDelete: Plugin = {
                     content: `NoDelete delayed start successful.`,
                     source: Assets.getIDByName('Check'),
                 });
-            } catch (e) {
-                console.log('[NoDelete Plugin Error]', e);
+            } catch (err) {
+                console.log('[NoDelete Plugin Error]', err);
 
                 if (attempt < attempts) {
                     console.warn(
@@ -144,7 +151,7 @@ const NoDelete: Plugin = {
                 }
             }
         };
-        
+
         setTimeout(() => {
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough

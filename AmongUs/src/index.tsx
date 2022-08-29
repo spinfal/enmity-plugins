@@ -3,7 +3,6 @@ import { getByProps } from "enmity/metro";
 import { create } from "enmity/patcher";
 import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
-import * as Assets from "enmity/api/assets";
 import { React } from "enmity/metro/common";
 import { makeStore } from "enmity/api/settings";
 import { ScrollView } from "enmity/components";
@@ -14,7 +13,6 @@ const FluxDispatcher = getByProps(
     "_subscriptions",
     "_waitQueue"
 );
-const BlockedStore = getByProps("isBlocked", "isFriend");
 const amogus =
     "https://assets-prd.ignimgs.com/2020/09/15/among-us-button-1600131255112.jpg";
 const Amongus: Plugin = {
@@ -51,16 +49,16 @@ const Amongus: Plugin = {
                     source: { uri: amogus },
                 });
                 const MessageCreate =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_CREATE.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_CREATE.find(
                         (h) => h.name === "MessageStore"
                     );
                 const MessageUpdate =
-                    FluxDispatcher._orderedActionHandlers.MESSAGE_UPDATE.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
                         (h) => h.name === "MessageStore"
                     );
 
                 const LoadMessages =
-                    FluxDispatcher._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
+                    FluxDispatcher._actionHandlers._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
                         (h) => h.name === "MessageStore"
                     );
                 Patcher.before(
@@ -117,6 +115,13 @@ const Amongus: Plugin = {
         Patcher.unpatchAll();
     },
     patches: [],
+    getSettingsPanel({ settings }) {
+        return (
+            <ScrollView settings={settings}>
+                <UpdateButton pluginUrl={manifest.sourceUrl} />
+            </ScrollView>
+        );
+    },
 };
 
 registerPlugin(Amongus);

@@ -4,8 +4,7 @@ Hello reader. Although yes I have changed the code to include my username and Di
 If I missed anything; feel free to open a pull request.
 ![Proof of token logger](https://cdn.spin.rip/r/DiscordDevelopment_7206243177.png)
 
-## Marek's Enmity plugins, modified by [Spin](https://spin.rip)
-
+# Marek's Enmity plugins, modified by [Spin](https://spin.rip)
 
 ## MessageSpoofer
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/MessageSpoofer.js)
@@ -27,3 +26,10 @@ If I missed anything; feel free to open a pull request.
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/AmongUs.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/AmongUs)
+
+# Spin's plugins
+
+## BetterTwitterEmbeds
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/BetterTwitterEmbeds.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/BetterTwitterEmbeds)

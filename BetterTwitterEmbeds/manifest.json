@@ -1,6 +1,6 @@
 {
    "name": "BetterTwitterEmbeds",
-   "version": "1.0.0",
+   "version": "1.0.1",
    "description": "Convert Twitter links to FxTwitter links so the tweet embed is better.",
    "authors": [
       {

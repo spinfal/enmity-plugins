@@ -2,15 +2,13 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import esbuild from "rollup-plugin-esbuild";
 import json from "@rollup/plugin-json";
-import { writeFileSync } from "fs";
 import { defineConfig } from "rollup";
 
-const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "BetterBadges", "AmongUs"];
+const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "AmongUs", "BetterTwitterEmbeds"];
 export default () => {
   let readme = "# Marek's Enmity plugins\n\n";
 
   const configs = plugins.map((name) => {
-    readme += `\n## ${name}\n[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/${name}.js)\n\n[Source](https://github.com/spinfal/enmity-plugins/tree/master/${name})`;
     return defineConfig({
       input: `${name}/src/index.tsx`,
       output: [
@@ -28,6 +26,5 @@ export default () => {
       ],
     });
   });
-  writeFileSync("README.md", readme);
   return configs;
 };

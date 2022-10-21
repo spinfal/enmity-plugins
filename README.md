@@ -29,3 +29,7 @@ If I missed anything; feel free to open a pull request.
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/BetterTwitterEmbeds.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/BetterTwitterEmbeds)
+## BetterTiktokEmbeds
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/BetterTiktokEmbeds.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/BetterTiktokEmbeds)

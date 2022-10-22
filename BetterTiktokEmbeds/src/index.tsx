@@ -21,13 +21,13 @@ const BTE: Plugin = {
     ...manifest,
     onStart() {
         try {
-            if (!get('_tiktok', '_type', false)) set('_tiktok', '_type', 'tt-embed.com');
+            if (!get('_tiktok', '_type', false)) set('_tiktok', '_type', 'tiktxk.com');
 
             Patcher.before(Messages, "sendMessage", (self, args, orig) => {
                 const content = args[1]["content"];
                 const tiktokLinks = content.match(/http(s)?:\/\/(www.)?tiktok.com\/(@[a-zA-Z0-9_.]{2,24}\/video\/\d+|\w{1}\/[a-zA-Z0-9_.-]{8,12})(\/)?/gim);
                 if (!tiktokLinks) return;
-                args[1]["content"] = (get('_tiktok', '_type', false) === 'tt-embed.com' ? content.replace(/http(s)?:\/\/(www.)?tiktok.com/gim, `https://tt-embed.com/?q=https://tiktok.com`) : content.replace(/http(s)?:\/\/(www.)?tiktok.com/gim, `https://vm.dstn.to`));
+                args[1]["content"] = content.replace(/http(s)?:\/\/(www.)?tiktok.com/gim, `https://${get('_tiktok', '_type', false)}`);
             });
         } catch (err) {
             console.log('[ BetterTiktokEmbeds Error ]', err);
@@ -42,18 +42,18 @@ const BTE: Plugin = {
             <ScrollView settings={settings}>
                 <FormSection title="Settings">
                     <FormRow
-                        label='Use vm.dstn.to instead of tt-embed.com'
+                        label='Use vm.dstn.to instead of tiktxk.com'
                         leading={<FormRow.Icon source={Assets.getIDByName('toast_copy_link')} />}
                         trailing={
                             <FormSwitch
-                                value={settings.getBoolean('_tt-embed', false)}
+                                value={settings.getBoolean('_tiktxk', false)}
                                 onValueChange={() => {
                                     try {
-                                        settings.toggle('_tt-embed', false);
-                                        if (settings.getBoolean('_tt-embed', false)) {
+                                        settings.toggle('_tiktxk', false);
+                                        if (settings.getBoolean('_tiktxk', false)) {
                                             set('_tiktok', '_type', 'vm.dstn.to');
                                         } else {
-                                            set('_tiktok', '_type', 'tt-embed.com');
+                                            set('_tiktok', '_type', 'tiktxk.com');
                                         }
                                         Toast.open({
                                             content: `Switched to ${get('_tiktok', '_type', false)}.`,

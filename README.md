@@ -25,6 +25,10 @@ If I missed anything; feel free to open a pull request.
 
 # Spin's plugins
 
+## PetPet
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/PetPet.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/PetPet)
 ## BetterTwitterEmbeds
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/BetterTwitterEmbeds.js)
 

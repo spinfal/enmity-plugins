@@ -4,7 +4,7 @@ import esbuild from "rollup-plugin-esbuild";
 import json from "@rollup/plugin-json";
 import { defineConfig } from "rollup";
 
-const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "AmongUs", "BetterTwitterEmbeds", "BetterTiktokEmbeds"];
+const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "AmongUs", "BetterTwitterEmbeds", "BetterTiktokEmbeds", "PetPet"];
 export default () => {
   let readme = "# Marek's Enmity plugins\n\n";
 

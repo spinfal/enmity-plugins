@@ -5,7 +5,7 @@ import { React } from "enmity/metro/common";
 import { ScrollView } from "enmity/components";
 import UpdateButton from "../../common/components/updateButton";
 
-const Amongus: Plugin = {
+const PetPet: Plugin = {
     ...manifest,
     onStart() {
         this.commands = petpetCommands
@@ -23,4 +23,4 @@ const Amongus: Plugin = {
     },
 };
 
-registerPlugin(Amongus);
+registerPlugin(PetPet);

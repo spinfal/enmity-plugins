@@ -19,24 +19,25 @@ const BlockedStore = getByProps("isBlocked", "isFriend");
 const HideBlockedMessages: Plugin = {
     ...manifest,
     onStart() {
-        const Settings = makeStore(this.name);
-        FluxDispatcher.dispatch({
-            type: "LOAD_MESSAGES",
-        });
-        Settings.set("test", "test");
-        FluxDispatcher.dispatch({
-            type: "LOAD_MESSAGES_SUCCESS",
-            channelId: 0,
-            messages: [],
-            isBefore: false,
-            isAfter: false,
-            hasMoreBefore: false,
-            hasMoreAfter: false,
-            limit: 25,
-            jump: undefined,
-            isStale: false,
-            truncate: undefined,
-        }); // wake up the handler?????? this does nothing lmao
+        // const Settings = makeStore(this.name);
+        // FluxDispatcher.dispatch({
+        //     type: "LOAD_MESSAGES",
+        // });
+        // // Settings.set("test", "test");
+        // FluxDispatcher.dispatch({
+        //     type: "LOAD_MESSAGES_SUCCESS",
+        //     channelId: 0,
+        //     messages: [],
+        //     isBefore: false,
+        //     isAfter: false,
+        //     hasMoreBefore: false,
+        //     hasMoreAfter: false,
+        //     limit: 25,
+        //     jump: undefined,
+        //     isStale: false,
+        //     truncate: undefined,
+        // }); // wake up the handler?????? this does nothing lmao
+        /* ^ this broke the plugin lol */
         let attempt = 0;
         let attempts = 3;
         const lateStartup = () => {
@@ -68,7 +69,7 @@ const HideBlockedMessages: Plugin = {
                     "actionHandler",
                     (_, args: any) => {
                         const msg = args[0].message;
-                        args[0].message = BlockedStore.isBlocked(msg.author.id)
+                        args[0].message = BlockedStore.isBlocked(msg?.author?.id)
                             ? null
                             : msg;
                     }
@@ -78,7 +79,7 @@ const HideBlockedMessages: Plugin = {
                     "actionHandler",
                     (_, args: any) => {
                         const msg = args[0].message;
-                        args[0].message = BlockedStore.isBlocked(msg.author.id)
+                        args[0].message = BlockedStore.isBlocked(msg?.author?.id)
                             ? null
                             : msg;
                     }
@@ -87,7 +88,7 @@ const HideBlockedMessages: Plugin = {
                     MessageStore,
                     "getMessage",
                     (_, _args: any, response: any) => {
-                        response = BlockedStore.isBlocked(response.author.id)
+                        response = BlockedStore.isBlocked(response?.author?.id)
                             ? null
                             : response;
                     }

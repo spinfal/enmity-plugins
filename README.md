@@ -25,6 +25,10 @@ If I missed anything; feel free to open a pull request.
 
 # Spin's plugins
 
+## FriendInvites
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/FriendInvites.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/FriendInvites)
 ## PetPet
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/PetPet.js)
 

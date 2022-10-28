@@ -1,0 +1,13 @@
+{
+   "name": "FriendInvites",
+   "version": "1.0.0",
+   "description": "Easily create a Discord friend invite link to make it easier for users to add you as a friend",
+   "authors": [
+      {
+         "name": "spin",
+         "id": "308440976723148800"
+      }
+   ],
+   "color": "#ff0069",
+   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/FriendInvites.js"
+}

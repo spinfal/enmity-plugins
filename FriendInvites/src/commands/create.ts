@@ -32,7 +32,7 @@ const createFriendInvite: Command = {
     const whisper = args[args.findIndex(x => x.name === 'whisper')];
 
     try {
-      const response = await getByKeyword('friendinvite').createFriendInvite().then(res => res);
+      const response = await getByKeyword('friendinvite').createFriendInvite();
 
       if (response) {
         if (whisper?.value ?? true) {

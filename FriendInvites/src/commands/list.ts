@@ -32,7 +32,7 @@ const listFriendInvites: Command = {
     const whisper = args[args.findIndex(x => x.name === 'whisper')];
 
     try {
-      const response = await getByKeyword('friendinvite').getAllFriendInvites().then(res => res)
+      const response = await getByKeyword('friendinvite').getAllFriendInvites()
 
       if (response) {
         const embed = {

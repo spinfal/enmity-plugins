@@ -20,7 +20,7 @@ const revokeFriendInvites: Command = {
   execute: async function (args, message) {
     try {
       await getByKeyword('friendinvite').revokeFriendInvites();
-      const response = await getByKeyword('friendinvite').getAllFriendInvites().then(res => res);
+      const response = await getByKeyword('friendinvite').getAllFriendInvites();
 
       if (response.length == 0) {
         sendReply(message?.channel.id ?? "0", 'All of your friend invites have been revoked.');

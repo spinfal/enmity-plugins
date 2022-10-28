@@ -25,9 +25,9 @@ const BTE: Plugin = {
 
             Patcher.before(Messages, "sendMessage", (self, args, orig) => {
                 const content = args[1]["content"];
-                const tiktokLinks = content.match(/http(s)?:\/\/(www.)?tiktok.com\/(@[a-zA-Z0-9_.]{2,24}\/video\/\d+|\w{1}\/[a-zA-Z0-9_.-]{8,12})(\/)?/gim);
+                const tiktokLinks = content.match(/http(s)?:\/\/(\w+.)?tiktok.com\/(@[a-zA-Z0-9_.]{2,24}\/video\/\d+|(\w{1}\/)?[a-zA-Z0-9_.-]{8,12})(\/)?/gim);
                 if (!tiktokLinks) return;
-                args[1]["content"] = content.replace(/http(s)?:\/\/(www.)?tiktok.com/gim, `https://${get('_tiktok', '_type', false)}`);
+                args[1]["content"] = content.replace(/http(s)?:\/\/(\w+.)?tiktok.com/gim, `https://${get('_tiktok', '_type', false)}`);
             });
         } catch (err) {
             console.log('[ BetterTiktokEmbeds Error ]', err);

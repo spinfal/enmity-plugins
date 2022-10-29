@@ -62,7 +62,7 @@ const HideBlockedMessages: Plugin = {
                     FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
                         (h) => h.name === "MessageStore"
                     );
-                const MessageStore = getByProps("getMessage", "getMessages");
+                // const MessageStore = getByProps("getMessage", "getMessages");
 
                 Patcher.before(
                     MessageCreate,
@@ -84,15 +84,15 @@ const HideBlockedMessages: Plugin = {
                             : msg;
                     }
                 );
-                Patcher.after(
-                    MessageStore,
-                    "getMessage",
-                    (_, _args: any, response: any) => {
-                        response = BlockedStore.isBlocked(response?.author?.id)
-                            ? null
-                            : response;
-                    }
-                );
+                // Patcher.after(
+                //     MessageStore,
+                //     "getMessage",
+                //     (_, _args: any, response: any) => {
+                //         response = BlockedStore.isBlocked(response?.author?.id)
+                //             ? null
+                //             : response;
+                //     }
+                // );
                 Patcher.before(
                     LoadMessages,
                     "actionHandler",

@@ -4,6 +4,9 @@ Hello reader. Although yes I have changed the code to include my username and Di
 If I missed anything; feel free to open a pull request.
 ![Proof of token logger](https://cdn.spin.rip/r/DiscordDevelopment_7206243177.png)
 
+# How do I install a plugin?
+Copy the [Compiled](/#) link under the plugin that you want, then open Enmity and add the plugin.
+
 # Marek's Enmity plugins, modified by [Spin](https://spin.rip)
 
 ## MessageSpoofer

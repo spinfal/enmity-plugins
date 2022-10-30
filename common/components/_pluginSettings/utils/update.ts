@@ -1,7 +1,10 @@
 // Dependencies used in the script
 import { Dialog, REST, Toasts } from "enmity/metro/common";
+import { getByProps } from 'enmity/metro';
 import { reload } from "enmity/api/native";
 import { Icons } from './icons';
+
+const Router = getByProps('transitionToGuild');
 
 interface Props {
     manifest: object;

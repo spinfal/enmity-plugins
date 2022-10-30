@@ -3,8 +3,7 @@ import { getByProps } from "enmity/metro";
 import { Messages, React } from "enmity/metro/common";
 import { create } from "enmity/patcher";
 import * as Assets from "enmity/api/assets";
-import { ScrollView } from "enmity/components";
-import UpdateButton from "../../common/components/updateButton";
+import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import manifest from "../manifest.json";
 const MessageStore = getByProps("getMessage", "getMessages");
 const ChannelStore = getByProps("getChannel", "getDMFromUserId");
@@ -105,11 +104,7 @@ const Spoofer: Plugin = {
         Patcher.unpatchAll();
     },
     getSettingsPanel({ settings }) {
-        return (
-            <ScrollView settings={settings}>
-                <UpdateButton pluginUrl={manifest.sourceUrl} />
-            </ScrollView>
-        );
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={[]} />;
     },
 };
 

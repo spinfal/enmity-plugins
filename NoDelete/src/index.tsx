@@ -1,13 +1,12 @@
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { getByProps, getModule } from "enmity/metro";
+import { getByProps } from "enmity/metro";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
-import * as Assets from "enmity/api/assets";
-import { React } from "enmity/metro/common";
-import { ScrollView } from "enmity/components";
-import UpdateButton from "../../common/components/updateButton";
+import { React, Toasts } from "enmity/metro/common";
+import { getBoolean } from "enmity/api/settings";
+import { Icons } from "../../common/components/_pluginSettings/utils";
+import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 const Patcher = create("NoDelete");
-const Toast = getModule(m => m.open !== undefined && m.close !== undefined && !m.openLazy && !m.startDrag && !m.init && !m.openReplay && !m.openChannelCallPopout)
 const NoDelete: Plugin = {
     ...manifest,
     patches: [],
@@ -16,6 +15,8 @@ const NoDelete: Plugin = {
         let attempt = 0;
         let attempts = 3;
         const plugin = () => {
+            let enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
+
             try {
                 // FluxDispatcher.dispatch({
                 //     type: "MESSAGE_DELETE",
@@ -46,14 +47,14 @@ const NoDelete: Plugin = {
                     "getChannel",
                     "getDMFromUserId"
                 );
-                // console.log('[NoDelete Dispatch]', FluxDispatcher);
+                // console.log(`[${manifest.name} Dispatch]`, FluxDispatcher);
                 console.log(
-                    `NoDelete delayed start attempt ${attempt}/${attempts}.`
+                    `${manifest.name} delayed start attempt ${attempt}/${attempts}.`
                 );
-                Toast.open({
-                    content: `NoDelete start attempt ${attempt}/${attempts}.`,
-                    source: Assets.getIDByName('debug'),
-                });
+                enableToasts ? Toasts.open({
+                    content: `[${manifest.name}] start attempt ${attempt}/${attempts}.`,
+                    source: Icons.Debug,
+                }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
 
                 for (const handler of ["MESSAGE_UPDATE", "MESSAGE_DELETE"]) {
                     try {
@@ -62,7 +63,7 @@ const NoDelete: Plugin = {
                             message: {}, // should be enough to wake them up
                         });
                     } catch (err) {
-                        console.log('[NoDelete Dispatch Error]', err);
+                        console.log(`[${manifest.name} Dispatch Error]`, err);
                     }
                 }
 
@@ -121,32 +122,32 @@ const NoDelete: Plugin = {
                             args[0].message.content;
                         return;
                     } catch (err) {
-                        console.log('[NoDelete Error]', err);
+                        console.log(`[${manifest.name} Error]`, err);
                     }
                 });
 
-                console.log("NoDelete delayed start successful.");
-                Toast.open({
-                    content: `NoDelete delayed start successful.`,
-                    source: Assets.getIDByName('Check'),
-                });
+                console.log(`${manifest.name} delayed start successful.`);
+                enableToasts ? Toasts.open({
+                    content: `[${manifest.name}] start successful.`,
+                    source: Icons.Delete,
+                }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
             } catch (err) {
-                console.log('[NoDelete Plugin Error]', err);
+                console.log(`[${manifest.name} Plugin Error]`, err);
 
                 if (attempt < attempts) {
                     console.warn(
-                        `NoDelete failed to start. Trying again in ${attempt}0s.`
+                        `${manifest.name} failed to start. Trying again in ${attempt}0s.`
                     );
-                    Toast.open({
-                        content: `NoDelete failed to start trying again in ${attempt}0s.`,
-                        source: Assets.getIDByName('ic_message_retry'),
-                    });
+                    enableToasts ? Toasts.open({
+                        content: `[${manifest.name}] failed to start trying again in ${attempt}0s.`,
+                        source: Icons.Failed,
+                    }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
                     setTimeout(plugin, attempt * 10000);
                 } else {
-                    console.error(`NoDelete failed to start. Giving up.`);
-                    Toast.open({
-                        content: `NoDelete failed to start. Giving up.`,
-                        source: Assets.getIDByName('Small'),
+                    console.error(`${manifest.name} failed to start. Giving up.`);
+                    Toasts.open({
+                        content: `${manifest.name} failed to start. Giving up.`,
+                        source: Icons.Failed,
                     });
                 }
             }
@@ -161,11 +162,7 @@ const NoDelete: Plugin = {
         Patcher.unpatchAll();
     },
     getSettingsPanel({ settings }) {
-        return (
-            <ScrollView settings={settings}>
-                <UpdateButton pluginUrl={manifest.sourceUrl} />
-            </ScrollView>
-        );
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={[]} />;
     },
 };
 

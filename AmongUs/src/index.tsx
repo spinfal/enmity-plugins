@@ -4,9 +4,9 @@ import { create } from "enmity/patcher";
 import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 import { React } from "enmity/metro/common";
-import { makeStore } from "enmity/api/settings";
-import { ScrollView } from "enmity/components";
-import UpdateButton from "../../common/components/updateButton";
+import { getBoolean, makeStore } from "enmity/api/settings";
+import { Icons } from "../../common/components/_pluginSettings/utils";
+import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 const Patcher = create("Amongus");
 const FluxDispatcher = getByProps(
     "_currentDispatchActionType",
@@ -39,15 +39,17 @@ const Amongus: Plugin = {
         let attempt = 0;
         let attempts = 3;
         const lateStartup = () => {
+            let enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
+
             try {
                 attempt++;
                 console.log(
                     `Amongus delayed start attempt ${attempt}/${attempts}.`
                 );
-                Toasts.open({
-                    content: `Amongus start attempt ${attempt}/${attempts}.`,
-                    source: { uri: amogus },
-                });
+                enableToasts ? Toasts.open({
+                    content: `[${manifest.name}] start attempt ${attempt}/${attempts}.`,
+                    source: Icons.Debug,
+                }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
                 const MessageCreate =
                     FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_CREATE.find(
                         (h) => h.name === "MessageStore"
@@ -85,26 +87,26 @@ const Amongus: Plugin = {
                         });
                     }
                 );
-                console.log(`Amongus delayed start successful.`);
-                Toasts.open({
-                    content: `Amongus delayed start successful.`,
-                    source: { uri: amogus },
-                });
+                console.log(`${manifest.name} delayed start successful.`);
+                enableToasts ? Toasts.open({
+                    content: `${manifest.name} start successful.`,
+                    source: Icons.Delete,
+                }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
             } catch {
                 if (attempt < attempts) {
                     console.warn(
-                        `Amongus failed to start. Trying again in ${attempt}0s.`
+                        `${manifest.name} failed to start. Trying again in ${attempt}0s.`
                     );
-                    Toasts.open({
-                        content: `Amongus failed to start trying again in ${attempt}0s.`,
-                        source: { uri: amogus },
-                    });
+                    enableToasts ? Toasts.open({
+                        content: `${manifest.name} failed to start trying again in ${attempt}0s.`,
+                        source: Icons.Failed,
+                    }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
                     setTimeout(lateStartup, attempt * 10000);
                 } else {
-                    console.error(`Amongus failed to start. Giving up.`);
+                    console.error(`${manifest['name']} failed to start. Giving up.`);
                     Toasts.open({
-                        content: `Amongus failed to start. Giving up.`,
-                        source: { uri: amogus },
+                        content: `${manifest.name} failed to start. Giving up.`,
+                        source: Icons.Failed,
                     });
                 }
             }
@@ -116,11 +118,7 @@ const Amongus: Plugin = {
     },
     patches: [],
     getSettingsPanel({ settings }) {
-        return (
-            <ScrollView settings={settings}>
-                <UpdateButton pluginUrl={manifest.sourceUrl} />
-            </ScrollView>
-        );
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={true} section={[]} />;
     },
 };
 

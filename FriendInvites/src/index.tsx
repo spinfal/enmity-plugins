@@ -14,7 +14,7 @@ const FriendInvites: Plugin = {
     },
     patches: [],
     getSettingsPanel({ settings }) {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={[]} />;
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={null} commands={commands.map(c => c.name)} />;
     },
 };
 

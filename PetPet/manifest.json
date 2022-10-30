@@ -1,6 +1,7 @@
 {
    "name": "PetPet",
-   "version": "1.0.3",
+   "version": "1.0.4",
+   "build": "patch-1.0.0",
    "description": "Generate a petpet gif from a given image",
    "authors": [
       {

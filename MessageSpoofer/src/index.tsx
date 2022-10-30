@@ -104,7 +104,7 @@ const Spoofer: Plugin = {
         Patcher.unpatchAll();
     },
     getSettingsPanel({ settings }) {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={[]} />;
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={null} commands={null} />;
     },
 };
 

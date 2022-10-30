@@ -1,5 +1,5 @@
 // main imports of elements and dependencies
-import { FormDivider, FormRow, ScrollView, FormSwitch, FormSection, Text } from 'enmity/components';
+import { FormDivider, FormRow, ScrollView, FormSwitch, FormSection, View, Button } from 'enmity/components';
 import { SettingsStore } from 'enmity/api/settings';
 import { React, Toasts, Constants, StyleSheet, Navigation, Storage } from 'enmity/metro/common';
 import { bulk, filters } from 'enmity/metro';
@@ -11,7 +11,8 @@ interface SettingsProps {
   settings: SettingsStore;
   manifest: object;
   hasToasts: boolean;
-  section: object;
+  section: any;
+  commands: any;
 }
 
 // main declaration of modules being altered by the plugin
@@ -23,15 +24,18 @@ const [
   filters.byProps('setString')
 );
 
-export default ({ manifest, settings, hasToasts, section }: SettingsProps) => {
+export default ({ manifest, settings, hasToasts, section, commands }: SettingsProps) => {
   // icon and styles
-
   const styles = StyleSheet.createThemedStyleSheet({
     icon: {
       color: Constants.ThemeColorMap.INTERACTIVE_NORMAL
     },
     item: {
       color: Constants.ThemeColorMap.TEXT_MUTED
+    },
+    text_container: {
+      display: 'flex',
+      flexDirection: 'column'
     }
   }); // main stylesheet
 
@@ -59,6 +63,19 @@ export default ({ manifest, settings, hasToasts, section }: SettingsProps) => {
     >
       <Credits manifest={manifest} /* main credits gui, created from scratch exclusively for dislate */ />
       {section}
+      {commands && <FormSection title="Plugin Commands">
+        <View style={styles.text_container}>
+          {commands.map((command: any) => <Button
+            style={styles.command}
+            key={command}
+            onPress={function () {
+              Clipboard.setString(`/${command}`); // copy the command to clipboard`
+              clipboard_toast(`the command ${command}`);
+            }}
+            title={`/${command}`}
+          >/{command}</Button>)}
+        </View>
+      </FormSection>}
       <FormSection title="Utility">
         {hasToasts && <>
           <FormRow
@@ -71,7 +88,7 @@ export default ({ manifest, settings, hasToasts, section }: SettingsProps) => {
                 onValueChange={() => {
                   settings.toggle(`${manifest['name']}-toastEnable`, false)
                   Toasts.open({
-                    content: `Successfully ${settings.getBoolean(`${manifest['name']}-toastEnable`, false) ? 'enabled' : 'disabled'} Initialization Toasts.`,
+                    content: `Successfully ${settings.getBoolean(`${manifest['name']}-toastEnable`, false) ? 'enabled' : 'disabled'} initialization toasts.`,
                     source: Icons.Settings.Toasts.Settings
                   }); // overwrites it with the opposite
                 }

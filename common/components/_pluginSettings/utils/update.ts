@@ -15,11 +15,13 @@ async function check_for_updates({ manifest }: Props) {
     const content = await res.text;
 
     // get the version from the source
-    let external_version = content.match(/[0-9].[0-9].[0-9]/g);
-    if (!external_version) return;
+    let external_version = content.match(/\d\.\d\.\d+/g);
+    let external_build = content.match(/patch\-\d\.\d\.\d+/g);
+    if (!external_version || !external_build) return;
 
-    // format the remote version
-    external_version = external_version[0].replaceAll('"', ""); // make the string into a plain version (1.1.6 etc)
+    // set the versions to their index
+    external_version = external_version[0];
+    external_build = external_build[0];
 
     /* 
     i dont need to match specific parts of the version, here are some tests~
@@ -31,38 +33,40 @@ async function check_for_updates({ manifest }: Props) {
     */
 
     // if the version is not the current one, that means its newer, otherwise run the no update function
-    external_version != manifest['version'] ? show_update_dialog(url, external_version, manifest) : no_updates(manifest['name'], manifest['version'])
-    return // finish the function
+    if (external_version != manifest['verson']) return show_update_dialog(url, external_version, external_build.split('-')[1], manifest, false)
+    if (external_build != manifest['build']) return show_update_dialog(url, external_version, external_build.split('-')[1], manifest, true)
+    return no_updates(manifest['name'], manifest['verson'])
 }
 
-const show_update_dialog = (url: string, version: string, manifest: object) => {
+const show_update_dialog = (url: string, version: string, build: string, manifest: object, is_ghost_patch: boolean) => {
     // open a dialog to show that a new version is available
+    const type = is_ghost_patch ? build : version
     Dialog.show({
         title: "Update found",
-        body: `A newer version is available for ${manifest['name']}.\nWould you like to install version ${version} now?`,
+        body: `A newer ${is_ghost_patch ? "build" : "version"} is available for ${manifest['name']}. ${is_ghost_patch ? `\nThe version will remain at ${version}, but the build will update to ${build}.` : ""}\nWould you like to install ${is_ghost_patch ? `build \`${build}\`` : `version \`${version}\``}  now?`,
         confirmText: "Update",
         cancelText: "Not now",
 
         // run the install function
-        onConfirm: () => install_plugin(url, version, manifest),
+        onConfirm: () => install_plugin(url, type, is_ghost_patch, manifest),
     });
 }
 
 const no_updates = (name: string, version: string) => {
     // logs the fact that youre on the latest version with both a toast a
     console.log(`[${name}] is on the latest version (${version})`)
-    Toasts.open({ content: `${name} is on the latest version (${version})`, source: Icons.Delete });
+    Toasts.open({ content: `${name} is on the latest version (${version})`, source: Icons.Settings.Toasts.Settings });
 }
 
-async function install_plugin(url: string, version: string, manifest: object) {
+async function install_plugin(url: string, type: string, is_ghost_patch: boolean, manifest: object) {
     //@ts-ignore
-    window.enmity.plugins.installPlugin(pluginUrl, ({ data }) => {
+    window.enmity.plugins.installPlugin(url, ({ data }) => {
         console.log(`${manifest['name']} Update Error`, data);
         // as a callback, waits for a success of "installed-plugin" or "overriden-plugin"
         // before showing the dialog to reload discord
-        data == "installed-plugin" || data == "overriden-plugin" ? Dialog.show({
+        data == "installed_plugin" || data == "overridden_plugin" ? Dialog.show({
             title: `Updated ${manifest['name']}`,
-            body: `Successfully updated to version ${manifest['version']}. \nWould you like to reload Discord now?`,
+            body: `Successfully updated to ${is_ghost_patch ? `build` : `version` } \`${type}\`. \nWould you like to reload Discord now?`,
             confirmText: "Yep!",
             cancelText: "Later",
             // reload discord from native function
@@ -75,7 +79,7 @@ async function install_plugin(url: string, version: string, manifest: object) {
             onConfirm: () => { Dialog.close() },
             onCancel: () => {
                 // @ts-ignore
-                Router.openURL(`https://github.com/spinfal/enmity-plugins/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D%20${manifest['name']}%20Update%20Error`);
+                Router.openURL(`https://github.com/spinfal/enmity-plugins/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D%20${manifest['name']}%20Update%20Error%3A%20${!is_ghost_patch ? `v${version}` : `b${version}`}`);
             }
         });
         // otherwise show an error dialog when the update fails ^^^

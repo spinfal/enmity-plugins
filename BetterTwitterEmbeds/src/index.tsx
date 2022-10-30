@@ -40,7 +40,7 @@ const BTE: Plugin = {
             <FormSection title="Plugin Settings">
                 <FormRow
                     label='Use vxtwitter.com instead of fxtwitter.com'
-                    leading={<FormRow.Icon source={Icons.Open} />}
+                    leading={<FormRow.Icon source={Icons.Copy} />}
                     trailing={
                         <FormSwitch
                             value={settings.getBoolean('_vxtwitter', false)}
@@ -54,7 +54,7 @@ const BTE: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Switched to ${get('_twitter', '_type', false)}.`,
-                                        source: Icons.Delete,
+                                        source: Icons.Settings.Toasts.Settings,
                                     });
                                 } catch (err) {
                                     console.log('[ BetterTwitterEmbeds Error ]', err);
@@ -69,7 +69,7 @@ const BTE: Plugin = {
                     }
                 />
             </FormSection>
-        }
+        } commands={null}
         />;
     },
 };

@@ -1,6 +1,7 @@
 {
    "name": "AmongUs",
-   "version": "1.0.2",
+   "version": "1.0.3",
+   "build": "patch-1.0.0",
    "description": "sus",
    "authors": [
       {

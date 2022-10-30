@@ -39,7 +39,7 @@ const BTE: Plugin = {
             <FormSection title="Plugin Settings">
                 <FormRow
                     label='Use vm.dstn.to instead of tiktxk.com'
-                    leading={<FormRow.Icon source={Icons.Open} />}
+                    leading={<FormRow.Icon source={Icons.Copy} />}
                     trailing={
                         <FormSwitch
                             value={settings.getBoolean('_tiktxk', false)}
@@ -53,7 +53,7 @@ const BTE: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Switched to ${get('_tiktok', '_type', false)}.`,
-                                        source: Icons.Delete,
+                                        source: Icons.Settings.Toasts.Settings,
                                     });
                                 } catch (err) {
                                     console.log('[ BetterTiktokEmbeds Error ]', err);
@@ -68,7 +68,7 @@ const BTE: Plugin = {
                     }
                 />
             </FormSection>
-        }
+        } commands={null}
         />;
     },
 };

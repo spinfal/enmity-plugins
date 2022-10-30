@@ -106,7 +106,7 @@ const HideBlockedMessages: Plugin = {
                 console.log(`${manifest.name} delayed start successful.`);
                 enableToasts ? Toasts.open({
                     content: `${manifest.name} start successful.`,
-                    source: Icons.Delete,
+                    source: Icons.Settings.Toasts.Settings,
                 }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
             } catch (err) {
                 console.log(`[${manifest.name} Error]`, err);
@@ -138,7 +138,7 @@ const HideBlockedMessages: Plugin = {
     },
     patches: [],
     getSettingsPanel({ settings }) {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={true} section={[]} />;
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={true} section={null} commands={null} />;
     },
 };
 

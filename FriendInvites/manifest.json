@@ -1,6 +1,6 @@
 {
    "name": "FriendInvites",
-   "version": "1.1.4",
+   "version": "1.1.5",
    "build": "patch-1.0.1",
    "description": "Easily create a Discord friend invite link to make it easier for users to add you as a friend",
    "authors": [

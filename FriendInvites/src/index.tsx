@@ -28,7 +28,7 @@ const styles = StyleSheet.createThemedStyleSheet({
 
 const FriendInvites: Plugin = {
     ...manifest,
-    async onStart() {
+    onStart() {
         this.commands = commands
     },
     onStop() {
@@ -36,9 +36,11 @@ const FriendInvites: Plugin = {
     },
     patches: [],
     getSettingsPanel({ settings }): any {
-        const [invites, setInvites] = React.useState()
+        const [invites, setInvites] = React.useState(null)
         React.useEffect(async function () {
-            setInvites(await getByKeyword('friendinvite').getAllFriendInvites())
+            const inviteLinks = await getByKeyword('friendinvite').getAllFriendInvites();
+
+            (!inviteLinks || inviteLinks.length === 0) ? setInvites(null) : setInvites(inviteLinks)
         }, [])
 
         return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={

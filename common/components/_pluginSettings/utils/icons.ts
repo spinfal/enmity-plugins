@@ -21,7 +21,8 @@ export const Icons = {
             Context: getIDByName('toast_image_saved'),
             Settings: getIDByName('ic_selection_checked_24px')
         },
-        Invite: getIDByName('invite'),
+        Share: getIDByName('share'),
+        Commands: getIDByName('ic_profile_badge_bot_commands'),
         Debug: getIDByName('ic_rulebook_16px'),
     }
 };

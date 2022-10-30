@@ -64,17 +64,16 @@ export default ({ manifest, settings, hasToasts, section, commands }: SettingsPr
       <Credits manifest={manifest} /* main credits gui, created from scratch exclusively for dislate */ />
       {section}
       {commands && <FormSection title="Plugin Commands">
-        <View style={styles.text_container}>
-          {commands.map((command: any) => <Button
-            style={styles.command}
-            key={command}
-            onPress={function () {
-              Clipboard.setString(`/${command}`); // copy the command to clipboard`
-              clipboard_toast(`the command ${command}`);
-            }}
-            title={`/${command}`}
-          >/{command}</Button>)}
-        </View>
+        {commands.map((command: any) => <FormRow
+          label={`/${command['name']}`}
+          subLabel={command['description']}
+          leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Commands} />}
+          trailing={FormRow.Arrow}
+          onPress={function () {
+            Clipboard.setString(`/${command['name']}`); // copy the command to clipboard`
+            clipboard_toast(`the command ${command['name']}`);
+          }}
+        />)}
       </FormSection>}
       <FormSection title="Utility">
         {hasToasts && <>

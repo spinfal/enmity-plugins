@@ -13,8 +13,8 @@ const PetPet: Plugin = {
         this.commands = []
     },
     patches: [],
-    getSettingsPanel({ settings }) {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={null} commands={['petpet']} />;
+    getSettingsPanel({ settings }): any {
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={null} commands={[{name: "petpet", description: "Generate a petpet gif from a given image"}]} />;
     },
 };
 

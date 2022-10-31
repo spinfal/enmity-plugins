@@ -38,7 +38,7 @@ const listFriendInvites: Command = {
         const embed = {
           type: 'rich',
           title: 'Friend Invites',
-          description: (response.length == 0 ? 'You have no friend invites!' : `${response.map(x => `\`discord.gg/${x.code}\` - uses: ${x.uses}/${x.max_uses} - expires <t:${new Date(x.expires_at).getTime() / 1000}:R>`).join('\n')}`),
+          description: (response.length == 0 ? 'You have no friend invites!' : `${response.map(x => `**https://discord.gg/${x.code}**\nUses: ${x.uses}/${x.max_uses}\nExpires <t:${new Date(x.expires_at).getTime() / 1000}:R>`).join('\n\n')}`),
           footer: {
             text: `Friend invites are mostly undocumented and any of these features may break at any time.`
           },

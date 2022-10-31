@@ -25,6 +25,10 @@ Copy the [Compiled](/#) link under the plugin that you want, then open Enmity an
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/AmongUs.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/AmongUs)
+## [piss](https://cdn.spin.rip/r/DiscordDevelopment_7702559702.png)
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/piss.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/piss)
 
 # Spin's plugins
 

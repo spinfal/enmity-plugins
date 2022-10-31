@@ -1,5 +1,5 @@
 // main imports of elements and dependencies
-import { FormDivider, FormRow, ScrollView, FormSwitch, FormSection, View, Button } from 'enmity/components';
+import { FormDivider, FormRow, ScrollView, FormSwitch, FormSection } from 'enmity/components';
 import { SettingsStore } from 'enmity/api/settings';
 import { React, Toasts, Constants, StyleSheet, Navigation, Storage } from 'enmity/metro/common';
 import { bulk, filters } from 'enmity/metro';

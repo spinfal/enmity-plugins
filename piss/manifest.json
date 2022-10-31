@@ -1,7 +1,7 @@
 {
    "name": "piss",
    "version": "1.0.0",
-   "build": "patch-1.0.0",
+   "build": "patch-1.0.1",
    "description": "piss",
    "authors": [
       {

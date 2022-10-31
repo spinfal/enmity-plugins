@@ -1,7 +1,7 @@
 {
    "name": "BetterTiktokEmbeds",
    "version": "1.1.6",
-   "build": "patch-1.0.6",
+   "build": "patch-1.0.7",
    "description": "Convert TikTok links to tiktxk.com links so the TikTok embed is better and can be played.",
    "authors": [
       {

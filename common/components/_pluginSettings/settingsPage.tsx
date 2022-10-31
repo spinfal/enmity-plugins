@@ -144,7 +144,10 @@ export default ({ manifest, settings, hasToasts, section, commands }: SettingsPr
           }}
         />
       </FormSection>
-      <FormRow label={`Plugin Version: ${manifest['version']}`} />
+      <FormRow label={
+        `Plugin Version: ${manifest['version']}
+Plugin Build: ${(manifest['build']).split('-').pop()}`
+      } />
     </ScrollView>
   </>
 };

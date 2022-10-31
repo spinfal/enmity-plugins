@@ -10,6 +10,12 @@ interface Props {
     manifest: object;
 }
 
+/**
+ * It gets the source of the plugin, gets the version and build from the source, and if the version or
+ * build is not the same as the current one, it shows an update dialog
+ * @param {object} manifest - the manifest of the plugin
+ * @returns calls the show_update_dialog function if an update is available, otherwise calls the no_updates function
+ */
 async function check_for_updates({ manifest }: Props) {
     // get the plugin source
     const url = `${manifest['sourceUrl']}?${Math.floor(Math.random() * 1001)}.js`
@@ -41,6 +47,14 @@ async function check_for_updates({ manifest }: Props) {
     return no_updates(manifest['name'], manifest['version'])
 }
 
+/**
+ * It shows a dialog to the user, and if the user confirms, it runs the install function to update the plugin
+ * @param {string} url - The URL to the plugin's zip file
+ * @param {string} version - The version of the plugin that is available.
+ * @param {string} build - The build number of the plugin.
+ * @param {object} manifest - the manifest of the plugin
+ * @param {boolean} is_ghost_patch - Whether or not the update is a ghost patch.
+ */
 const show_update_dialog = (url: string, version: string, build: string, manifest: object, is_ghost_patch: boolean) => {
     // open a dialog to show that a new version is available
     const type = is_ghost_patch ? build : version
@@ -55,12 +69,25 @@ const show_update_dialog = (url: string, version: string, build: string, manifes
     });
 }
 
+/**
+ * It logs the fact that you're on the latest version with both a toast and a console log
+ * @param {string} name - The name of the plugin
+ * @param {string} type - The type of update, either "major", "minor", or "patch"
+ */
 const no_updates = (name: string, type: string) => {
     // logs the fact that youre on the latest version with both a toast a
     console.log(`[${name}] Plugin is on the latest version, which is ${type}`)
     Toasts.open({ content: `${name} is on latest version (${type})`, source: Icons.Settings.Toasts.Settings });
 }
 
+/**
+ * It installs a plugin from a given url, and then shows a dialog to reload discord if the plugin was
+ * successfully installed otherwise it shows a dialog to the user saying that the plugin failed to install
+ * @param {string} url - The URL of the plugin to install
+ * @param {string} type - The type of update, either "version" or "build"
+ * @param {object} manifest - the manifest of the plugin
+ * @param {boolean} is_ghost_patch - boolean
+ */
 async function install_plugin(url: string, type: string, manifest: object, is_ghost_patch: boolean) {
     //@ts-ignore
     window.enmity.plugins.installPlugin(url, ({ data }) => {
@@ -81,10 +108,8 @@ async function install_plugin(url: string, type: string, manifest: object, is_gh
                 confirmText: "Report this issue",
                 cancelText: "Cancel",
                 onConfirm: () => {
-                    // @ts-ignore
-                    Router.openURL(`https://github.com/spinfal/enmity-plugins/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D%20${manifest['name']}%20Update%20Error%3A%20${!is_ghost_patch ? `v${version}` : `b${version}`}`);
-                },
-                onCancel: () => { Dialog.close() }
+                    Router.openURL(`https://github.com/spinfal/enmity-plugins/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D%20${manifest['name']}%20Update%20Error%3A%20${!is_ghost_patch ? `v${type}` : `b${type}`}`);
+                }
             });
         // otherwise log an issue when updating to console ^^^
     })

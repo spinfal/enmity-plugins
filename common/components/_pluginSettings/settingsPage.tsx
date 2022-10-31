@@ -104,7 +104,7 @@ export default ({ manifest, settings, hasToasts, section, commands }: SettingsPr
           leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Debug} />}
           trailing={FormRow.Arrow}
           onPress={async function () {
-            Clipboard.setString(await debug_info(manifest['name'], manifest['version']));
+            Clipboard.setString(await debug_info(manifest['name'], manifest['version'], manifest['build']));
             clipboard_toast('plugin debug information');
           }}
         />

@@ -1,6 +1,11 @@
 import { REST, Storage } from "enmity/metro/common";
 import { format_object } from "./format_object";
 
+/**
+ * It gets the device list from storage, if it doesn't exist then it fetches it from github, formats
+ * it, and sets it to storage
+ * @returns A list of all the devices that are available
+ */
 async function get_device_list() {
     try {
         // try to get the device list already from storage
@@ -25,6 +30,5 @@ async function get_device_list() {
         return // makes sure all code paths actually return something
     }
 }
-
 
 export { get_device_list }

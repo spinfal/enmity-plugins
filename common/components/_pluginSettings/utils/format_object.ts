@@ -1,5 +1,12 @@
 import { array_length } from "./array_length";
 
+/**
+ * It takes a string, splits it into an array, adds curly braces to the first and last index of the
+ * array, joins the array back into a string, removes all instances of the string undefined, reverses
+ * the string, removes the first comma, and then reverses the string back
+ * @param {string} text - the string that you want to format
+ * @returns A string that is formatted into a JSON object
+ */
 const format_object = (text: string) => {
     // convert the string into a key value pair: {iPhone12,8 : iPhone SE 2nd Gen} -> {"iPhone12,8":" iPhone SE 2nd Gen"}
     let final: any = text.split('\n').map((e: any) => {

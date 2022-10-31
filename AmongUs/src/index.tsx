@@ -44,7 +44,7 @@ const Amongus: Plugin = {
             try {
                 attempt++;
                 console.log(
-                    `Amongus delayed start attempt ${attempt}/${attempts}.`
+                    `[${manifest.name}] delayed start attempt ${attempt}/${attempts}.`
                 );
                 enableToasts ? Toasts.open({
                     content: `[${manifest.name}] start attempt ${attempt}/${attempts}.`,

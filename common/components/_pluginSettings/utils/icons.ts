@@ -5,6 +5,7 @@ export const Icons = {
     Retry: getIDByName('ic_message_retry'),
     Failed: getIDByName('Small'),
     Cancel: getIDByName('ic_megaphone_nsfw_16px'),
+    Add: getIDByName('add_white'),
     Delete: getIDByName('ic_message_delete'),
 
     Copy: getIDByName('toast_copy_link'),

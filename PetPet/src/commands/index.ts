@@ -120,4 +120,4 @@ export const petpetCommand: Command = {
   }
 }
 
-export const petpetCommands = [petpetCommand];
+export const pluginCommands = [petpetCommand];

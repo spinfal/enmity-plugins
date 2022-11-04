@@ -8,8 +8,8 @@ import { sendReply } from "enmity/api/clyde";
 const createFriendInvite: Command = {
   id: "create-friend-invite",
 
-  name: "createinvite",
-  displayName: "createinvite",
+  name: "invites create",
+  displayName: "invites create",
 
   description: "Create a friend invite link",
   displayDescription: "Create a friend invite link",

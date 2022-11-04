@@ -4,10 +4,8 @@ import esbuild from "rollup-plugin-esbuild";
 import json from "@rollup/plugin-json";
 import { defineConfig } from "rollup";
 
-const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "AmongUs", "piss", "BetterTwitterEmbeds", "BetterTiktokEmbeds", "PetPet", "FriendInvites"];
+const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "AmongUs", "piss", "BetterTwitterEmbeds", "BetterTiktokEmbeds", "PetPet", "FriendInvites", "CustomSlowmode"];
 export default () => {
-  let readme = "# Marek's Enmity plugins\n\n";
-
   const configs = plugins.map((name) => {
     return defineConfig({
       input: `${name}/src/index.tsx`,

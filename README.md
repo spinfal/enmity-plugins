@@ -28,6 +28,10 @@ Copy the [Compiled](/#) link under the plugin that you want, then open Enmity an
 
 # Spin's plugins
 
+## CustomSlowmode
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/CustomSlowmode.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/CustomSlowmode)
 ## FriendInvites
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/FriendInvites.js)
 

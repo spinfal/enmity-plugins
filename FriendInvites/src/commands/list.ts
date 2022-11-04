@@ -8,8 +8,8 @@ import { sendReply } from "enmity/api/clyde";
 const listFriendInvites: Command = {
   id: "list-friend-invites",
 
-  name: "listinvites",
-  displayName: "listinvites",
+  name: "invites list",
+  displayName: "invites list",
 
   description: "List your current friend invite links",
   displayDescription: "List your current friend invite links",

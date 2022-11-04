@@ -1,0 +1,14 @@
+{
+   "name": "CustomSlowmode",
+   "version": "1.0.0",
+   "build": "patch-1.0.0",
+   "description": "Add custom values to the slowmode slider or remove values that you do not want!",
+   "authors": [
+      {
+         "name": "spin",
+         "id": "308440976723148800"
+      }
+   ],
+   "color": "#ff0069",
+   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/CustomSlowmode.js"
+}

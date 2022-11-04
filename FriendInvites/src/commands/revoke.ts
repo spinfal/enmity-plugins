@@ -8,8 +8,8 @@ import { sendReply } from "enmity/api/clyde";
 const revokeFriendInvites: Command = {
   id: "revoke-friend-invites",
 
-  name: "revokeinvites",
-  displayName: "revokeinvites",
+  name: "invites revoke",
+  displayName: "invites revoke",
 
   description: "Revoke all of your friend invites (this is irreversible and will delete all of your friend invites)",
   displayDescription: "Revoke all of your friend invites (this is irreversible and will delete all of your friend invites)",

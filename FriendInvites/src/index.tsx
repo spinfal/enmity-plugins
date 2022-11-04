@@ -1,8 +1,9 @@
 import { FormSection, FormRow, FormDivider } from 'enmity/components';
-import { Plugin, registerPlugin } from 'enmity/managers/plugins';
+import { Plugin, registerPlugin, getPlugin } from 'enmity/managers/plugins';
 import manifest from '../manifest.json';
 import { commands } from './commands';
 import { getByKeyword, bulk, filters } from "enmity/metro";
+import { getBoolean, set, get } from "enmity/api/settings";
 import { React, Constants, StyleSheet, Dialog, Toasts } from "enmity/metro/common";
 import { Icons, clipboard_toast } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
@@ -29,10 +30,37 @@ const styles = StyleSheet.createThemedStyleSheet({
 const FriendInvites: Plugin = {
     ...manifest,
     onStart() {
-        this.commands = commands
+        this.commands = commands;
+
+        if (getBoolean('_friendinvites', 'firstRun', true) === true) {
+            // if (getPlugin('MuteNewGuilds') !== undefined) {
+                Dialog.show({
+                    title: "Conflicting Plugins",
+                    body: "The plugin 'MuteNewGuilds' is known to falsely detect friend invite links as Server invite links, causing you to not receive notifications outside of the app.\nA fix is coming soon™️, would you like to continute anyway?",
+                    confirmText: "Continue",
+                    cancelText: "Cancel",
+                    onConfirm: () => {
+                        set('_friendinvites', 'firstRun', false);
+                    },
+                    onCancel: () => {
+                        // @ts-ignore
+                        enmity.plugins.disablePlugin('FriendInvites').then((res: string) => {
+                            if (res === 'yes') {
+                                Toasts.open({ content: "Plugin disabled", source: Icons.Settings.Toasts.Settings });
+                                set('_friendinvites', 'firstRun', false);
+                            } else {
+                                Toasts.open({ content: "Something went wrong! Disable manually", source: Icons.Failed });
+                                set('_friendinvites', 'firstRun', false);
+                            }
+                        })
+                    }
+                });
+            // }
+        }
     },
     onStop() {
         this.commands = []
+        set('_friendinvites', 'firstRun', true)
     },
     patches: [],
     getSettingsPanel({ settings }): any {

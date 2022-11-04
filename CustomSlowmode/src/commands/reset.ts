@@ -22,9 +22,9 @@ const resetSlowmodeValues: Command = {
     try {
       const defaultSlowmodeValues = [0, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600, 7200, 21600];
       Constants.SLOWMODE_VALUES = defaultSlowmodeValues;
-      set('_customSlowmode', 'slowmodeValues', Constants.SLOWMODE_VALUES);
+      set("_customSlowmode", "slowmodeValues", Constants.SLOWMODE_VALUES);
       
-      if (Constants.SLOWMODE_VALUES === defaultSlowmodeValues && get('_customSlowmode', 'slowmodeValues', null) === defaultSlowmodeValues) {
+      if (Constants.SLOWMODE_VALUES === defaultSlowmodeValues && get("_customSlowmode", "slowmodeValues", null) === defaultSlowmodeValues) {
         sendReply(message?.channel.id ?? "0", "Slowmode values have been reset to Discord's default values.");
         return;
       } else {

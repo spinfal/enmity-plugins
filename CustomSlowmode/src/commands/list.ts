@@ -29,15 +29,15 @@ const listSlowmodeValues: Command = {
   }],
 
   execute: async function (args, message) {
-    const whisper = args[args.findIndex(x => x.name === 'whisper')];
+    const whisper = args[args.findIndex(x => x.name === "whisper")];
 
     try {
       const embed = {
-        type: 'rich',
-        title: 'Slowmode Values',
-        description: (Constants.SLOWMODE_VALUES?.length > 0 ? Constants.SLOWMODE_VALUES.map((x: number) => `${x}s (${Math.floor(x / 60)}m)`).join('\n') : 'No values found'),
+        type: "rich",
+        title: "Slowmode Values",
+        description: (Constants.SLOWMODE_VALUES?.length > 0 ? Constants.SLOWMODE_VALUES.map((x: number) => `${x}s (${Math.floor(x / 60)}m)`).join("\n") : "No values found"),
         footer: {
-          text: 'Not every value will work. This is a limitation set by Discord.'
+          text: "Not every value will work. This is a limitation set by Discord."
         },
         color: "0xff0069"
       }
@@ -47,7 +47,7 @@ const listSlowmodeValues: Command = {
         return
       } else {
         return {
-          content: (Constants.SLOWMODE_VALUES?.length > 0 ? Constants.SLOWMODE_VALUES.map((x: number) => `${x}s (${Math.floor(x / 60)}m)`).join('\n') : 'No values found')
+          content: (Constants.SLOWMODE_VALUES?.length > 0 ? Constants.SLOWMODE_VALUES.map((x: number) => `${x}s (${Math.floor(x / 60)}m)`).join("\n") : "No values found")
         }
       }
     } catch (err) {

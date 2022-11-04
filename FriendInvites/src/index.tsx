@@ -1,9 +1,9 @@
-import { FormSection, FormRow, FormDivider } from 'enmity/components';
-import { Plugin, registerPlugin, getPlugin } from 'enmity/managers/plugins';
-import manifest from '../manifest.json';
-import { commands } from './commands';
+import { FormSection, FormRow, FormDivider } from "enmity/components";
+import { Plugin, registerPlugin } from "enmity/managers/plugins";
+import manifest from "../manifest.json";
+import { commands } from "./commands";
 import { getByKeyword, bulk, filters } from "enmity/metro";
-import { getBoolean, set, get } from "enmity/api/settings";
+import { getBoolean, set } from "enmity/api/settings";
 import { React, Constants, StyleSheet, Dialog, Toasts } from "enmity/metro/common";
 import { Icons, clipboard_toast } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
@@ -11,7 +11,7 @@ import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 const [
     Clipboard // used to copy the dl link to keyboard
 ] = bulk(
-    filters.byProps('setString')
+    filters.byProps("setString")
 );
 
 const styles = StyleSheet.createThemedStyleSheet({
@@ -22,8 +22,8 @@ const styles = StyleSheet.createThemedStyleSheet({
         color: Constants.ThemeColorMap.TEXT_MUTED
     },
     text_container: {
-        display: 'flex',
-        flexDirection: 'column'
+        display: "flex",
+        flexDirection: "column"
     }
 });
 
@@ -32,25 +32,25 @@ const FriendInvites: Plugin = {
     onStart() {
         this.commands = commands;
 
-        if (getBoolean('_friendinvites', 'firstRun', true) === true) {
-            // if (getPlugin('MuteNewGuilds') !== undefined) {
+        if (getBoolean("_friendinvites", "firstRun", true) === true) {
+            // if (getPlugin("MuteNewGuilds") !== undefined) {
                 Dialog.show({
                     title: "Conflicting Plugins",
                     body: "The plugin 'MuteNewGuilds' is known to falsely detect friend invite links as Server invite links, causing you to not receive notifications outside of the app.\nA fix is coming soon™️, would you like to continute anyway?",
                     confirmText: "Continue",
                     cancelText: "Cancel",
                     onConfirm: () => {
-                        set('_friendinvites', 'firstRun', false);
+                        set("_friendinvites", "firstRun", false);
                     },
                     onCancel: () => {
                         // @ts-ignore
-                        enmity.plugins.disablePlugin('FriendInvites').then((res: string) => {
-                            if (res === 'yes') {
+                        enmity.plugins.disablePlugin("FriendInvites").then((res: string) => {
+                            if (res === "yes") {
                                 Toasts.open({ content: "Plugin disabled", source: Icons.Settings.Toasts.Settings });
-                                set('_friendinvites', 'firstRun', false);
+                                set("_friendinvites", "firstRun", false);
                             } else {
                                 Toasts.open({ content: "Something went wrong! Disable manually", source: Icons.Failed });
-                                set('_friendinvites', 'firstRun', false);
+                                set("_friendinvites", "firstRun", false);
                             }
                         })
                     }
@@ -60,13 +60,13 @@ const FriendInvites: Plugin = {
     },
     onStop() {
         this.commands = []
-        set('_friendinvites', 'firstRun', true)
+        set("_friendinvites", "firstRun", true)
     },
     patches: [],
     getSettingsPanel({ settings }): any {
         const [invites, setInvites] = React.useState(null)
         React.useEffect(async function () {
-            const inviteLinks = await getByKeyword('friendinvite').getAllFriendInvites();
+            const inviteLinks = await getByKeyword("friendinvite").getAllFriendInvites();
 
             (!inviteLinks || inviteLinks.length === 0) ? setInvites(null) : setInvites(inviteLinks)
         }, [])
@@ -78,14 +78,14 @@ const FriendInvites: Plugin = {
                         {
                             invites.map((invite) => {
                                 return <FormRow
-                                    key={invite['code']}
-                                    label={`discord.gg/${invite['code']}`}
-                                    subLabel={`This invite has been used ${invite['uses']} times out of ${invite['max_uses']} and will expire ${new Date(invite['expires_at']).toLocaleString()}`}
+                                    key={invite["code"]}
+                                    label={`discord.gg/${invite["code"]}`}
+                                    subLabel={`This invite has been used ${invite["uses"]} times out of ${invite["max_uses"]} and will expire ${new Date(invite["expires_at"]).toLocaleString()}`}
                                     leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Share} />}
                                     trailing={FormRow.Arrow}
                                     onPress={function () {
-                                        Clipboard.setString(`discord.gg/${invite['code']}`); // copy the invite to clipboard
-                                        clipboard_toast(`the invite discord.gg/${invite['code']}`);
+                                        Clipboard.setString(`discord.gg/${invite["code"]}`); // copy the invite to clipboard
+                                        clipboard_toast(`the invite discord.gg/${invite["code"]}`);
                                     }}
                                     onLongPress={function () {
                                         Dialog.show({
@@ -94,17 +94,17 @@ const FriendInvites: Plugin = {
                                             confirmText: "Revoke",
                                             cancelText: "Cancel",
                                             onConfirm: () => {
-                                                getByKeyword('friendinvite').revokeFriendInvites().then(() => {
-                                                    getByKeyword('friendinvite').getAllFriendInvites().then((inviteLinks: any) => {
+                                                getByKeyword("friendinvite").revokeFriendInvites().then(() => {
+                                                    getByKeyword("friendinvite").getAllFriendInvites().then((inviteLinks: any) => {
                                                         if (!inviteLinks || inviteLinks.length == 0) {
                                                             Toasts.open({ content: "Friends invites have been revoked", source: Icons.Settings.Toasts.Settings });
                                                             return
                                                         } else {
-                                                            console.log('[ revokeFriendInvites Response ]', inviteLinks);
+                                                            console.log("[ revokeFriendInvites Response ]", inviteLinks);
                                                             Toasts.open({ content: "Something went wrong. Invite list sent to console", source: Icons.Failed });
                                                         }
                                                     }).catch((err: any) => {
-                                                        console.log('[ revokeFriendInvites Response ]', err);
+                                                        console.log("[ revokeFriendInvites Response ]", err);
                                                         Toasts.open({ content: "Something went wrong. Details sent to console", source: Icons.Failed });
                                                     })
                                                 });
@@ -122,16 +122,16 @@ const FriendInvites: Plugin = {
                             leading={<FormRow.Icon style={styles.icon} source={Icons.Add} />}
                             trailing={FormRow.Arrow}
                             onPress={function () {
-                                getByKeyword('friendinvite').createFriendInvite().then((invite: object) => {
+                                getByKeyword("friendinvite").createFriendInvite().then((invite: object) => {
                                     if (!invite) {
-                                        console.log('[ createFriendInvite Response ]', invite);
+                                        console.log("[ createFriendInvite Response ]", invite);
                                         Toasts.open({ content: "Something went wrong. Invite list sent to console", source: Icons.Failed });
                                     } else {
-                                        Clipboard.setString(`discord.gg/${invite['code']}`); // copy the invite to clipboard
-                                        clipboard_toast(`the invite discord.gg/${invite['code']}`);
+                                        Clipboard.setString(`discord.gg/${invite["code"]}`); // copy the invite to clipboard
+                                        clipboard_toast(`the invite discord.gg/${invite["code"]}`);
                                     }
                                 }).catch((err: any) => {
-                                    console.log('[ createFriendInvite Response ]', err);
+                                    console.log("[ createFriendInvite Response ]", err);
                                     Toasts.open({ content: "Something went wrong. Details sent to console", source: Icons.Failed });
                                 })
                             }}

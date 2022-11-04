@@ -44,7 +44,7 @@ const addSlowmodeValue: Command = {
       Constants.SLOWMODE_VALUES.push(seconds);
       Constants.SLOWMODE_VALUES.sort((a: number, b: number) => { return a - b });
       sendReply(message?.channel.id ?? "0", `The value \`${seconds}\` has been added.`);
-      set('_customSlowmode', 'slowmodeValues', Constants.SLOWMODE_VALUES);
+      set("_customSlowmode", "slowmodeValues", Constants.SLOWMODE_VALUES);
     } catch (err) {
       console.log("[ addSlowmodeValue Error ]", err);
       sendReply(message?.channel.id ?? "0", "An error occured while adding a slowmode value. Check debug logs for more info.");

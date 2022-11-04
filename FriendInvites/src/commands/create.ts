@@ -29,10 +29,10 @@ const createFriendInvite: Command = {
   }],
 
   execute: async function (args, message) {
-    const whisper = args[args.findIndex(x => x.name === 'whisper')];
+    const whisper = args[args.findIndex(x => x.name === "whisper")];
 
     try {
-      const response = await getByKeyword('friendinvite').createFriendInvite();
+      const response = await getByKeyword("friendinvite").createFriendInvite();
 
       if (response) {
         if (whisper?.value ?? true) {
@@ -44,11 +44,11 @@ const createFriendInvite: Command = {
           }
         }
       } else {
-        console.log('[ createFriendInvite Response ]', response);
+        console.log("[ createFriendInvite Response ]", response);
         sendReply(message?.channel.id ?? "0", "Something went wrong, please try again later. Fetch response sent to console.");
       }
     } catch (err) {
-      console.log('[ createFriendInvite Error ]', err);
+      console.log("[ createFriendInvite Error ]", err);
       sendReply(message?.channel.id ?? "0", "An error occured while creating the friend invite. Check debug logs for more info.");
     }
   }

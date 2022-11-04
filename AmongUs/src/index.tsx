@@ -4,7 +4,7 @@ import { create } from "enmity/patcher";
 import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 import { React } from "enmity/metro/common";
-import { getBoolean, makeStore } from "enmity/api/settings";
+import { getBoolean } from "enmity/api/settings";
 import { Icons } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 const Patcher = create("Amongus");
@@ -13,16 +13,14 @@ const FluxDispatcher = getByProps(
     "_subscriptions",
     "_waitQueue"
 );
-const amogus =
-    "https://assets-prd.ignimgs.com/2020/09/15/among-us-button-1600131255112.jpg";
+
 const Amongus: Plugin = {
     ...manifest,
     onStart() {
-        const Settings = makeStore(this.name);
         FluxDispatcher.dispatch({
             type: "LOAD_MESSAGES",
         });
-        Settings.set("test", "test");
+
         FluxDispatcher.dispatch({
             type: "LOAD_MESSAGES_SUCCESS",
             channelId: 0,

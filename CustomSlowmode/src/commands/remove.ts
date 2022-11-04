@@ -40,7 +40,7 @@ const removeSlowmodeValue: Command = {
 
       Constants.SLOWMODE_VALUES.splice(Constants.SLOWMODE_VALUES.indexOf(value),1)
       Constants.SLOWMODE_VALUES.sort((a: number, b: number) => { return a - b });
-      set('_customSlowmode', 'slowmodeValues', Constants.SLOWMODE_VALUES);
+      set("_customSlowmode", "slowmodeValues", Constants.SLOWMODE_VALUES);
       sendReply(message?.channel.id ?? "0", `The value \`${value}\` has been removed.`);
     } catch (err) {
       console.log("[ removeSlowmodeValue Error ]", err);

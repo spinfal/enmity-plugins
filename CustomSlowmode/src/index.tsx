@@ -1,6 +1,6 @@
-import { Plugin, registerPlugin } from 'enmity/managers/plugins';
-import manifest from '../manifest.json';
-import { commands } from './commands';
+import { Plugin, registerPlugin } from "enmity/managers/plugins";
+import manifest from "../manifest.json";
+import { commands } from "./commands";
 import { get } from "enmity/api/settings";
 import { React, Constants } from "enmity/metro/common";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
@@ -11,7 +11,7 @@ const FriendInvites: Plugin = {
     ...manifest,
     onStart() {
         this.commands = commands;
-        Constants.SLOWMODE_VALUES = get('_customSlowmode', 'slowmodeValues', defaultSlowmodeValues);
+        Constants.SLOWMODE_VALUES = get("_customSlowmode", "slowmodeValues", defaultSlowmodeValues);
     },
     onStop() {
         this.commands = [];

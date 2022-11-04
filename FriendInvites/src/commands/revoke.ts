@@ -19,18 +19,18 @@ const revokeFriendInvites: Command = {
 
   execute: async function (args, message) {
     try {
-      await getByKeyword('friendinvite').revokeFriendInvites();
-      const response = await getByKeyword('friendinvite').getAllFriendInvites();
+      await getByKeyword("friendinvite").revokeFriendInvites();
+      const response = await getByKeyword("friendinvite").getAllFriendInvites();
 
       if (response.length == 0) {
-        sendReply(message?.channel.id ?? "0", 'All of your friend invites have been revoked.');
+        sendReply(message?.channel.id ?? "0", "All of your friend invites have been revoked.");
         return
       } else {
-        console.log('[ revokeFriendInvites Response ]', response);
+        console.log("[ revokeFriendInvites Response ]", response);
         sendReply(message?.channel.id ?? "0", "Something went wrong, please try again later. Fetch response sent to console.");
       }
     } catch (err) {
-      console.log('[ revokeFriendInvites Error ]', err);
+      console.log("[ revokeFriendInvites Error ]", err);
       sendReply(message?.channel.id ?? "0", "An error occured while revoking friend invites. Check debug logs for more info.");
     }
   }

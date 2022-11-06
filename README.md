@@ -7,6 +7,10 @@ If I missed anything; feel free to open a pull request.
 # How do I install a plugin?
 Copy the [Compiled](/#) link under the plugin that you want, then open Enmity and add the plugin.
 
+# I need help!1!
+Join the [Official Enmity Discord server](https://lnk.spin.rip/enmitymod
+)
+
 # Marek's Enmity plugins, modified by [Spin](https://spin.rip)
 
 ## MessageSpoofer

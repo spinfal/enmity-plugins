@@ -4,7 +4,7 @@ import esbuild from "rollup-plugin-esbuild";
 import json from "@rollup/plugin-json";
 import { defineConfig } from "rollup";
 
-const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "AmongUs", "piss", "BetterTwitterEmbeds", "BetterTiktokEmbeds", "PetPet", "FriendInvites", "CustomSlowmode"];
+const plugins = ["MessageSpoofer", "NoDelete", "HideBlockedMessages", "AmongUs", "piss", "BetterTwitterEmbeds", "BetterTiktokEmbeds", "PetPet", "GotFemboys", "FriendInvites", "CustomSlowmode"];
 export default () => {
   const configs = plugins.map((name) => {
     return defineConfig({

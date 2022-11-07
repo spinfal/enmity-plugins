@@ -1,0 +1,14 @@
+{
+   "name": "GotFemboys",
+   "version": "1.0.0",
+   "build": "patch-1.0.0",
+   "description": "Get a post of a femboy from r/femboy or r/femboys",
+   "authors": [
+      {
+         "name": "spin",
+         "id": "308440976723148800"
+      }
+   ],
+   "color": "#ff0069",
+   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/GotFemboys.js"
+}

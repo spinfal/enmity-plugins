@@ -70,23 +70,23 @@ const petpet: Command = {
   }],
 
   execute: async function (args, message) {
-    const url = args[args.findIndex(x => x.name === 'url')];
-    const user = args[args.findIndex(x => x.name === 'user')];
-    const size = args[args.findIndex(x => x.name === 'size')];
-    const delay = args[args.findIndex(x => x.name === 'delay')];
-    const whisper = args[args.findIndex(x => x.name === 'whisper')];
+    const url = args[args.findIndex(x => x.name === "url")];
+    const user = args[args.findIndex(x => x.name === "user")];
+    const size = args[args.findIndex(x => x.name === "size")];
+    const delay = args[args.findIndex(x => x.name === "delay")];
+    const whisper = args[args.findIndex(x => x.name === "whisper")];
 
-    const apiVersion = 'v2';
+    const apiVersion = "v2";
 
     // Argument checks
     if (!url && !user) return sendReply(message?.channel.id ?? "0", "No argument provided, nothing will happen. Here's a banana instead 🍌");
 
     try {
-      const response = await REST.get(`https://petpet-api.clit.repl.co/petpet?url=${url?.value ? url.value : getByProps("getUser").getUser(user?.value).getAvatarURL().split('?')[0].replace(/gif|webp/, 'png')}&size=${size ? size.value : 100}&delay=${delay ? delay.value : 20}&version=${apiVersion}`).then(res => res.body);
+      const response = await REST.get(`https://petpet-api.clit.repl.co/petpet?url=${url?.value ? url.value : getByProps("getUser").getUser(user?.value).getAvatarURL().split("?")[0].replace(/gif|webp/, "png")}&size=${size ? size.value : 100}&delay=${delay ? delay.value : 20}&version=${apiVersion}`).then(res => res.body);
 
       if (response.status == true) {
         const embed = {
-          type: 'rich',
+          type: "rich",
           image: {
             proxy_url: response?.result,
             url: response?.result,
@@ -108,13 +108,13 @@ const petpet: Command = {
           }
         }
       } else {
-        console.log('[ PetPet Fetch Response ]', response, response?.status);
-        console.log('[ PetPet Arguments ]', url, user, size, delay, whisper);
+        console.log("[ PetPet Fetch Response ]", response, response?.status);
+        console.log("[ PetPet Arguments ]", url, user, size, delay, whisper);
         sendReply(message?.channel.id ?? "0", "Something went wrong, please try again later. Fetch response and PetPet arguments sent to console.");
       }
     } catch (err) {
-      console.log('[ PetPet Error ]', err);
-      console.log('[ PetPet Arguments ]', url, user, size, delay, whisper);
+      console.log("[ PetPet Error ]", err);
+      console.log("[ PetPet Arguments ]", url, user, size, delay, whisper);
       sendReply(message?.channel.id ?? "0", "An error occured while fetching and preparing the petpet image. Check debug logs for more info.");
     }
   }

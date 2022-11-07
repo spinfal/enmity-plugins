@@ -51,10 +51,10 @@ const femboy: Command = {
         color: "0xff0069"
       }
 
-      if (message?.guild?.id == "788198098714886176" && whisper?.value === false) whisper.value = true;
+      if (message?.guild?.id == "950850315601711176" && whisper?.value === false) whisper.value = true;
 
       if (whisper?.value ?? true) {
-        sendReply(message?.channel.id ?? "0", { content: (message?.guild?.id == "788198098714886176" ? "i do not recommend sending femboy images here, most of them are too revealing - spin" : ""), embeds: [embed] });
+        sendReply(message?.channel.id ?? "0", { content: (message?.guild?.id == "950850315601711176" ? "i do not recommend sending femboy images here, most of them are too revealing - spin" : ""), embeds: [embed] });
         return
       } else {
         return {

@@ -1,7 +1,7 @@
 {
    "name": "CustomSlowmode",
    "version": "1.0.0",
-   "build": "patch-1.0.1",
+   "build": "patch-1.0.2",
    "description": "Add custom values to the slowmode slider or remove values that you do not want!",
    "authors": [
       {

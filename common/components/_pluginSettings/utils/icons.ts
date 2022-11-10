@@ -7,6 +7,8 @@ export const Icons = {
     Cancel: getIDByName('ic_megaphone_nsfw_16px'),
     Add: getIDByName('add_white'),
     Delete: getIDByName('ic_message_delete'),
+    Clear: getIDByName('ic_clear_all_24px'),
+    Pencil: getIDByName('ic_pencil_24px'),
 
     Copy: getIDByName('toast_copy_link'),
     Open: getIDByName('ic_leave_stage'),

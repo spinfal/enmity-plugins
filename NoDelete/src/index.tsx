@@ -5,7 +5,7 @@ import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 import { React, Toasts, Storage, Navigation, Constants, StyleSheet } from "enmity/metro/common";
 import { SettingsStore, getBoolean, get, set } from "enmity/api/settings";
-import { Icons } from "../../common/components/_pluginSettings/utils";
+import { Icons, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import Page from "../../common/components/_pluginSettings/Page";
 import Logs from "./Logs";
@@ -22,6 +22,10 @@ const NoDelete: Plugin = {
     patches: [],
 
     onStart() {
+        async function checkCompat() {
+            await check_if_compatible_device(manifest);
+        }
+        
         Storage.getItem("NoDeleteLogs").then(res => {
             if (res == null) Storage.setItem("NoDeleteLogs", "[]")
         }).catch(err => {
@@ -180,6 +184,7 @@ const NoDelete: Plugin = {
         };
 
         setTimeout(() => {
+            checkCompat();
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
 

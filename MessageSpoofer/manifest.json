@@ -1,7 +1,7 @@
 {
    "name": "MessageSpoofer",
    "version": "1.1.8",
-   "build": "patch-1.0.9",
+   "build": "patch-1.0.10",
    "description": "Change what people say.",
    "authors": [
       {

@@ -5,7 +5,7 @@ import { Toasts } from "enmity/metro/common";
 import manifest from "../manifest.json";
 import { React } from "enmity/metro/common";
 import { getBoolean } from "enmity/api/settings";
-import { Icons } from "../../common/components/_pluginSettings/utils";
+import { Icons, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 const Patcher = create("HideBlockedMessages");
 const FluxDispatcher = getByProps(
@@ -18,6 +18,9 @@ const BlockedStore = getByProps("isBlocked", "isFriend");
 const HideBlockedMessages: Plugin = {
     ...manifest,
     onStart() {
+        async function checkCompat() {
+            await check_if_compatible_device(manifest);
+        }
         // const Settings = makeStore(this.name);
         // FluxDispatcher.dispatch({
         //     type: "LOAD_MESSAGES",
@@ -131,7 +134,10 @@ const HideBlockedMessages: Plugin = {
                 }
             }
         };
-        setTimeout(lateStartup, 300);
+        setTimeout(() => {
+            checkCompat();
+            lateStartup();
+        }, 300);
     },
     onStop() {
         Patcher.unpatchAll();

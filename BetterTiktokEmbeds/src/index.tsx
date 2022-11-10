@@ -4,7 +4,7 @@ import { SettingsStore, get, set } from "enmity/api/settings";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 import { React, Messages, Toasts } from "enmity/metro/common";
-import { Icons } from "../../common/components/_pluginSettings/utils";
+import { Icons, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 
 interface SettingsProps {
@@ -17,6 +17,9 @@ const Patcher = create("BTE");
 const BTE: Plugin = {
     ...manifest,
     onStart() {
+        async function checkCompat() {
+            await check_if_compatible_device(manifest);
+        }
         try {
             if (!get("_tiktok", "_type", false)) set("_tiktok", "_type", "tiktxk.com");
 
@@ -29,6 +32,8 @@ const BTE: Plugin = {
         } catch (err) {
             console.log("[ BetterTiktokEmbeds Error ]", err);
         }
+
+        checkCompat();
     },
     onStop() {
         Patcher.unpatchAll();

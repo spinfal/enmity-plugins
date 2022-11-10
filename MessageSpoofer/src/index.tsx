@@ -4,6 +4,7 @@ import { Messages, React } from "enmity/metro/common";
 import { create } from "enmity/patcher";
 import * as Assets from "enmity/api/assets";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
+import { check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
 const MessageStore = getByProps("getMessage", "getMessages");
 const ChannelStore = getByProps("getChannel", "getDMFromUserId");
@@ -19,6 +20,9 @@ const Spoofer: Plugin = {
     ...manifest,
     patches: [],
     onStart() {
+        async function checkCompat() {
+            await check_if_compatible_device(manifest);
+        }
         let dirtyEdit = false;
         Patcher.before(Opener, "openLazy", (_, [component, sheet]) => {
             if (sheet === "MessageLongPressActionSheet") {
@@ -98,6 +102,8 @@ const Spoofer: Plugin = {
                 a1 = {} as any;
             }
         });
+
+        checkCompat();
     },
 
     onStop() {

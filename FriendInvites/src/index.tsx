@@ -4,7 +4,7 @@ import manifest from "../manifest.json";
 import { commands } from "./commands";
 import { getByKeyword, bulk, filters } from "enmity/metro";
 import { React, Constants, StyleSheet, Dialog, Toasts } from "enmity/metro/common";
-import { Icons, clipboard_toast } from "../../common/components/_pluginSettings/utils";
+import { Icons, clipboard_toast, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 
 const [
@@ -29,7 +29,12 @@ const styles = StyleSheet.createThemedStyleSheet({
 const FriendInvites: Plugin = {
     ...manifest,
     onStart() {
+        async function checkCompat() {
+            await check_if_compatible_device(manifest);
+        }
         this.commands = commands;
+
+        checkCompat();
     },
     onStop() {
         this.commands = [];

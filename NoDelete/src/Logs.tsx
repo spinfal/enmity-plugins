@@ -62,7 +62,7 @@ export default () => {
         },
         log_type: {
             color: Constants.ThemeColorMap.TEXT_MUTED,
-            opacity: 0.985,
+            opacity: 0.450,
             fontSize: 16,
             marginLeft: "auto",
         },

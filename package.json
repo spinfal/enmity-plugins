@@ -5,6 +5,7 @@
    "license": "GPL-3.0",
    "author": "spinfal",
    "scripts": {
+      "debug": "cd ../enmity-debug && node .",
       "build": "rollup -c --configPlugin esbuild"
    },
    "devDependencies": {

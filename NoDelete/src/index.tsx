@@ -1,17 +1,33 @@
+import { FormDivider, FormSwitch, FormRow, FormSection, FormInput } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
-import { React, Toasts } from "enmity/metro/common";
-import { getBoolean } from "enmity/api/settings";
+import { React, Toasts, Storage, Navigation, Constants, StyleSheet } from "enmity/metro/common";
+import { SettingsStore, getBoolean, get, set } from "enmity/api/settings";
 import { Icons } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
+import Page from "../../common/components/_pluginSettings/Page";
+import Logs from "./Logs";
+import { commands } from './commands';
+import { updateLogStorage } from "../functions/updateLogStorage";
+
+interface SettingsProps {
+    settings: SettingsStore;
+}
+
 const Patcher = create("NoDelete");
 const NoDelete: Plugin = {
     ...manifest,
     patches: [],
 
     onStart() {
+        Storage.getItem("NoDeleteLogs").then(res => {
+            if (res == null) Storage.setItem("NoDeleteLogs", "[]")
+        }).catch(err => {
+            console.log(`[${manifest.name} Storage Error]`, err);
+        })
+
         let attempt = 0;
         let attempts = 3;
         const plugin = () => {
@@ -67,11 +83,11 @@ const NoDelete: Plugin = {
                     }
                 }
 
-                const MessageDelete = FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_DELETE.find(
+                const MessageDelete = FluxDispatcher._actionHandlers._orderedActionHandlers?.MESSAGE_DELETE.find(
                     (h) => h.name === "MessageStore"
                 );
 
-                const MessageUpdate = FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
+                const MessageUpdate = FluxDispatcher._actionHandlers._orderedActionHandlers?.MESSAGE_UPDATE.find(
                     (h) => h.name === "MessageStore"
                 );
 
@@ -80,7 +96,8 @@ const NoDelete: Plugin = {
                         args[0].channelId,
                         args[0].id
                     );
-                    args[0] = {};
+                    if (getBoolean("_nodelete", "_storageLog", false) == false) args[0] = {};
+
                     if (
                         !originalMessage?.editedTimestamp ||
                         originalMessage?.editedTimestamp._isValid
@@ -91,15 +108,18 @@ const NoDelete: Plugin = {
                                 ...originalMessage,
                                 edited_timestamp: "invalid_timestamp",
                                 content:
-                                    originalMessage.content + " `[deleted]`",
+                                    originalMessage?.content + " `[deleted]`",
                                 guild_id: ChannelStore.getChannel(
-                                    originalMessage.channel_id
-                                ).guild_id,
+                                    originalMessage?.channel_id
+                                )?.guild_id,
                             },
                             log_edit: false
                         };
+
                         FluxDispatcher.dispatch(editEvent);
                     }
+
+                    updateLogStorage("delete", `${originalMessage?.author?.username}#${originalMessage?.author?.discriminator}`, originalMessage?.author?.id, originalMessage?.author?.avatar, { time: originalMessage?.timestamp, original: originalMessage?.content?.replace("`[deleted]`", "").trim() })
                 });
 
                 Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
@@ -116,10 +136,16 @@ const NoDelete: Plugin = {
                         try {
                             if (!args[0].edited_timestamp._isValid) return;
                         } catch { }
-                        args[0].message.content =
-                            originalMessage.content +
-                            " `[edited]`\n" +
-                            args[0].message.content;
+                        const newEditMessage = args[0].message.content;
+
+                        if (getBoolean("_nodelete", "_storageLog", false) == false) {
+                            args[0].message.content =
+                                originalMessage?.content +
+                                " `[edited]`\n" +
+                                args[0]?.message?.content;
+                        }
+
+                        updateLogStorage("edit", `${args[0]?.message?.author?.username}#${args[0]?.message?.author?.discriminator}`, args[0]?.message?.author?.id, args[0]?.message?.author?.avatar, { time: args[0]?.message?.edited_timestamp, original: originalMessage?.content?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim(), edited: `${newEditMessage?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim()}` })
                         return;
                     } catch (err) {
                         console.log(`[${manifest.name} Error]`, err);
@@ -156,13 +182,109 @@ const NoDelete: Plugin = {
         setTimeout(() => {
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
+
+        this.commands = commands;
     },
 
     onStop() {
         Patcher.unpatchAll();
+        this.commands = [];
     },
-    getSettingsPanel({ settings }): any {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={null} commands={null} />;
+    getSettingsPanel({ settings }: SettingsProps): any {
+        const styles = StyleSheet.createThemedStyleSheet({
+            icon: {
+                color: Constants.ThemeColorMap.INTERACTIVE_NORMAL
+            },
+            item: {
+                color: Constants.ThemeColorMap.TEXT_MUTED
+            }
+        });
+
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={
+            <>
+                <FormSection title="Message Logs">
+                    <FormRow
+                        label="View Message Logs"
+                        subLabel="Tap on an item to copy to clipboard. Long press an item to view profile"
+                        leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Debug} />}
+                        onPress={() => {
+                            Navigation.push(Page, { component: Logs, name: "NoDelete Message Logs" }) // opens custom page with logs
+                        }}
+                    />
+                </FormSection>
+                <FormDivider />
+                <FormSection title="Plugin Settings">
+                    <FormRow
+                        label="Only log to Storage"
+                        subLabel="Message logs will not show in chat, only in Storage"
+                        leading={<FormRow.Icon source={Icons.Pencil} />}
+                        trailing={
+                            <FormSwitch
+                                value={settings.getBoolean("_nodelete", false)}
+                                onValueChange={() => {
+                                    try {
+                                        settings.toggle("_nodelete", false);
+                                        if (settings.getBoolean("_nodelete", false)) {
+                                            set("_nodelete", "_storageLog", true);
+                                        } else {
+                                            set("_nodelete", "_storageLog", false);
+                                        }
+                                        Toasts.open({
+                                            content: `Storage-only log has been set to: ${get("_nodelete", "_storageLog", false)}.`,
+                                            source: Icons.Settings.Toasts.Settings,
+                                        });
+                                    } catch (err) {
+                                        console.log("[ NoDelete Toggle Error ]", err);
+
+                                        Toasts.open({
+                                            content: "An error has occurred. Check debug logs for more info.",
+                                            source: Icons.Failed,
+                                        });
+                                    }
+                                }}
+                            />
+                        }
+                    />
+                    <FormDivider />
+                    <FormInput
+                        value={get("_nodelete", "maxLogs", "1000")}
+                        onChange={(value: string) => (/^\d+$/.test(value) ? set("_nodelete", "maxLogs", value.trim()) : set("_nodelete", "maxLogs", "1000"))}
+                        title="Max Logs to Store"
+                    />
+                    <FormRow
+                        label="Auto-clear logs"
+                        subLabel="Message logs will automatically clear after they have exceeded your max logs limit"
+                        leading={<FormRow.Icon source={Icons.Clear} />}
+                        trailing={
+                            <FormSwitch
+                                value={settings.getBoolean("_nodelete_autoClear", false)}
+                                onValueChange={() => {
+                                    try {
+                                        settings.toggle("_nodelete_autoClear", false);
+                                        if (settings.getBoolean("_nodelete_autoClear", false)) {
+                                            set("_nodelete", "autoClear", true);
+                                        } else {
+                                            set("_nodelete", "autoClear", false);
+                                        }
+                                        Toasts.open({
+                                            content: `Logs auto-clearing has been set to: ${get("_nodelete", "autoClear", false)}.`,
+                                            source: Icons.Settings.Toasts.Settings,
+                                        });
+                                    } catch (err) {
+                                        console.log("[ NoDelete Toggle Error ]", err);
+
+                                        Toasts.open({
+                                            content: "An error has occurred. Check debug logs for more info.",
+                                            source: Icons.Failed,
+                                        });
+                                    }
+                                }}
+                            />
+                        }
+                    />
+                </FormSection>
+            </>
+        } commands={commands} />;
     },
 };
 

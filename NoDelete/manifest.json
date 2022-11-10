@@ -1,8 +1,8 @@
 {
    "name": "NoDelete",
-   "version": "1.3.9",
+   "version": "2.3.9",
    "build": "patch-1.0.8",
-   "description": "Basic \"Message Logger\"",
+   "description": "Somewhat basic \"Message Logger\"",
    "authors": [
       {
          "name": "Marek (modified by spin)",

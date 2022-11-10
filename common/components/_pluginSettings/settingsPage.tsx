@@ -27,6 +27,9 @@ const [
 export default ({ manifest, settings, hasToasts, section, commands }: SettingsProps) => {
   // icon and styles
   const styles = StyleSheet.createThemedStyleSheet({
+    bottom_padding: {
+      paddingBottom: 25
+    },
     icon: {
       color: Constants.ThemeColorMap.INTERACTIVE_NORMAL
     },
@@ -144,7 +147,7 @@ export default ({ manifest, settings, hasToasts, section, commands }: SettingsPr
           }}
         />
       </FormSection>
-      <FormRow label={
+      <FormRow style={styles.bottom_padding} label={
         `Plugin Version: ${manifest['version']}
 Plugin Build: ${(manifest['build']).split('-').pop()}`
       } />

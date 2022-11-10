@@ -5,6 +5,11 @@
 import { Dialog, Native, Storage } from "enmity/metro/common";
 import { get_device_list } from "./devices";
 
+/**
+ * It checks if the device is an iPhone, and if it is, it checks if it's an iPhone X or below, and if
+ * it is, it shows a dialog saying that the plugin may not behave correctly.
+ * @param {object} manifest - object - The manifest of the app.
+ */
 async function check_if_compatible_device(manifest: object) {
     let device = Native.DCDDeviceManager.device; // current device
     let devices = await get_device_list() // list of devices

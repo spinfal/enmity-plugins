@@ -1,4 +1,6 @@
 import { Storage } from "enmity/metro/common";
+import { getByKeyword } from "enmity/metro";
+import { getBoolean } from "enmity/api/settings";
 
 /**
  * It takes in a type, author, id, avatar, and content, and then it checks if the author, id, avatar,
@@ -15,12 +17,13 @@ import { Storage } from "enmity/metro/common";
 async function updateLogStorage(type: string, author: string, id: string, avatar: string, content: object) {
   // stops logging of items with undefined in them
   if (author.split("#").pop() == "undefined" || id == "undefined" || avatar == "undefined" || content["original"] == undefined) return;
+  if (getBoolean("_nodelete", "_logSelf", false) === false && id == getByKeyword('getCurrentUser').getCurrentUser()?.id) return;
 
   const itemObject = {
     type: type,
     author: author,
     id: id,
-    avatar: avatar ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.${(avatar?.startsWith("a_") ? "gif" : "png")}?size=32` : "https://cdn.discordapp.com/embed/avatars/0.png",
+    avatar: avatar ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.${(avatar?.startsWith("a_") ? "gif" : "png")}?size=1024` : "https://cdn.discordapp.com/embed/avatars/0.png",
     content: (content["edited"] ? [new Date(content["time"]).toLocaleString(), content["original"], content["edited"]] : [new Date(content["time"]).toLocaleString(), content["original"]]),
   }
   let logs = await Storage.getItem("NoDeleteLogs") as any;

@@ -8,7 +8,6 @@ import { Storage } from "enmity/metro/common"
 import { getBoolean, get } from "enmity/api/settings";
 import { clipboard_toast, Icons } from "../../common/components/_pluginSettings/utils";
 
-// allows copying text to clipboard
 const [
     Clipboard, // used to copy the dl link to keyboard
     GetProfile // used to get the user's profile
@@ -66,22 +65,24 @@ export default () => {
             fontSize: 16,
             marginLeft: "auto",
         },
+        avatar_container: {
+            alignSelf: "start",
+            justifySelf: "start",
+        },
         author_avatar: {
             width: 40,
             height: 40,
             borderRadius: 100,
-            justifySelf: "start",
-            alignSelf: "start",
         },
         old_message: {
             color: Constants.ThemeColorMap.TEXT_MUTED,
             opacity: 0.890,
-            fontSize: 17,
+            fontSize: 16,
         },
         message_content: {
             color: Constants.ThemeColorMap.TEXT_NORMAL,
             opacity: 0.985,
-            fontSize: 17,
+            fontSize: 16,
         },
         main_container: {
             paddingLeft: 8,
@@ -177,7 +178,6 @@ export default () => {
         }
     }
 
-
     return <>
         <Search
             placeholder="Search Logs"
@@ -196,13 +196,7 @@ export default () => {
                 {logs.filter((item: object) => JSON.stringify(item).includes(query)).map((item: object) =>
                     <>
                         <View style={styles.item_container}>
-                            <Image
-                                style={[styles.author_avatar]}
-                                source={{
-                                    uri: item["avatar"],
-                                }}
-                            />
-                            <TouchableOpacity onPress={() => { Clipboard.setString(`${item["author"]} (\`${item["id"]}\`): ${item["content"].join("\n")}`); clipboard_toast("log content") }} onLongPress={() => {
+                            <TouchableOpacity onPress={() => {
                                 GetProfile.fetchProfile(item["id"]).then(() => {
                                     Profiles.showUserProfile({ userId: item["id"] });
                                 }).catch((err: any) => {
@@ -212,7 +206,15 @@ export default () => {
                                     })
                                     console.log("[NoDelete User Fetch Error]", err)
                                 })
-                            }} style={styles.text_container}>
+                            }} style={styles.avatar_container}>
+                                <Image
+                                    style={styles.author_avatar}
+                                    source={{
+                                        uri: item["avatar"],
+                                    }}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { Clipboard.setString(`${item["author"]} (\`${item["id"]}\`):\n>>> ${item["content"].join("\n")}`); clipboard_toast("log content") }} style={styles.text_container}>
                                 <View style={styles.log_header}>
                                     <View style={styles.log_sub_header}>
                                         <Text style={[styles.main_text, styles.author_name]}>

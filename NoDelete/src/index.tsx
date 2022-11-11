@@ -5,7 +5,7 @@ import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 import { React, Toasts, Storage, Navigation, Constants, StyleSheet } from "enmity/metro/common";
 import { SettingsStore, getBoolean, get, set } from "enmity/api/settings";
-import { Icons, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
+import { Icons } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import Page from "../../common/components/_pluginSettings/Page";
 import Logs from "./Logs";
@@ -22,10 +22,10 @@ const NoDelete: Plugin = {
     patches: [],
 
     onStart() {
-        async function checkCompat() {
-            await check_if_compatible_device(manifest);
-        }
-        
+        // async function checkCompat() {
+        //     await check_if_compatible_device(manifest);
+        // }
+
         Storage.getItem("NoDeleteLogs").then(res => {
             if (res == null) Storage.setItem("NoDeleteLogs", "[]")
         }).catch(err => {
@@ -184,7 +184,7 @@ const NoDelete: Plugin = {
         };
 
         setTimeout(() => {
-            checkCompat();
+            // checkCompat();
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
 
@@ -210,7 +210,7 @@ const NoDelete: Plugin = {
                 <FormSection title="Message Logs">
                     <FormRow
                         label="View Message Logs"
-                        subLabel="Tap on an item to copy to clipboard. Long press an item to view profile"
+                        subLabel="Tap on an item to copy to clipboard"
                         leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Debug} />}
                         onPress={() => {
                             Navigation.push(Page, { component: Logs, name: "NoDelete Message Logs" }) // opens custom page with logs
@@ -219,6 +219,38 @@ const NoDelete: Plugin = {
                 </FormSection>
                 <FormDivider />
                 <FormSection title="Plugin Settings">
+                    <FormRow
+                        label="Log my own messages"
+                        subLabel="Whether or not your own edits and deleted messages will be logged"
+                        leading={<FormRow.Icon source={Icons.Settings.Self} />}
+                        trailing={
+                            <FormSwitch
+                                value={settings.getBoolean("_nodelete_logSelf", false)}
+                                onValueChange={() => {
+                                    try {
+                                        settings.toggle("_nodelete_logSelf", false);
+                                        if (settings.getBoolean("_nodelete_logSelf", false)) {
+                                            set("_nodelete", "_logSelf", true);
+                                        } else {
+                                            set("_nodelete", "_logSelf", false);
+                                        }
+                                        Toasts.open({
+                                            content: `Log self-events has been set to: ${get("_nodelete", "_logSelf", false)}.`,
+                                            source: Icons.Settings.Toasts.Settings,
+                                        });
+                                    } catch (err) {
+                                        console.log("[ NoDelete Toggle Error ]", err);
+
+                                        Toasts.open({
+                                            content: "An error has occurred. Check debug logs for more info.",
+                                            source: Icons.Failed,
+                                        });
+                                    }
+                                }}
+                            />
+                        }
+                    />
+                    <FormDivider />
                     <FormRow
                         label="Only log to Storage"
                         subLabel="Message logs will not show in chat, only in Storage"

@@ -102,6 +102,8 @@ const NoDelete: Plugin = {
                     );
                     if (getBoolean("_nodelete", "_storageLog", false) == false) args[0] = {};
 
+                    if (originalMessage?.content == '' && originalMessage?.attachments?.length == 0 && originalMessage?.embeds?.length == 0) return;
+
                     if (
                         !originalMessage?.editedTimestamp ||
                         originalMessage?.editedTimestamp._isValid
@@ -135,7 +137,7 @@ const NoDelete: Plugin = {
                             args[0].message.id
                         );
 
-                        if (!args[0]?.message?.content) return;
+                        if (args[0]?.message?.content == '' && args[0]?.message?.attachments?.length == 0 && args[0]?.message?.embeds?.length) return;
 
                         try {
                             if (!args[0].edited_timestamp._isValid) return;

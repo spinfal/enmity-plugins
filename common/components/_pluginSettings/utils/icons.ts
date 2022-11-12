@@ -26,6 +26,7 @@ export const Icons = {
         },
         Self: getIDByName('friends_toast_icon'),
         Share: getIDByName('share'),
+        Robot: getIDByName('ic_robot_24px'),
         Commands: getIDByName('ic_profile_badge_bot_commands'),
         Debug: getIDByName('ic_rulebook_16px'),
     }

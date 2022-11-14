@@ -1,6 +1,6 @@
 import { FormDivider, FormSwitch, FormRow, FormSection, FormInput } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { getByProps } from "enmity/metro";
+import { getByProps, getByKeyword } from "enmity/metro";
 import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 import { React, Toasts, Storage, Navigation, Constants, StyleSheet } from "enmity/metro/common";
@@ -100,9 +100,11 @@ const NoDelete: Plugin = {
                         args[0].channelId,
                         args[0].id
                     );
-                    if (getBoolean("_nodelete", "_storageLog", false) == false) args[0] = {};
+                    if (!originalMessage?.content && originalMessage?.attachments?.length == 0 && originalMessage?.embeds?.length == 0) return;
 
-                    if (originalMessage?.content == '' && originalMessage?.attachments?.length == 0 && originalMessage?.embeds?.length == 0) return;
+                    if (getBoolean("_nodelete", "_storageLog", false) == true || getBoolean("_nodelete", "_logSelf", false) === false && originalMessage?.author?.id == getByKeyword('getCurrentUser').getCurrentUser()?.id) return;
+
+                    args[0] = {};
 
                     if (
                         !originalMessage?.editedTimestamp ||
@@ -130,14 +132,14 @@ const NoDelete: Plugin = {
 
                 Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
                     try {
-                        if (args[0].log_edit == false) return;
+                        if (args[0].log_edit == false || getBoolean("_nodelete", "_logSelf", false) === false && args[0]?.message?.author?.id == getByKeyword('getCurrentUser').getCurrentUser()?.id) return;
 
                         const originalMessage = MessageStore.getMessage(
                             args[0].message.channel_id,
                             args[0].message.id
                         );
 
-                        if (args[0]?.message?.content == '' && args[0]?.message?.attachments?.length == 0 && args[0]?.message?.embeds?.length) return;
+                        if (args[0]?.message?.content == "undefined" && args[0]?.message?.attachments?.length == 0 && args[0]?.message?.embeds?.length == 0) return;
 
                         try {
                             if (!args[0].edited_timestamp._isValid) return;

@@ -1,6 +1,4 @@
 import { Storage } from "enmity/metro/common";
-import { getByKeyword } from "enmity/metro";
-import { getBoolean } from "enmity/api/settings";
 
 /**
  * It takes in a type, author, id, avatar, and content, and then it checks if the author, id, avatar,
@@ -17,7 +15,6 @@ import { getBoolean } from "enmity/api/settings";
 async function updateLogStorage(type: string, author: string, id: string, avatar: string, content: object) {
   // stops logging of items with undefined in them
   if (author.split("#").pop() == "undefined" || id == "undefined" || avatar == "undefined" || content["original"] == undefined) return;
-  if (getBoolean("_nodelete", "_logSelf", false) === false && id == getByKeyword('getCurrentUser').getCurrentUser()?.id) return;
 
   const itemObject = {
     type: type,

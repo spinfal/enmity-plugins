@@ -139,7 +139,7 @@ const NoDelete: Plugin = {
                             args[0].message.id
                         );
 
-                        if (args[0]?.message?.content == "undefined" && args[0]?.message?.attachments?.length == 0 && args[0]?.message?.embeds?.length == 0) return;
+                        if (!args[0]?.message?.content && args[0]?.message?.attachments?.length == 0 && args[0]?.message?.embeds?.length == 0 || args[0]?.message?.embeds?.[0]?.type === "link") return;
 
                         try {
                             if (!args[0].edited_timestamp._isValid) return;

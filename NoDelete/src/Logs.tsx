@@ -1,11 +1,10 @@
 /* i've suffered immense brain damage */
 
 // main imports of elements and dependencies
-import { FormRow, FormDivider, ScrollView, Image, View, TouchableOpacity, Text } from "enmity/components";
-import { React, StyleSheet, Constants, Dialog, Navigation, Profiles, Toasts } from "enmity/metro/common";
-import { getByName, filters, bulk } from "enmity/metro"
-import { Storage } from "enmity/metro/common"
-import { getBoolean, get } from "enmity/api/settings";
+import { get, getBoolean } from "enmity/api/settings";
+import { FormDivider, FormRow, Image, ScrollView, Text, TouchableOpacity, View } from "enmity/components";
+import { bulk, filters, getByName } from "enmity/metro";
+import { Constants, Dialog, Navigation, Profiles, React, Storage, StyleSheet, Toasts } from "enmity/metro/common";
 import { clipboard_toast, Icons } from "../../common/components/_pluginSettings/utils";
 
 const [
@@ -101,7 +100,7 @@ export default () => {
     });
 
     // shorten string
-    const shortenStr = (str: string, maxLen: number) => {
+    const shortenStr = (str: string, maxLen: number): string => {
         if (str.length > maxLen) {
             return str.substring(0, maxLen) + '...';
         }
@@ -109,7 +108,7 @@ export default () => {
     }
 
     // clears message logs
-    const clearLogs = () => {
+    const clearLogs = (): void => {
         Storage.setItem("NoDeleteLogs", "[]")
         Storage.getItem("NoDeleteLogs").then((res: any) => {
             if (res == "[]") {
@@ -148,6 +147,20 @@ export default () => {
             setLogs(messageLogs.reverse())
         })
     }, [])
+
+    // checks for any outdated logs and updates them to work with the new format
+    for (let i = 0; i < logs.length; i++) {
+        if (logs[i]["author"]["id"] == undefined) {
+            logs[i] = {
+                type: logs[i]["type"],
+                author: { username: logs[i]["author"], id: logs[i]["id"], avatar: logs[i]["avatar"], bot: "unknown" },
+                context: { guild: "unknown", channel: "unknown", message: "unknown" },
+                content: logs[i]["content"],
+            }
+
+            if (i == logs.length - 1) setLogs(logs)
+        }
+    }
 
     if (logs.length > parseInt(maxLogCount)) {
         if (getBoolean("_nodelete", "autoClear", false) == false) {
@@ -197,8 +210,8 @@ export default () => {
                     <>
                         <View style={styles.item_container}>
                             <TouchableOpacity onPress={() => {
-                                GetProfile.fetchProfile(item["id"]).then(() => {
-                                    Profiles.showUserProfile({ userId: item["id"] });
+                                GetProfile.fetchProfile(item["author"]["id"]).then(() => {
+                                    Profiles.showUserProfile({ userId: item["author"]["id"] });
                                 }).catch((err: any) => {
                                     Toasts.open({
                                         content: "Error while fetching user. Check logs for more info.",
@@ -210,15 +223,15 @@ export default () => {
                                 <Image
                                     style={styles.author_avatar}
                                     source={{
-                                        uri: item["avatar"],
+                                        uri: item["author"]["avatar"],
                                     }}
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => { Clipboard.setString(`${item["author"]} (\`${item["id"]}\`):\n>>> ${item["content"].join("\n")}`); clipboard_toast("log content") }} style={styles.text_container}>
+                            <TouchableOpacity onPress={() => { Clipboard.setString(`${item["author"]["username"]} (\`${item["author"]["id"]}\`):\n>>> ${item["content"].join("\n")}`); clipboard_toast("log content") }} style={styles.text_container}>
                                 <View style={styles.log_header}>
                                     <View style={styles.log_sub_header}>
                                         <Text style={[styles.main_text, styles.author_name]}>
-                                            {item["author"]}
+                                            {item["author"]["username"]}
                                         </Text>
                                         <Text style={[styles.main_text, styles.log_time]}>
                                             {item["content"][0]}

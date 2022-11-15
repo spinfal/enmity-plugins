@@ -1,60 +1,46 @@
-import { FormDivider, FormSwitch, FormRow, FormSection, FormInput } from "enmity/components";
+/*
+    "When I wrote this, only God and I understood what I was doing.
+    Now, God only knows."
+*/
+
+import { get, getBoolean, set, SettingsStore } from "enmity/api/settings";
+import { FormDivider, FormInput, FormRow, FormSection, FormSwitch } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { getByProps, getByKeyword } from "enmity/metro";
+import { getByKeyword, getByProps } from "enmity/metro";
+import { Constants, Navigation, React, Storage, StyleSheet, Toasts } from "enmity/metro/common";
 import { create } from "enmity/patcher";
-import manifest from "../manifest.json";
-import { React, Toasts, Storage, Navigation, Constants, StyleSheet } from "enmity/metro/common";
-import { SettingsStore, getBoolean, get, set } from "enmity/api/settings";
-import { Icons } from "../../common/components/_pluginSettings/utils";
-import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import Page from "../../common/components/_pluginSettings/Page";
-import Logs from "./Logs";
-import { commands } from './commands';
+import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
+import { Icons } from "../../common/components/_pluginSettings/utils";
 import { updateLogStorage } from "../functions/updateLogStorage";
+import manifest from "../manifest.json";
+import { commands } from './commands';
+import Logs from "./Logs";
 
 interface SettingsProps {
     settings: SettingsStore;
 }
 
+const currentUserID = getByKeyword('getCurrentUser').getCurrentUser()?.id;
 const Patcher = create("NoDelete");
 const NoDelete: Plugin = {
     ...manifest,
     patches: [],
 
     onStart() {
-        // async function checkCompat() {
-        //     await check_if_compatible_device(manifest);
-        // }
-
-        Storage.getItem("NoDeleteLogs").then(res => {
+        Storage.getItem("NoDeleteLogs").then((res: any) => {
             if (res == null) Storage.setItem("NoDeleteLogs", "[]")
-        }).catch(err => {
+        }).catch((err: any) => {
             console.log(`[${manifest.name} Storage Error]`, err);
         })
 
         let attempt = 0;
-        let attempts = 3;
+        const attempts = 3;
         const plugin = () => {
-            let enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
+            const enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
 
             try {
-                // FluxDispatcher.dispatch({
-                //     type: "MESSAGE_DELETE",
-                //     message: {
-                //         channel_id: "0000000000",
-                //         id: "00000000000",
-                //     },
-                // });
                 attempt++;
-                // FluxDispatcher.dispatch({
-                //     type: "MESSAGE_UPDATE",
-                //     message: {
-                //         edited_timestamp: "",
-                //         content: "",
-                //         guild_id: "0000000",
-                //     },
-                // });
-
 
                 const FluxDispatcher = getByProps(
                     "_currentDispatchActionType",
@@ -67,7 +53,7 @@ const NoDelete: Plugin = {
                     "getChannel",
                     "getDMFromUserId"
                 );
-                // console.log(`[${manifest.name} Dispatch]`, FluxDispatcher);
+
                 console.log(
                     `${manifest.name} delayed start attempt ${attempt}/${attempts}.`
                 );
@@ -88,11 +74,11 @@ const NoDelete: Plugin = {
                 }
 
                 const MessageDelete = FluxDispatcher._actionHandlers._orderedActionHandlers?.MESSAGE_DELETE.find(
-                    (h) => h.name === "MessageStore"
+                    (h: any) => h.name === "MessageStore"
                 );
 
                 const MessageUpdate = FluxDispatcher._actionHandlers._orderedActionHandlers?.MESSAGE_UPDATE.find(
-                    (h) => h.name === "MessageStore"
+                    (h: any) => h.name === "MessageStore"
                 );
 
                 Patcher.before(MessageDelete, "actionHandler", (_, args) => {
@@ -100,11 +86,10 @@ const NoDelete: Plugin = {
                         args[0].channelId,
                         args[0].id
                     );
-                    if (!originalMessage?.content && originalMessage?.attachments?.length == 0 && originalMessage?.embeds?.length == 0) return;
+                    if (!originalMessage?.author?.id || !originalMessage?.author?.username || !originalMessage?.content && originalMessage?.attachments?.length == 0 && originalMessage?.embeds?.length == 0) return;
 
-                    if (getBoolean("_nodelete", "_storageLog", false) == true || getBoolean("_nodelete", "_logSelf", false) === false && originalMessage?.author?.id == getByKeyword('getCurrentUser').getCurrentUser()?.id) return;
-
-                    args[0] = {};
+                    if (getBoolean("_nodelete", "_logSelf", false) === false && originalMessage?.author?.id == currentUserID) return;
+                    if (getBoolean("_nodelete", "_storageLog", false) == false) args[0] = {};
 
                     if (
                         !originalMessage?.editedTimestamp ||
@@ -127,18 +112,19 @@ const NoDelete: Plugin = {
                         FluxDispatcher.dispatch(editEvent);
                     }
 
-                    updateLogStorage("delete", `${originalMessage?.author?.username}#${originalMessage?.author?.discriminator}`, originalMessage?.author?.id, originalMessage?.author?.avatar, { time: originalMessage?.timestamp, original: originalMessage?.content?.replace("`[deleted]`", "").trim() })
+                    updateLogStorage("delete", { username: `${originalMessage?.author?.username}#${originalMessage?.author?.discriminator}`, id: originalMessage?.author?.id, avatar: originalMessage?.author?.avatar }, { guild: ChannelStore.getChannel(originalMessage?.channel_id)?.guild_id, channel: originalMessage?.channel_id, message: originalMessage?.id }, { time: originalMessage?.timestamp, original: originalMessage?.content?.replace("`[deleted]`", "").trim() })
                 });
 
                 Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
                     try {
-                        if (args[0].log_edit == false || getBoolean("_nodelete", "_logSelf", false) === false && args[0]?.message?.author?.id == getByKeyword('getCurrentUser').getCurrentUser()?.id) return;
+                        if (args[0].log_edit == false || getBoolean("_nodelete", "_logSelf", false) === false && args[0]?.message?.author?.id == currentUserID) return;
 
                         const originalMessage = MessageStore.getMessage(
                             args[0].message.channel_id,
                             args[0].message.id
                         );
 
+                        if (!originalMessage?.content || !args[0]?.message?.content) return;
                         if (!args[0]?.message?.content && args[0]?.message?.attachments?.length == 0 && args[0]?.message?.embeds?.length == 0 || args[0]?.message?.embeds?.[0]?.type === "link") return;
 
                         try {
@@ -153,8 +139,7 @@ const NoDelete: Plugin = {
                                 args[0]?.message?.content;
                         }
 
-                        updateLogStorage("edit", `${args[0]?.message?.author?.username}#${args[0]?.message?.author?.discriminator}`, args[0]?.message?.author?.id, args[0]?.message?.author?.avatar, { time: args[0]?.message?.edited_timestamp, original: originalMessage?.content?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim(), edited: `${newEditMessage?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim()}` })
-                        return;
+                        updateLogStorage("edit", { username: `${args[0]?.message?.author?.username}#${args[0]?.message?.author?.discriminator}`, id: args[0]?.message?.author?.id, avatar: args[0]?.message?.author?.avatar }, { guild: args[0].message.guild_id, channel: args[0].message.channel_id, message: args[0].message.id }, { time: args[0]?.message?.edited_timestamp, original: originalMessage?.content?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim(), edited: `${newEditMessage?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim()}` })
                     } catch (err) {
                         console.log(`[${manifest.name} Error]`, err);
                     }
@@ -188,7 +173,6 @@ const NoDelete: Plugin = {
         };
 
         setTimeout(() => {
-            // checkCompat();
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
 

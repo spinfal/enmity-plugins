@@ -39,4 +39,4 @@ async function check_if_compatible_device(manifest: object) {
     }
 }
 
-export { check_if_compatible_device }
+export { check_if_compatible_device };

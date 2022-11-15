@@ -10,4 +10,4 @@ const clipboard_toast = (originSource: string) => {
     Toasts.open({ content: `Copied ${originSource} to clipboard.`, source: Icons.Clipboard });
 }
 
-export { clipboard_toast }
+export { clipboard_toast };

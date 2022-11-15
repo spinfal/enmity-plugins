@@ -1,9 +1,9 @@
 /* Enmity slash command structure created by Hauntii under the GNU GENERAL PUBLIC LICENSE. Do not remove this line. */
 /* Modified by Spinfal aka Spin */
 /* "Why rewrite what is already written?" */
+import { sendReply } from "enmity/api/clyde";
 import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
 import { getByProps } from "enmity/metro";
-import { sendReply } from "enmity/api/clyde";
 import { REST } from "enmity/modules/common";
 
 const petpet: Command = {
@@ -120,4 +120,4 @@ const petpet: Command = {
   }
 }
 
-export { petpet }
+export { petpet };

@@ -1,8 +1,8 @@
+import * as Assets from "enmity/api/assets";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
 import { Messages, React } from "enmity/metro/common";
 import { create } from "enmity/patcher";
-import * as Assets from "enmity/api/assets";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import { check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
@@ -26,7 +26,7 @@ const Spoofer: Plugin = {
         let dirtyEdit = false;
         Patcher.before(Opener, "openLazy", (_, [component, sheet]) => {
             if (sheet === "MessageLongPressActionSheet") {
-                component.then((instance) => {
+                component.then((instance: any) => {
                     let func = instance.default;
                     instance.default = function (
                         { message, user, channel, canAddNewReactions },
@@ -72,7 +72,7 @@ const Spoofer: Plugin = {
                 });
             }
         });
-        Patcher.before(Messages, "startEditMessage", (a0, a1, a2) => {
+        Patcher.before(Messages, "startEditMessage", (_a0, a1, _a2) => {
             if (a1[0].startsWith("dirty-")) {
                 a1[0] = a1[0].replace("dirty-", "");
                 dirtyEdit = true;
@@ -81,7 +81,7 @@ const Spoofer: Plugin = {
             }
         });
 
-        Patcher.before(Messages, "editMessage", (a0, a1, a2) => {
+        Patcher.before(Messages, "editMessage", (_a0, a1, _a2) => {
             if (dirtyEdit) {
                 const originalMessage = MessageStore.getMessage(a1[0], a1[1]);
                 FluxDispatcher.dispatch({

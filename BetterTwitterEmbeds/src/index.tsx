@@ -1,11 +1,11 @@
-import { FormSection, FormRow, FormSwitch } from "enmity/components";
+import { get, set, SettingsStore } from "enmity/api/settings";
+import { FormRow, FormSection, FormSwitch } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { SettingsStore, get, set } from "enmity/api/settings";
+import { Messages, React, Toasts } from "enmity/metro/common";
 import { create } from "enmity/patcher";
-import manifest from "../manifest.json";
-import { React, Messages, Toasts } from "enmity/metro/common";
-import { Icons, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
+import { Icons } from "../../common/components/_pluginSettings/utils";
+import manifest from "../manifest.json";
 
 interface SettingsProps {
     settings: SettingsStore;
@@ -17,13 +17,10 @@ const Patcher = create("BTE");
 const BTE: Plugin = {
     ...manifest,
     onStart() {
-        async function checkCompat() {
-            await check_if_compatible_device(manifest);
-        }
         try {
             if (!get("_twitter", "_type", false)) set("_twitter", "_type", "fxtwitter");
 
-            Patcher.before(Messages, "sendMessage", (self, args, orig) => {
+            Patcher.before(Messages, "sendMessage", (_self, args, _orig) => {
                 const content = args[1]["content"];
                 const twitterLinks = content.match(/http(s)?:\/\/twitter.com\/\w{4,15}\/status\/\d+/gim);
                 if (!twitterLinks) return;
@@ -32,8 +29,6 @@ const BTE: Plugin = {
         } catch (err) {
             console.log("[ BetterTwitterEmbeds Error ]", err);
         }
-
-        checkCompat();
     },
     onStop() {
         Patcher.unpatchAll();

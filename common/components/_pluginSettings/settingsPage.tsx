@@ -1,10 +1,10 @@
 // main imports of elements and dependencies
-import { FormDivider, FormRow, ScrollView, FormSwitch, FormSection } from 'enmity/components';
 import { SettingsStore } from 'enmity/api/settings';
-import { React, Toasts, Constants, StyleSheet, Navigation, Storage } from 'enmity/metro/common';
+import { FormDivider, FormRow, FormSection, FormSwitch, ScrollView } from 'enmity/components';
 import { bulk, filters } from 'enmity/metro';
+import { Constants, Navigation, React, Storage, StyleSheet, Toasts } from 'enmity/metro/common';
 import Credits from './credits';
-import { debug_info, clipboard_toast, Icons, check_for_updates } from './utils';
+import { check_for_updates, clipboard_toast, debug_info, Icons } from './utils';
 
 // main settingsStore and manifest interface
 interface SettingsProps {

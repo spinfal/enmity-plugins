@@ -1,10 +1,10 @@
-import { format_string } from "./format_text";
-import { debug_info } from "./debug";
-import { clipboard_toast } from "./clipboard";
 import { array_length } from "./array_length";
+import { clipboard_toast } from "./clipboard";
+import { debug_info } from "./debug";
 import { get_device_list } from "./devices";
-import { check_for_updates } from "./update";
+import { format_string } from "./format_text";
 import { check_if_compatible_device } from "./incompatible_device";
+import { check_for_updates } from "./update";
 
 import { Icons } from "./icons";
 

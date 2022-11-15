@@ -31,4 +31,4 @@ async function get_device_list() {
     }
 }
 
-export { get_device_list }
+export { get_device_list };

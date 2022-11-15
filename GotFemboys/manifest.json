@@ -1,7 +1,7 @@
 {
    "name": "GotFemboys",
    "version": "1.0.0",
-   "build": "patch-1.0.4",
+   "build": "patch-1.0.5",
    "description": "Get a post of a femboy from r/femboy or r/femboys",
    "authors": [
       {

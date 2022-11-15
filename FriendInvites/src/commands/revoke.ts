@@ -1,9 +1,9 @@
 /* Enmity slash command structure created by Hauntii under the GNU GENERAL PUBLIC LICENSE. Do not remove this line. */
 /* Modified by Spinfal aka Spin */
 /* "Why rewrite what is already written?" */
-import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
-import { getByKeyword } from "enmity/metro";
 import { sendReply } from "enmity/api/clyde";
+import { ApplicationCommandInputType, ApplicationCommandType, Command } from "enmity/api/commands";
+import { getByKeyword } from "enmity/metro";
 
 const revokeFriendInvites: Command = {
   id: "revoke-friend-invites",
@@ -17,7 +17,7 @@ const revokeFriendInvites: Command = {
   type: ApplicationCommandType.Chat,
   inputType: ApplicationCommandInputType.BuiltInText,
 
-  execute: async function (args, message) {
+  execute: async function (_args, message) {
     try {
       await getByKeyword("friendinvite").revokeFriendInvites();
       const response = await getByKeyword("friendinvite").getAllFriendInvites();
@@ -36,4 +36,4 @@ const revokeFriendInvites: Command = {
   }
 }
 
-export { revokeFriendInvites }
+export { revokeFriendInvites };

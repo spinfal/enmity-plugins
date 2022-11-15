@@ -1,8 +1,8 @@
 // main dependencies and components
-import { React, Constants, StyleSheet } from 'enmity/metro/common';
+import { Image, Text, TouchableOpacity, View } from 'enmity/components';
 import { bulk, filters } from 'enmity/metro';
-import { TouchableOpacity, View, Image, Text } from 'enmity/components';
-import { clipboard_toast, debug_info } from './utils';
+import { Constants, React, StyleSheet } from 'enmity/metro/common';
+import { clipboard_toast } from './utils';
 
 interface Props {
     manifest: object;

@@ -1,12 +1,11 @@
+import { getBoolean } from "enmity/api/settings";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
+import { React, Toasts } from "enmity/metro/common";
 import { create } from "enmity/patcher";
-import { Toasts } from "enmity/metro/common";
-import manifest from "../manifest.json";
-import { React } from "enmity/metro/common";
-import { getBoolean } from "enmity/api/settings";
-import { Icons, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
+import { Icons } from "../../common/components/_pluginSettings/utils";
+import manifest from "../manifest.json";
 const Patcher = create("HideBlockedMessages");
 const FluxDispatcher = getByProps(
     "_currentDispatchActionType",
@@ -18,14 +17,10 @@ const BlockedStore = getByProps("isBlocked", "isFriend");
 const HideBlockedMessages: Plugin = {
     ...manifest,
     onStart() {
-        async function checkCompat() {
-            await check_if_compatible_device(manifest);
-        }
-        // const Settings = makeStore(this.name);
         // FluxDispatcher.dispatch({
         //     type: "LOAD_MESSAGES",
         // });
-        // // Settings.set("test", "test");
+
         // FluxDispatcher.dispatch({
         //     type: "LOAD_MESSAGES_SUCCESS",
         //     channelId: 0,
@@ -41,9 +36,9 @@ const HideBlockedMessages: Plugin = {
         // }); // wake up the handler?????? this does nothing lmao
         /* ^ this broke the plugin lol */
         let attempt = 0;
-        let attempts = 3;
+        const attempts = 3;
         const lateStartup = () => {
-            let enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
+            const enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
 
             try {
                 attempt++;
@@ -56,15 +51,15 @@ const HideBlockedMessages: Plugin = {
                 }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
                 const LoadMessages =
                     FluxDispatcher._actionHandlers._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
-                        (h) => h.name === "MessageStore"
+                        (h: any) => h.name === "MessageStore"
                     );
                 const MessageCreate =
                     FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_CREATE.find(
-                        (h) => h.name === "MessageStore"
+                        (h: any) => h.name === "MessageStore"
                     );
                 const MessageUpdate =
                     FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
-                        (h) => h.name === "MessageStore"
+                        (h: any) => h.name === "MessageStore"
                     );
                 // const MessageStore = getByProps("getMessage", "getMessages");
 
@@ -102,7 +97,7 @@ const HideBlockedMessages: Plugin = {
                     "actionHandler",
                     (_, args: any) => {
                         args[0].messages = args[0].messages.filter(
-                            (msg) => !BlockedStore.isBlocked(msg.author.id)
+                            (msg: any) => !BlockedStore.isBlocked(msg.author.id)
                         );
                     }
                 );
@@ -135,7 +130,6 @@ const HideBlockedMessages: Plugin = {
             }
         };
         setTimeout(() => {
-            checkCompat();
             lateStartup();
         }, 300);
     },

@@ -1,10 +1,10 @@
 /* Enmity slash command structure created by Hauntii under the GNU GENERAL PUBLIC LICENSE. Do not remove this line. */
 /* Modified by Spinfal aka Spin */
 /* "Why rewrite what is already written?" */
-import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
-import { Constants } from "enmity/metro/common";
 import { sendReply } from "enmity/api/clyde";
+import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
 import { set } from "enmity/api/settings";
+import { Constants } from "enmity/metro/common";
 
 const addSlowmodeValue: Command = {
   id: "add-slowmode-value",
@@ -52,4 +52,5 @@ const addSlowmodeValue: Command = {
   }
 }
 
-export { addSlowmodeValue }
+export { addSlowmodeValue };
+

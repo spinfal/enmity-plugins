@@ -1,8 +1,8 @@
 /* Enmity slash command structure created by Hauntii under the GNU GENERAL PUBLIC LICENSE. Do not remove this line. */
 /* Modified by Spinfal aka Spin */
 /* "Why rewrite what is already written?" */
-import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
 import { sendReply } from "enmity/api/clyde";
+import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
 import { REST } from "enmity/modules/common";
 
 const femboy: Command = {
@@ -68,4 +68,4 @@ const femboy: Command = {
   }
 }
 
-export { femboy }
+export { femboy };

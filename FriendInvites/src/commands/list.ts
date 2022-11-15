@@ -1,9 +1,9 @@
 /* Enmity slash command structure created by Hauntii under the GNU GENERAL PUBLIC LICENSE. Do not remove this line. */
 /* Modified by Spinfal aka Spin */
 /* "Why rewrite what is already written?" */
+import { sendReply } from "enmity/api/clyde";
 import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
 import { getByKeyword } from "enmity/metro";
-import { sendReply } from "enmity/api/clyde";
 
 const listFriendInvites: Command = {
   id: "list-friend-invites",
@@ -38,13 +38,13 @@ const listFriendInvites: Command = {
         const embed = {
           type: "rich",
           title: "Friend Invites",
-          description: (response.length == 0 ? "You have no friend invites!" : `${response.map(x => `**https://discord.gg/${x.code}**\nUses: ${x.uses}/${x.max_uses}\nExpires <t:${new Date(x.expires_at).getTime() / 1000}:R>`).join("\n\n")}`),
+          description: (response.length == 0 ? "You have no friend invites!" : `${response.map((invite: object) => `**https://discord.gg/${invite["code"]}**\nUses: ${invite["uses"]}/${invite["max_uses"]}\nExpires <t:${new Date(invite["expires_at"]).getTime() / 1000}:R>`).join("\n\n")}`),
           footer: {
             text: `Friend invites are mostly undocumented and any of these features may break at any time.`
           },
           color: "0xff0069"
         }
-        
+
         if (whisper?.value ?? true) {
           sendReply(message?.channel.id ?? "0", { embeds: [embed] });
           return
@@ -54,7 +54,7 @@ const listFriendInvites: Command = {
             return
           } else {
             return {
-              content: `${response.map(x => `\`discord.gg/${x.code}\` - uses: ${x.uses}/${x.max_uses} - expires <t:${new Date(x.expires_at).getTime() / 1000}:R>`).join("\n")}`
+              content: `${response.map((invite: object) => `\`discord.gg/${invite["code"]}\` - uses: ${invite["uses"]}/${invite["max_uses"]} - expires <t:${new Date(invite["expires_at"]).getTime() / 1000}:R>`).join("\n")}`
             }
           }
         }
@@ -69,4 +69,5 @@ const listFriendInvites: Command = {
   }
 }
 
-export { listFriendInvites }
+export { listFriendInvites };
+

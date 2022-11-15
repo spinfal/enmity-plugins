@@ -1,12 +1,11 @@
+import { getBoolean } from "enmity/api/settings";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
+import { React, Toasts } from "enmity/metro/common";
 import { create } from "enmity/patcher";
-import { Toasts } from "enmity/metro/common";
-import manifest from "../manifest.json";
-import { React } from "enmity/metro/common";
-import { getBoolean, makeStore } from "enmity/api/settings";
-import { Icons, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
+import { Icons } from "../../common/components/_pluginSettings/utils";
+import manifest from "../manifest.json";
 const Patcher = create("PISS");
 const FluxDispatcher = getByProps(
     "_currentDispatchActionType",
@@ -16,14 +15,10 @@ const FluxDispatcher = getByProps(
 const PISS: Plugin = {
     ...manifest,
     onStart() {
-        async function checkCompat() {
-            await check_if_compatible_device(manifest);
-        }
-        const Settings = makeStore(this.name);
         FluxDispatcher.dispatch({
             type: "LOAD_MESSAGES",
         });
-        Settings.set("test", "test");
+
         FluxDispatcher.dispatch({
             type: "LOAD_MESSAGES_SUCCESS",
             channelId: 0,
@@ -38,9 +33,9 @@ const PISS: Plugin = {
             truncate: undefined,
         }); // wake up the handler?????? this does nothing lmao
         let attempt = 0;
-        let attempts = 3;
+        const attempts = 3;
         const lateStartup = () => {
-            let enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
+            const enableToasts = getBoolean(manifest.name, `${manifest.name}-toastEnable`, false)
 
             try {
                 attempt++;
@@ -53,16 +48,16 @@ const PISS: Plugin = {
                 }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
                 const MessageCreate =
                     FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_CREATE.find(
-                        (h) => h.name === "MessageStore"
+                        (h: any) => h.name === "MessageStore"
                     );
                 const MessageUpdate =
                     FluxDispatcher._actionHandlers._orderedActionHandlers.MESSAGE_UPDATE.find(
-                        (h) => h.name === "MessageStore"
+                        (h: any) => h.name === "MessageStore"
                     );
 
                 const LoadMessages =
                     FluxDispatcher._actionHandlers._orderedActionHandlers.LOAD_MESSAGES_SUCCESS.find(
-                        (h) => h.name === "MessageStore"
+                        (h: any) => h.name === "MessageStore"
                     );
                 Patcher.before(
                     MessageCreate,
@@ -113,7 +108,6 @@ const PISS: Plugin = {
             }
         };
         setTimeout(() => {
-            checkCompat();
             lateStartup();
         }, 300);
     },

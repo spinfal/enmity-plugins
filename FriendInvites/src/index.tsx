@@ -1,11 +1,11 @@
-import { FormSection, FormRow, FormDivider } from "enmity/components";
+import { FormDivider, FormRow, FormSection } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
+import { bulk, filters, getByKeyword } from "enmity/metro";
+import { Constants, Dialog, React, StyleSheet, Toasts } from "enmity/metro/common";
+import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
+import { clipboard_toast, Icons } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
 import { commands } from "./commands";
-import { getByKeyword, bulk, filters } from "enmity/metro";
-import { React, Constants, StyleSheet, Dialog, Toasts } from "enmity/metro/common";
-import { Icons, clipboard_toast, check_if_compatible_device } from "../../common/components/_pluginSettings/utils";
-import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 
 const [
     Clipboard // used to copy the dl link to keyboard
@@ -29,12 +29,7 @@ const styles = StyleSheet.createThemedStyleSheet({
 const FriendInvites: Plugin = {
     ...manifest,
     onStart() {
-        async function checkCompat() {
-            await check_if_compatible_device(manifest);
-        }
         this.commands = commands;
-
-        checkCompat();
     },
     onStop() {
         this.commands = [];
@@ -53,7 +48,7 @@ const FriendInvites: Plugin = {
                 <FormSection title="Invite Links">
                     {invites && (<>
                         {
-                            invites.map((invite) => {
+                            invites.map((invite: object) => {
                                 return <FormRow
                                     key={invite["code"]}
                                     label={`discord.gg/${invite["code"]}`}

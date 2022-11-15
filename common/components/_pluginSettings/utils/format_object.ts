@@ -33,4 +33,4 @@ const format_object = (text: string) => {
     return final
 }
 
-export { format_object }
+export { format_object };

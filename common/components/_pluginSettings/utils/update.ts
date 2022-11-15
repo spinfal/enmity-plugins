@@ -1,7 +1,7 @@
 // Dependencies used in the script
-import { Dialog, REST, Toasts } from "enmity/metro/common";
-import { getByProps } from 'enmity/metro';
 import { reload } from "enmity/api/native";
+import { getByProps } from 'enmity/metro';
+import { Dialog, REST, Toasts } from "enmity/metro/common";
 import { Icons } from './icons';
 
 const Router = getByProps('transitionToGuild');
@@ -115,4 +115,4 @@ async function install_plugin(url: string, type: string, manifest: object, is_gh
     })
 }
 
-export { check_for_updates }
+export { check_for_updates };

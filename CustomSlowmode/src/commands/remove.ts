@@ -1,10 +1,10 @@
 /* Enmity slash command structure created by Hauntii under the GNU GENERAL PUBLIC LICENSE. Do not remove this line. */
 /* Modified by Spinfal aka Spin */
 /* "Why rewrite what is already written?" */
-import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
-import { Constants } from "enmity/metro/common";
 import { sendReply } from "enmity/api/clyde";
+import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
 import { set } from "enmity/api/settings";
+import { Constants } from "enmity/metro/common";
 
 const removeSlowmodeValue: Command = {
   id: "remove-slowmode-value",
@@ -38,7 +38,7 @@ const removeSlowmodeValue: Command = {
         return;
       }
 
-      Constants.SLOWMODE_VALUES.splice(Constants.SLOWMODE_VALUES.indexOf(value),1)
+      Constants.SLOWMODE_VALUES.splice(Constants.SLOWMODE_VALUES.indexOf(value), 1)
       Constants.SLOWMODE_VALUES.sort((a: number, b: number) => { return a - b });
       set("_customSlowmode", "slowmodeValues", Constants.SLOWMODE_VALUES);
       sendReply(message?.channel.id ?? "0", `The value \`${value}\` has been removed.`);
@@ -49,4 +49,4 @@ const removeSlowmodeValue: Command = {
   }
 }
 
-export { removeSlowmodeValue }
+export { removeSlowmodeValue };

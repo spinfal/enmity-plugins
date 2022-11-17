@@ -88,6 +88,7 @@ const NoDelete: Plugin = {
                     );
                     if (!originalMessage?.author?.id || !originalMessage?.author?.username || !originalMessage?.content && originalMessage?.attachments?.length == 0 && originalMessage?.embeds?.length == 0) return;
 
+                    if (getBoolean("_nodelete", "_logBots", false) === false && originalMessage?.author?.bot) return;
                     if (getBoolean("_nodelete", "_logSelf", false) === false && originalMessage?.author?.id == currentUserID) return;
                     if (getBoolean("_nodelete", "_storageLog", false) == false) args[0] = {};
 
@@ -112,13 +113,11 @@ const NoDelete: Plugin = {
                         FluxDispatcher.dispatch(editEvent);
                     }
 
-                    updateLogStorage("delete", { username: `${originalMessage?.author?.username}#${originalMessage?.author?.discriminator}`, id: originalMessage?.author?.id, avatar: originalMessage?.author?.avatar }, { guild: ChannelStore.getChannel(originalMessage?.channel_id)?.guild_id, channel: originalMessage?.channel_id, message: originalMessage?.id }, { time: originalMessage?.timestamp, original: originalMessage?.content?.replace("`[deleted]`", "").trim() })
+                    updateLogStorage("delete", { username: `${originalMessage?.author?.username}#${originalMessage?.author?.discriminator}`, id: originalMessage?.author?.id, avatar: originalMessage?.author?.avatar, bot: originalMessage?.author?.bot }, { guild: ChannelStore.getChannel(originalMessage?.channel_id)?.guild_id, channel: originalMessage?.channel_id, message: originalMessage?.id }, { time: originalMessage?.timestamp, original: originalMessage?.content?.replace("`[deleted]`", "").trim() })
                 });
 
                 Patcher.before(MessageUpdate, "actionHandler", (_, args) => {
                     try {
-                        if (args[0].log_edit == false || getBoolean("_nodelete", "_logSelf", false) === false && args[0]?.message?.author?.id == currentUserID) return;
-
                         const originalMessage = MessageStore.getMessage(
                             args[0].message.channel_id,
                             args[0].message.id
@@ -126,6 +125,10 @@ const NoDelete: Plugin = {
 
                         if (!originalMessage?.content || !args[0]?.message?.content) return;
                         if (!args[0]?.message?.content && args[0]?.message?.attachments?.length == 0 && args[0]?.message?.embeds?.length == 0 || args[0]?.message?.embeds?.[0]?.type === "link") return;
+
+                        if (args[0].log_edit == false) return;
+                        if (getBoolean("_nodelete", "_logBots", false) === false && args[0]?.message?.author?.bot) return;
+                        if (getBoolean("_nodelete", "_logSelf", false) === false && args[0]?.message?.author?.id == currentUserID) return;
 
                         try {
                             if (!args[0].edited_timestamp._isValid) return;
@@ -139,7 +142,7 @@ const NoDelete: Plugin = {
                                 args[0]?.message?.content;
                         }
 
-                        updateLogStorage("edit", { username: `${args[0]?.message?.author?.username}#${args[0]?.message?.author?.discriminator}`, id: args[0]?.message?.author?.id, avatar: args[0]?.message?.author?.avatar }, { guild: args[0].message.guild_id, channel: args[0].message.channel_id, message: args[0].message.id }, { time: args[0]?.message?.edited_timestamp, original: originalMessage?.content?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim(), edited: `${newEditMessage?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim()}` })
+                        updateLogStorage("edit", { username: `${args[0]?.message?.author?.username}#${args[0]?.message?.author?.discriminator}`, id: args[0]?.message?.author?.id, avatar: args[0]?.message?.author?.avatar, bot: args[0]?.message?.author?.bot }, { guild: args[0].message.guild_id, channel: args[0].message.channel_id, message: args[0].message.id }, { time: args[0]?.message?.edited_timestamp, original: originalMessage?.content?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim(), edited: `${newEditMessage?.replace(/\`\[edited\]\`/gim, "")?.replace("`[deleted]`", "").trim()}` })
                     } catch (err) {
                         console.log(`[${manifest.name} Error]`, err);
                     }
@@ -207,6 +210,38 @@ const NoDelete: Plugin = {
                 </FormSection>
                 <FormDivider />
                 <FormSection title="Plugin Settings">
+                    <FormRow
+                        label="Log bot messages"
+                        subLabel="Whether or not bot message events should be logged"
+                        leading={<FormRow.Icon source={Icons.Settings.Robot} />}
+                        trailing={
+                            <FormSwitch
+                                value={settings.getBoolean("_nodelete_logBots", false)}
+                                onValueChange={() => {
+                                    try {
+                                        settings.toggle("_nodelete_logBots", false);
+                                        if (settings.getBoolean("_nodelete_logBots", false)) {
+                                            set("_nodelete", "_logBots", true);
+                                        } else {
+                                            set("_nodelete", "_logBots", false);
+                                        }
+                                        Toasts.open({
+                                            content: `Log self-events has been set to: ${get("_nodelete", "_logBots", false)}.`,
+                                            source: Icons.Settings.Toasts.Settings,
+                                        });
+                                    } catch (err) {
+                                        console.log("[ NoDelete Toggle Error ]", err);
+
+                                        Toasts.open({
+                                            content: "An error has occurred. Check debug logs for more info.",
+                                            source: Icons.Failed,
+                                        });
+                                    }
+                                }}
+                            />
+                        }
+                    />
+                    <FormDivider />
                     <FormRow
                         label="Log my own messages"
                         subLabel="Whether or not your own edits and deleted messages will be logged"

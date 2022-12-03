@@ -38,18 +38,18 @@ const BTE: Plugin = {
         return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={
             <FormSection title="Plugin Settings">
                 <FormRow
-                    label="Use vm.dstn.to instead of tiktxk.com"
+                    label="Use vxtiktok.com instead of vm.dstn.to"
                     leading={<FormRow.Icon source={Icons.Copy} />}
                     trailing={
                         <FormSwitch
-                            value={settings.getBoolean("_tiktxk", false)}
+                            value={settings.getBoolean("_dstn", false)}
                             onValueChange={() => {
                                 try {
-                                    settings.toggle("_tiktxk", false);
-                                    if (settings.getBoolean("_tiktxk", false)) {
-                                        set("_tiktok", "_type", "vm.dstn.to");
+                                    settings.toggle("_dstn", false);
+                                    if (settings.getBoolean("_dstn", false)) {
+                                        set("_tiktok", "_type", "vt.vxtiktok.com");
                                     } else {
-                                        set("_tiktok", "_type", "tiktxk.com");
+                                        set("_tiktok", "_type", "vm.dstn.to");
                                     }
                                     Toasts.open({
                                         content: `Switched to ${get("_tiktok", "_type", false)}.`,

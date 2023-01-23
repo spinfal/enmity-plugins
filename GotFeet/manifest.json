@@ -1,0 +1,14 @@
+{
+   "name": "GotFeet",
+   "version": "1.0.1",
+   "build": "patch-1.0.0",
+   "description": "Get a post of some feet from r/feet",
+   "authors": [
+      {
+         "name": "spin",
+         "id": "308440976723148800"
+      }
+   ],
+   "color": "#ff0069",
+   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/GotFeet.js"
+}

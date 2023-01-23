@@ -48,6 +48,10 @@ Join the [Official Enmity Discord server](https://lnk.spin.rip/enmitymod
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/GotFemboys.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/GotFemboys)
+## [GotFeet](https://cdn.spin.rip/r/DiscordDevelopment_5063630558.png)
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/GotFeet.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/GotFeet)
 ## BetterTwitterEmbeds
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/BetterTwitterEmbeds.js)
 

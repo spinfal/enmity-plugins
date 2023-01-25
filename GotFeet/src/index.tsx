@@ -5,7 +5,7 @@ import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import manifest from '../manifest.json';
 import { commands } from './commands';
 
-const PetPet: Plugin = {
+const GotFeet: Plugin = {
     ...manifest,
     onStart() {
         if (!get("_age", "_confirmed", false)) {
@@ -30,4 +30,4 @@ const PetPet: Plugin = {
     },
 };
 
-registerPlugin(PetPet);
+registerPlugin(GotFeet);

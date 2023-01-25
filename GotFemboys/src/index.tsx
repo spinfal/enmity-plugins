@@ -4,7 +4,7 @@ import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import manifest from '../manifest.json';
 import { commands } from './commands';
 
-const PetPet: Plugin = {
+const GotFemboys: Plugin = {
     ...manifest,
     onStart() {
         this.commands = commands
@@ -18,4 +18,4 @@ const PetPet: Plugin = {
     },
 };
 
-registerPlugin(PetPet);
+registerPlugin(GotFemboys);

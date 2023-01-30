@@ -7,7 +7,7 @@ import { get, getBoolean, set, SettingsStore } from "enmity/api/settings";
 import { FormDivider, FormInput, FormRow, FormSection, FormSwitch } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByKeyword, getByProps } from "enmity/metro";
-import { Constants, Navigation, React, Storage, StyleSheet, Toasts } from "enmity/metro/common";
+import { Constants, Navigation, React, Storage, StyleSheet, Toasts, Users } from "enmity/metro/common";
 import { create } from "enmity/patcher";
 import Page from "../../common/components/_pluginSettings/Page";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
@@ -21,7 +21,7 @@ interface SettingsProps {
     settings: SettingsStore;
 }
 
-const currentUserID = getByKeyword('getCurrentUser').getCurrentUser()?.id;
+let currentUserID
 const Patcher = create("NoDelete");
 const NoDelete: Plugin = {
     ...manifest,
@@ -176,6 +176,7 @@ const NoDelete: Plugin = {
         };
 
         setTimeout(() => {
+            currentUserID = Users.getCurrentUser().id
             plugin();
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
 

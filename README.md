@@ -11,7 +11,7 @@ Copy the [Compiled](/#) link under the plugin that you want, then open Enmity an
 Join the [Official Enmity Discord server](https://lnk.spin.rip/enmitymod
 )
 
-# Marek's Enmity plugins, modified by [Spin](https://spin.rip)
+# Marek's Enmity plugins, modified by [Spin](https://out.spin.rip/home)
 
 ## MessageSpoofer
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/MessageSpoofer.js)

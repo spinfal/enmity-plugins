@@ -62,8 +62,8 @@ const ReviewDB: Plugin = {
           <FormDivider />
           <FormInput
             placeholder="token"
-            value={get("_rdb", "rdbToken", "")}
-            onChange={(value: string) => (/^[A-Za-z0-9]{30,32}$/.test(value) ? set("_rdb", "rdbToken", value.trim()) : set("_rdb", "rdbToken", ""))}
+            value={get(manifest.name, "rdbToken", "")}
+            onChange={(value: string) => (/^[A-Za-z0-9]{30,32}$/.test(value) ? set(manifest.name, "rdbToken", value.trim()) : set(manifest.name, "rdbToken", ""))}
             title="ReviewDB Auth Token"
           />
         </FormSection>

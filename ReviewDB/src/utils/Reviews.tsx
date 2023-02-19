@@ -1,20 +1,16 @@
-import { get, set } from "enmity/api/settings";
-import { FormDivider, FormInput, Image, Text, TouchableOpacity, View } from 'enmity/components';
-import { bulk, filters } from "enmity/metro";
-import { Profiles, React, Toasts } from "enmity/metro/common";
+import { get } from "enmity/api/settings";
+import { FormInput, Text, View } from 'enmity/components';
+import { getByProps } from "enmity/metro";
+import { React, Toasts } from "enmity/metro/common";
 import { Icons } from "../../../common/components/_pluginSettings/utils";
 import Button from "./Button";
 import { addReview, getReviews } from './RDBAPI';
+import Review from "./Review";
 import { renderActionSheet } from "./ReviewActionSheet";
 import styles from "./StyleSheet";
+import manifest from "../../manifest.json"
 
-const [
-  GetProfile, // used to get the user's profile
-  LazyActionSheet // used to render/manage the action sheet
-] = bulk(
-  filters.byProps("fetchProfile"),
-  filters.byProps("openLazy", "hideActionSheet")
-);
+const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
 
 /**
  * Main @Reviews component implementation.
@@ -26,7 +22,7 @@ export default ({ userID, currentUserID }: { userID: string, currentUserID: stri
   const [reviews, setReviews] = React.useState([])
 
   React.useEffect(() => {
-    getReviews(userID).then((reviews: any) => {
+    getReviews(userID).then(reviews => {
       setReviews(reviews)
     });
   }, [])
@@ -36,77 +32,39 @@ export default ({ userID, currentUserID }: { userID: string, currentUserID: stri
       User Reviews
     </Text>
     {reviews && reviews.length > 0 ? reviews.map((item: object) =>
-      <>
-        <View style={styles.item_container}>
-          <TouchableOpacity onPress={() => {
-            GetProfile.fetchProfile(item["senderdiscordid"]).then(() => {
-              Profiles.showUserProfile({ userId: item["senderdiscordid"] });
-            }).catch((err: any) => {
-              Toasts.open({
-                content: "Error while fetching user. Check logs for more info.",
-                source: Icons.Failed,
-              })
-              console.log("[ReviewDB User Fetch Error]")
-              console.log(err)
-            })
-          }} style={styles.avatar_container}>
-            <Image
-              style={styles.author_avatar}
-              source={{
-                uri: item["profile_photo"],
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            /**
-             * Opens an @arg ActionSheet to the user and passes an onConfirm and type of @arg Copy because this is inside Settings, not the Command.
-             */
-            renderActionSheet(() => {
-              /**
-               * This closes the current ActionSheet.
-               * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
-               */
-              LazyActionSheet.hideActionSheet()
-            }, item, currentUserID)
-          }} style={styles.text_container}>
-            <View style={styles.review_header}>
-              <View style={styles.review_sub_header}>
-                <Text style={[styles.main_text, styles.author_name]}>
-                  {item["username"]}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.message_content}>
-                {item["comment"]}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <FormDivider />
-      </>
+      <Review 
+        item={item} 
+        onSubmit={() => renderActionSheet(() => {
+          /**
+           * This closes the current ActionSheet.
+           * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
+           */
+          LazyActionSheet.hideActionSheet();
+        }, item, currentUserID)}
+      />
     ) : <Text style={[styles.text, styles.content]}>
-      No reviews yet; you could be the first!
+      No reviews yet. You could be the first!
     </Text>}
     <FormInput
       id="reviewTextbox"
-      placeholder="Tap here to review..."
+      placeholder="Tap here to add a review..."
+      value={input}
       onChange={(value: string) => {
-        set("_rdb", "tempReviewText", value);
+        setInput(value)
       }}
     />
-    <Button text="Submit" press={() => {
-      const review = get("_rdb", "tempReviewText", "") as string;
-      if (review) {
+    <Button text="Submit" onPress={() => {
+      if (input) {
         addReview({
           "userid": userID,
-          "comment": review.trim(),
+          "comment": input.trim(),
           "star": -1,
-          "token": get("_rdb", "rdbToken", "")
+          "token": get(manifest.name, "rdbToken", "")
         }).then(() => {
           getReviews(userID).then((reviews: any) => {
             setReviews(reviews)
           });
+          setInput("")
         })
       } else {
         Toasts.open({

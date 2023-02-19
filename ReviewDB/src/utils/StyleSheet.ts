@@ -55,17 +55,17 @@ const styles = StyleSheet.createThemedStyleSheet({
     paddingBottom: 8,
   },
   text: {
-    fontFamily: Constants.Fonts.DISPLAY_NORMAL,
+    fontFamily: Constants.Fonts.DISPLAY_BOLD,
     color: Constants.ThemeColorMap.TEXT_NORMAL
   },
   buttonText: {
     fontSize: 16,
   },
-  main_text: {
+  mainText: {
     opacity: 0.975,
     letterSpacing: 0.25,
   },
-  item_container: {
+  itemContainer: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -73,7 +73,7 @@ const styles = StyleSheet.createThemedStyleSheet({
     paddingBottom: 6,
     width: "95%",
   },
-  author_name: {
+  authorName: {
     color: Constants.ThemeColorMap.HEADER_PRIMARY,
     fontFamily: Constants.Fonts.DISPLAY_BOLD,
     fontSize: 18,
@@ -81,35 +81,35 @@ const styles = StyleSheet.createThemedStyleSheet({
     paddingBottom: 4,
     mixBlendMode: "difference",
   },
-  review_header: {
+  reviewHeader: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     maxWidth: "90%",
   },
-  review_sub_header: {
+  reviewSubHeader: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     maxWidth: "65%",
   },
-  avatar_container: {
+  avatarContainer: {
     alignSelf: "start",
     justifySelf: "start",
   },
-  author_avatar: {
+  authorAvatar: {
     width: 40,
     height: 40,
     borderRadius: 100,
   },
-  message_content: {
+  messageContent: {
     color: Constants.ThemeColorMap.TEXT_NORMAL,
     opacity: 0.985,
     fontSize: 16,
     mixBlendMode: "difference",
   },
-  text_container: {
+  textContainer: {
     display: "flex",
     flexDirection: "column",
     paddingBottom: 4,

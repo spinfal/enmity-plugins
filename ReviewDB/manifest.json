@@ -1,7 +1,7 @@
 {
   "name": "ReviewDB",
-  "version": "1.0.0",
-  "build": "patch-1.0.0",
+  "version": "1.1.0",
+  "build": "patch-1.1.0",
   "description": "Review other users. These reviews are visible to anyone with this type of plugin on any platform.",
   "authors": [
     {
@@ -9,7 +9,7 @@
       "id": "308440976723148800"
     },
     {
-      "name": "Acquite<3",
+      "name": "Rosie<3",
       "id": "581573474296791211",
       "profile": "https://github.com/acquitelol"
     }

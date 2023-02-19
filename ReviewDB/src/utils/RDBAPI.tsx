@@ -2,19 +2,36 @@ import { get, set } from 'enmity/api/settings';
 import { Dialog, Linking, Toasts } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import { API_URL } from '../../manifest.json';
+import manifest from "../../manifest.json";
 
-const getRdbToken = () => get("_rdb", "rdbToken", "");
+const getRdbToken = () => get(manifest.name, "rdbToken", "");
 
-const checkToken = () => {
-  if (!getRdbToken()) Dialog.show({
-    title: "Unauthorized",
-    body: "You have not set your ReviewDB Auth Token. Please do so in the settings panel.",
-    confirmText: "Get ReviewDB Token",
-    cancelText: "Close",
+let isShowing = false;
+const checkToken = (): boolean => {
+  if (isShowing) return false;
 
-    // run the install function
-    onConfirm: () => Linking.openURL("https://discord.com/api/v9/oauth2/authorize?client_id=915703782174752809&response_type=code&redirect_uri=https%3A%2F%2Fmanti.vendicated.dev%2FURauth&scope=identify")
-  });
+  if (!getRdbToken()) {
+    isShowing = true;
+    Dialog.show({
+      title: "Unauthorized",
+      body: "You have not set your ReviewDB Auth Token. Please do so in the settings panel.",
+      confirmText: "Get ReviewDB Token",
+      cancelText: "Close",
+
+      // run the install function
+      onConfirm: () => {
+        Linking.openURL("https://discord.com/api/v9/oauth2/authorize?client_id=915703782174752809&response_type=code&redirect_uri=https%3A%2F%2Fmanti.vendicated.dev%2FURauth&scope=identify")
+        isShowing = false;
+      },
+
+      onCancel: () => {
+        isShowing = false
+      }
+    });
+    return false;
+  }
+
+  return true;
 }
 
 export function getReviews(userID: string) {
@@ -39,7 +56,6 @@ export function addReview(review: any) {
   })
     .then(r => r.text())
     .then(res => {
-      set("_rdb", "tempReviewText", "");
       res && Toasts.open({
         content: res,
         source: Icons.Pencil,

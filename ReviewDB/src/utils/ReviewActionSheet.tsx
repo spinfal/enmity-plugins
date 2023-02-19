@@ -7,13 +7,14 @@
  *               This is required in all TSX components, or Dislate will crash.
  * @param Debug: The main Debug Info page.
  */
-import { FormDivider, Image, Text, TouchableOpacity, View } from 'enmity/components';
-import { bulk, filters, getByProps, getModule } from "enmity/metro";
-import { Profiles, React, Toasts } from "enmity/metro/common";
+import { View } from 'enmity/components';
+import { getByProps, getModule } from "enmity/metro";
+import { React, Toasts } from "enmity/metro/common";
 import { Icons } from "../../../common/components/_pluginSettings/utils";
 import Button from "./Button";
 import { canDeleteReview, reportReview } from './RDBAPI';
-import styles from "./StyleSheet";
+import Review from './Review';
+import { deleteReview } from './RDBAPI';
 
 /**
  * @param ActionSheet: The main ActionSheet component. This renders any type of @arg ActionSheet, but I'm going to render an @arg BottomSheetScrollView
@@ -21,13 +22,7 @@ import styles from "./StyleSheet";
  */
 const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } }).default.render;
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;
-const [
-  GetProfile, // used to get the user's profile
-  LazyActionSheet // used to render/manage the action sheet
-] = bulk(
-  filters.byProps("fetchProfile"),
-  filters.byProps("openLazy", "hideActionSheet")
-);
+const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
 
 export function renderActionSheet(onConfirm: Function, item: any, currentUserID: string) {
   /**
@@ -42,57 +37,20 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: { 
   /**
    * @returns @arg ActionSheet {scrollable}: Allows you to expand the actionsheet and scroll through it.
    */
-  return <ActionSheet scrollable>
+  return <ActionSheet>
     <BottomSheetScrollView contentContainerStyle={{ marginBottom: 10 }}>
       <View style={{
         flexDirection: "column",
         padding: 15,
       }}>
-        <>
-          <View style={styles.item_container}>
-            <TouchableOpacity onPress={() => {
-              GetProfile.fetchProfile(item["senderdiscordid"]).then(() => {
-                Profiles.showUserProfile({ userId: item["senderdiscordid"] });
-              }).catch((err: any) => {
-                Toasts.open({
-                  content: "Error while fetching user. Check logs for more info.",
-                  source: Icons.Failed,
-                })
-                console.log("[ReviewDB User Fetch Error]")
-                console.log(err)
-              })
-            }} style={styles.avatar_container}>
-              <Image
-                style={styles.author_avatar}
-                source={{
-                  uri: item["profile_photo"],
-                }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.text_container}>
-              <View style={styles.review_header}>
-                <View style={styles.review_sub_header}>
-                  <Text style={[styles.main_text, styles.author_name]}>
-                    {item["username"]}
-                  </Text>
-                </View>
-              </View>
-              <View>
-                <Text style={styles.message_content}>
-                  {item["comment"]}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <FormDivider />
-        </>
+        <Review item={item} onSubmit={null} />
 
-        {canDeleteReview(item, currentUserID) ? <Button text="Delete Review" press={() => {
-          reportReview(item["id"]).then(() => {
+        {canDeleteReview(item, currentUserID) ? <Button text="Delete Review" onPress={() => {
+          deleteReview(item["id"]).then(() => {
             onConfirm()
           })
         }} /> : null}
-        <Button text="Report Review" press={() => {
+        <Button text="Report Review" onPress={() => {
           reportReview(item["id"]).then(() => {
             onConfirm()
           })

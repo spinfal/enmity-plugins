@@ -1,7 +1,6 @@
 import { get, set } from 'enmity/api/settings';
 import { Dialog, Linking, Toasts } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
-import { API_URL } from '../../manifest.json';
 import manifest from "../../manifest.json";
 
 const getRdbToken = () => get(manifest.name, "rdbToken", "");
@@ -36,7 +35,7 @@ const checkToken = (): boolean => {
 
 export async function getReviews(userID: string) {
   try {
-    const res = await fetch(`${API_URL}/getUserReviews?snowflakeFormat=string&discordid=${userID}`);
+    const res = await fetch(`${manifest.API_URL}/getUserReviews?snowflakeFormat=string&discordid=${userID}`);
     return await res.json();
   } catch (err) {
     Toasts.open({
@@ -50,7 +49,7 @@ export async function getReviews(userID: string) {
 export async function addReview(review: any) {
   if (!checkToken()) return new Promise((_, reject) => reject("Invalid token!"));
 
-  const r = await fetch(API_URL + "/addUserReview", {
+  const r = await fetch(manifest.API_URL + "/addUserReview", {
     method: "POST",
     body: JSON.stringify(review),
     headers: {
@@ -68,7 +67,7 @@ export async function addReview(review: any) {
 export async function deleteReview(id: number) {
   if (!checkToken()) return new Promise((_, reject) => reject("Invalid token!"));
 
-  const r = await fetch(API_URL + "/deleteReview", {
+  const r = await fetch(manifest.API_URL + "/deleteReview", {
     method: "POST",
     headers: new Headers({
       "Content-Type": "application/json",
@@ -89,7 +88,7 @@ export async function deleteReview(id: number) {
 export async function reportReview(id: number) {
   if (!checkToken()) return new Promise((_, reject) => reject("Invalid token!"));
 
-  const res = await fetch(API_URL + "/reportReview", {
+  const res = await fetch(manifest.API_URL + "/reportReview", {
     method: "POST",
     headers: new Headers({
       "Content-Type": "application/json",

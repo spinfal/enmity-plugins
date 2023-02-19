@@ -34,40 +34,41 @@ const checkToken = (): boolean => {
   return true;
 }
 
-export function getReviews(userID: string) {
-  return fetch(`${API_URL}/getUserReviews?snowflakeFormat=string&discordid=${userID}`).then((res) => res.json()).catch((err) => {
+export async function getReviews(userID: string) {
+  try {
+    const res = await fetch(`${API_URL}/getUserReviews?snowflakeFormat=string&discordid=${userID}`);
+    return await res.json();
+  } catch (err) {
     Toasts.open({
       content: "Error while fetching reviews. Check logs for more info.",
       source: Icons.Failed,
-    })
-    console.log("[ReviewDB] Error while fetching reviews:", err)
-  });
+    });
+    console.log("[ReviewDB] Error while fetching reviews:", err);
+  }
 }
 
-export function addReview(review: any) {
-  checkToken();
+export async function addReview(review: any) {
+  if (!checkToken()) return new Promise((_, reject) => reject("Invalid token!"));
 
-  return fetch(API_URL + "/addUserReview", {
+  const r = await fetch(API_URL + "/addUserReview", {
     method: "POST",
     body: JSON.stringify(review),
     headers: {
       "Content-Type": "application/json",
     }
-  })
-    .then(r => r.text())
-    .then(res => {
-      res && Toasts.open({
-        content: res,
-        source: Icons.Pencil,
-      });
-      return console.log("[ReviewDB]", Response[res] ?? Response.error);
-    });
+  });
+  const res = await r.text();
+  res && Toasts.open({
+    content: res,
+    source: Icons.Pencil,
+  });
+  return console.log("[ReviewDB]", Response[res] ?? Response.error);
 }
 
-export function deleteReview(id: number) {
-  checkToken();
+export async function deleteReview(id: number) {
+  if (!checkToken()) return new Promise((_, reject) => reject("Invalid token!"));
 
-  return fetch(API_URL + "/deleteReview", {
+  const r = await fetch(API_URL + "/deleteReview", {
     method: "POST",
     headers: new Headers({
       "Content-Type": "application/json",
@@ -77,16 +78,16 @@ export function deleteReview(id: number) {
       token: getRdbToken(),
       reviewid: id
     })
-  }).then(r => r.json()).then(res => {
-    Toasts.open({
-      content: res?.message || "Response is empty",
-      source: Icons.Debug_Command.Sent,
-    });
-  })
+  });
+  const res = await r.json();
+  Toasts.open({
+    content: res?.message || "Response is empty",
+    source: Icons.Debug_Command.Sent,
+  });
 }
 
 export async function reportReview(id: number) {
-  checkToken();
+  if (!checkToken()) return new Promise((_, reject) => reject("Invalid token!"));
 
   const res = await fetch(API_URL + "/reportReview", {
     method: "POST",

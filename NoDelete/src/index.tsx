@@ -6,7 +6,7 @@
 import { get, getBoolean, set, SettingsStore } from "enmity/api/settings";
 import { FormDivider, FormInput, FormRow, FormSection, FormSwitch } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { getByKeyword, getByProps } from "enmity/metro";
+import { getByProps } from "enmity/metro";
 import { Constants, Navigation, React, Storage, StyleSheet, Toasts, Users } from "enmity/metro/common";
 import { create } from "enmity/patcher";
 import Page from "../../common/components/_pluginSettings/Page";

@@ -1,14 +1,14 @@
 {
-   "name": "NoDelete",
-   "version": "3.5.13",
-   "build": "patch-1.0.10",
-   "description": "Somewhat basic \"Message Logger\"",
-   "authors": [
-      {
-         "name": "Marek (modified by spin)",
-         "id": "308440976723148800"
-      }
-   ],
-   "color": "#ff0069",
-   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/NoDelete.js"
+  "name": "NoDelete",
+  "version": "3.5.13",
+  "build": "patch-1.0.11",
+  "description": "Somewhat basic \"Message Logger\"",
+  "authors": [
+    {
+      "name": "Marek (modified by spin)",
+      "id": "308440976723148800"
+    }
+  ],
+  "color": "#ff0069",
+  "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/NoDelete.js"
 }

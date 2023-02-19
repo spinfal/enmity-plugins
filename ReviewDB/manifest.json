@@ -1,0 +1,20 @@
+{
+  "name": "ReviewDB",
+  "version": "1.0.0",
+  "build": "patch-1.0.0",
+  "description": "Review other users. These reviews are visible to anyone with this type of plugin on any platform.",
+  "authors": [
+    {
+      "name": "spin",
+      "id": "308440976723148800"
+    },
+    {
+      "name": "Acquite<3",
+      "id": "581573474296791211",
+      "profile": "https://github.com/acquitelol"
+    }
+  ],
+  "color": "#ff0069",
+  "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/ReviewDB.js",
+  "API_URL": "https://manti.vendicated.dev"
+}

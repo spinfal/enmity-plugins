@@ -56,7 +56,7 @@ const ReviewDB: Plugin = {
             trailing={FormRow.Arrow}
             leading={<FormRow.Icon source={Icons.Settings.Self} />}
             onPress={() => {
-              Linking.openURL("https://discord.com/api/v9/oauth2/authorize?client_id=915703782174752809&response_type=code&redirect_uri=https%3A%2F%2Fmanti.vendicated.dev%2FURauth%3FclientMod%3Denmity&scope=identify")
+              Linking.openURL("https://discord.com/api/v9/oauth2/authorize?client_id=915703782174752809&response_type=code&redirect_uri=https%3A%2F%2Fmanti.vendicated.dev%2FURauth&scope=identify")
             }}
           />
           <FormDivider />

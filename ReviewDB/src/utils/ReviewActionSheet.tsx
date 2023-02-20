@@ -23,16 +23,16 @@ const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ??
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;
 const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
 
-export function renderActionSheet(onConfirm: Function, item: any) {
+export function renderActionSheet(onConfirm: Function, item: any, currentUserID: string) {
   /**
    * Opens an @arg ActionSheet to the user and passes an onConfirm and type of @arg Send because this is inside the Command, not Settings.
    */
   ActionSheet
-    ? LazyActionSheet.openLazy(new Promise(r => r({ default: ReviewActionSheet })), "ReviewActionSheet", { onConfirm, item })
+    ? LazyActionSheet.openLazy(new Promise(r => r({ default: ReviewActionSheet })), "ReviewActionSheet", { onConfirm, item, currentUserID })
     : Toasts.open({ content: "You cannot open ActionSheets on this version! Upgrade to 163+", source: Icons.Failed })
 }
 
-export default function ReviewActionSheet({ onConfirm, item }: { onConfirm: Function, item: any }) {
+export default function ReviewActionSheet({ onConfirm, item, currentUserID }: { onConfirm: Function, item: any, currentUserID: string }) {
   /**
    * @returns @arg ActionSheet {scrollable}: Allows you to expand the actionsheet and scroll through it.
    */
@@ -44,7 +44,7 @@ export default function ReviewActionSheet({ onConfirm, item }: { onConfirm: Func
       }}>
         <Review item={item} onSubmit={null} />
 
-        {canDeleteReview(item) ? <Button text="Delete Review" onPress={() => {
+        {canDeleteReview(item, currentUserID) ? <Button text="Delete Review" onPress={() => {
           deleteReview(item["id"]).then(() => {
             onConfirm()
           })

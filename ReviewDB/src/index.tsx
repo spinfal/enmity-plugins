@@ -16,6 +16,9 @@ const UserProfile = getByProps("PRIMARY_INFO_TOP_OFFSET", "SECONDARY_INFO_TOP_MA
 const ReviewDB: Plugin = {
   ...manifest,
   onStart() {
+    let currentUserID: string;
+    setTimeout(() => currentUserID = getByKeyword('getCurrentUser').getCurrentUser().id, 2000);
+
     /*
       massive huge thanks to rosie. they are v cool and they make very cool code.
       https://github.com/acquitelol
@@ -40,7 +43,7 @@ const ReviewDB: Plugin = {
       /**
        * @param {any} review: User reviews that will display in the user"s profile
        */
-      profileCardSection.push(<Reviews userID={userId} />)
+      profileCardSection.push(<Reviews userID={userId} currentUserID={currentUserID} />)
     });
   },
   onStop() {

@@ -116,4 +116,4 @@ export async function reportReview(id: number) {
 //     .then(Number);
 // }
 
-export function canDeleteReview(review: any) { return review.senderdiscordid == getByKeyword('getCurrentUser').getCurrentUser().id };
+export function canDeleteReview(review: any, currentUserID: string) { return review.senderdiscordid == currentUserID };

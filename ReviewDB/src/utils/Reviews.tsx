@@ -1,6 +1,6 @@
 import { get } from "enmity/api/settings";
 import { FormInput, Text, View } from 'enmity/components';
-import { getByProps } from "enmity/metro";
+import { getByKeyword, getByProps } from "enmity/metro";
 import { React, Toasts } from "enmity/metro/common";
 import { Icons } from "../../../common/components/_pluginSettings/utils";
 import manifest from "../../manifest.json";
@@ -17,7 +17,7 @@ const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
  * @param userID: The ID of the user, passed as a string
  * @returns TSX Component
  */
-export default ({ userID }: { userID: string }) => {
+export default ({ userID, currentUserID }: { userID: string, currentUserID: string }) => {
   const [input, setInput] = React.useState("");
   const [reviews, setReviews] = React.useState([])
 
@@ -40,14 +40,14 @@ export default ({ userID }: { userID: string }) => {
            * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
            */
           LazyActionSheet.hideActionSheet();
-        }, item)}
+        }, item, currentUserID)}
       />
     ) : <Text style={[styles.text, styles.content]}>
       No reviews yet. You could be the first!
     </Text>}
     <FormInput
       id="reviewTextbox"
-      placeholder="Tap here to add a review..."
+      placeholder={JSON.stringify(reviews).includes(currentUserID) ? "Tap here to update your review..." : "Tap here to leave a review..."}
       value={input}
       onChange={(value: string) => {
         setInput(value)

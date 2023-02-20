@@ -3,12 +3,12 @@ import { FormInput, Text, View } from 'enmity/components';
 import { getByProps } from "enmity/metro";
 import { React, Toasts } from "enmity/metro/common";
 import { Icons } from "../../../common/components/_pluginSettings/utils";
+import manifest from "../../manifest.json";
 import Button from "./Button";
 import { addReview, getReviews } from './RDBAPI';
 import Review from "./Review";
 import { renderActionSheet } from "./ReviewActionSheet";
 import styles from "./StyleSheet";
-import manifest from "../../manifest.json"
 
 const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
 
@@ -17,7 +17,7 @@ const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
  * @param userID: The ID of the user, passed as a string
  * @returns TSX Component
  */
-export default ({ userID, currentUserID }: { userID: string, currentUserID: string }) => {
+export default ({ userID }: { userID: string }) => {
   const [input, setInput] = React.useState("");
   const [reviews, setReviews] = React.useState([])
 
@@ -32,15 +32,15 @@ export default ({ userID, currentUserID }: { userID: string, currentUserID: stri
       User Reviews
     </Text>
     {reviews && reviews.length > 0 ? reviews.map((item: object) =>
-      <Review 
-        item={item} 
+      <Review
+        item={item}
         onSubmit={() => renderActionSheet(() => {
           /**
            * This closes the current ActionSheet.
            * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
            */
           LazyActionSheet.hideActionSheet();
-        }, item, currentUserID)}
+        }, item)}
       />
     ) : <Text style={[styles.text, styles.content]}>
       No reviews yet. You could be the first!

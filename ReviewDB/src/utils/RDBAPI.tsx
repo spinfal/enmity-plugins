@@ -1,4 +1,5 @@
-import { get, set } from 'enmity/api/settings';
+import { get } from 'enmity/api/settings';
+import { getByKeyword } from 'enmity/metro';
 import { Dialog, Linking, Toasts } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import manifest from "../../manifest.json";
@@ -110,11 +111,9 @@ export async function reportReview(id: number) {
  * eta? idk
  */
 // export function getLastReviewID(userID: string) {
-//   return fetch(API_URL + "/getLastReviewID?discordid=" + userID)
+//   return fetch(manifest.API_URL + "/getLastReviewID?discordid=" + userID)
 //     .then(r => r.text())
 //     .then(Number);
 // }
 
-export function canDeleteReview(review: any, currentUserID: string) {
-  if (review.senderdiscordid == currentUserID) return true;
-}
+export function canDeleteReview(review: any) { return review.senderdiscordid == getByKeyword('getCurrentUser').getCurrentUser().id };

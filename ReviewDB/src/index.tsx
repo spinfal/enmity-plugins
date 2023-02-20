@@ -40,7 +40,7 @@ const ReviewDB: Plugin = {
       /**
        * @param {any} review: User reviews that will display in the user"s profile
        */
-      profileCardSection.push(<Reviews userID={userId} currentUserID={getByKeyword('getCurrentUser').getCurrentUser().id} />)
+      profileCardSection.push(<Reviews userID={userId} />)
     });
   },
   onStop() {

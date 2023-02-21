@@ -3,7 +3,7 @@ import { StyleSheet, Constants } from "enmity/metro/common";
 const styles = StyleSheet.createThemedStyleSheet({
   container: {
     marginTop: 12,
-    marginLeft: 10,
+    marginLeft: 12,
     alignSelf: 'flex-start',
     width: "95%"
   },

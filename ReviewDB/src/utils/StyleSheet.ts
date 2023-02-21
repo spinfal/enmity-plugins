@@ -116,6 +116,10 @@ const styles = StyleSheet.createThemedStyleSheet({
     paddingLeft: 8,
     width: "90%",
   },
+  addReview: {
+    paddingLeft: 10,
+    paddingRight: 10,
+  }
 })
 
 export default styles;

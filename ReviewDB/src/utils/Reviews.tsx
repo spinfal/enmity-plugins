@@ -47,10 +47,7 @@ export default ({ userID, currentUserID }: { userID: string, currentUserID: stri
         No reviews yet. You could be the first!
       </Text>}
     </View>
-    <View style={{
-      paddingLeft: 10,
-      paddingRight: 10,
-    }}>
+    <View style={styles.addReview}>
       <FormInput
         id="reviewTextbox"
         placeholder={JSON.stringify(reviews).includes(currentUserID) ? "Tap here to update your review..." : "Tap here to leave a review..."}

@@ -13,14 +13,17 @@ Join the [Official Enmity Discord server](https://out.spin.rip/enmity)
 # Marek's Enmity plugins, modified by [Spin](https://out.spin.rip/home)
 
 ## MessageSpoofer
+###### needs to be fixed?
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/MessageSpoofer.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/MessageSpoofer)
 ## NoDelete
+###### needs to be fixed, i might rewrite this
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/NoDelete.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/NoDelete)
 ## HideBlockedMessages
+###### needs to be fixed
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/HideBlockedMessages.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/HideBlockedMessages)
@@ -36,6 +39,7 @@ Join the [Official Enmity Discord server](https://out.spin.rip/enmity)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/CustomSlowmode)
 ## FriendInvites
+###### needs to be fixed?
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/FriendInvites.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/FriendInvites)

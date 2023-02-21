@@ -8,8 +8,7 @@ If I missed anything; feel free to open a pull request.
 Copy the [Compiled](/#) link under the plugin that you want, then open Enmity and add the plugin.
 
 # I need help!1!
-Join the [Official Enmity Discord server](https://lnk.spin.rip/enmitymod
-)
+Join the [Official Enmity Discord server](https://out.spin.rip/enmity)
 
 # Marek's Enmity plugins, modified by [Spin](https://out.spin.rip/home)
 

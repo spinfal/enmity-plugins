@@ -6,7 +6,7 @@ import { create } from "enmity/patcher";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import { Icons } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
-const Patcher = create("PISS");
+const Patcher = create(manifest.name);
 const FluxDispatcher = getByProps(
     "_currentDispatchActionType",
     "_subscriptions",

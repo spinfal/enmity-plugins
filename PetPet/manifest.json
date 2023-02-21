@@ -1,14 +1,14 @@
 {
-   "name": "PetPet",
-   "version": "1.0.6",
-   "build": "patch-1.0.13",
-   "description": "Generate a petpet gif from a given image",
-   "authors": [
-      {
-         "name": "spin",
-         "id": "308440976723148800"
-      }
-   ],
-   "color": "#ff0069",
-   "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/PetPet.js"
+  "name": "PetPet",
+  "version": "1.0.6",
+  "build": "patch-1.0.13",
+  "description": "Generate a petpet gif from a given image",
+  "authors": [
+    {
+      "name": "spin",
+      "id": "308440976723148800"
+    }
+  ],
+  "color": "#ff0069",
+  "sourceUrl": "https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/PetPet.js"
 }

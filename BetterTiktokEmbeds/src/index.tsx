@@ -11,7 +11,7 @@ interface SettingsProps {
     settings: SettingsStore;
 }
 
-const Patcher = create("BTE");
+const Patcher = create(manifest.name);
 
 // the basic structure of some of this code was taken from https://github.com/jqms/enmity-plugins/blob/fb2b6d60a5054128c4b2e44ab3358d524e0c2154/ChangeDiscordLink/src/index.tsx#L13-L30 -- thank you :)
 const BTE: Plugin = {

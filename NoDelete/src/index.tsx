@@ -22,7 +22,7 @@ interface SettingsProps {
 }
 
 let currentUserID
-const Patcher = create("NoDelete");
+const Patcher = create(manifest.name);
 const NoDelete: Plugin = {
     ...manifest,
     patches: [],

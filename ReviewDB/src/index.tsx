@@ -10,7 +10,7 @@ import { Icons } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
 import Reviews from "./utils/Reviews";
 
-const Patcher = create("reviewdb");
+const Patcher = create(manifest.name);
 const UserProfile = getByProps("PRIMARY_INFO_TOP_OFFSET", "SECONDARY_INFO_TOP_MARGIN", "SIDE_PADDING");
 
 const ReviewDB: Plugin = {

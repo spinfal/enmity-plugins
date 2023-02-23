@@ -37,7 +37,6 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: { 
   /**
    * @returns @arg ActionSheet {scrollable}: Allows you to expand the actionsheet and scroll through it.
    */
-  console.log(item)
   return <ActionSheet>
     <BottomSheetScrollView contentContainerStyle={{ marginBottom: 10 }}>
       <View style={{

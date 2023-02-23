@@ -43,76 +43,74 @@ const FriendInvites: Plugin = {
             (!inviteLinks || inviteLinks.length === 0) ? setInvites(null) : setInvites(inviteLinks)
         }, [])
 
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={
-            <>
-                <FormSection title="Invite Links">
-                    {invites && (<>
-                        {
-                            invites.map((invite: object) => {
-                                return <FormRow
-                                    key={invite["code"]}
-                                    label={`discord.gg/${invite["code"]}`}
-                                    subLabel={`This invite has been used ${invite["uses"]} times out of ${invite["max_uses"]} and will expire ${new Date(invite["expires_at"]).toLocaleString()}`}
-                                    leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Share} />}
-                                    trailing={FormRow.Arrow}
-                                    onPress={function () {
-                                        Clipboard.setString(`discord.gg/${invite["code"]}`); // copy the invite to clipboard
-                                        clipboard_toast(`the invite discord.gg/${invite["code"]}`);
-                                    }}
-                                    onLongPress={function () {
-                                        Dialog.show({
-                                            title: "Revoke friend invites",
-                                            body: "Would you like to revoke all friend invites?\nThis action is permanent and cannot be undone.",
-                                            confirmText: "Revoke",
-                                            cancelText: "Cancel",
-                                            onConfirm: () => {
-                                                getByKeyword("friendinvite").revokeFriendInvites().then(() => {
-                                                    getByKeyword("friendinvite").getAllFriendInvites().then((inviteLinks: any) => {
-                                                        if (!inviteLinks || inviteLinks.length == 0) {
-                                                            Toasts.open({ content: "Friends invites have been revoked", source: Icons.Settings.Toasts.Settings });
-                                                            return
-                                                        } else {
-                                                            console.log("[ revokeFriendInvites Response ]", inviteLinks);
-                                                            Toasts.open({ content: "Something went wrong. Invite list sent to console", source: Icons.Failed });
-                                                        }
-                                                    }).catch((err: any) => {
-                                                        console.log("[ revokeFriendInvites Response ]", err);
-                                                        Toasts.open({ content: "Something went wrong. Details sent to console", source: Icons.Failed });
-                                                    })
-                                                });
-                                            }
-                                        });
-                                    }}
-                                />
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={commands}>
+            <FormSection title="Invite Links">
+                {invites && (<>
+                    {
+                        invites.map((invite: object) => {
+                            return <FormRow
+                                key={invite["code"]}
+                                label={`discord.gg/${invite["code"]}`}
+                                subLabel={`This invite has been used ${invite["uses"]} times out of ${invite["max_uses"]} and will expire ${new Date(invite["expires_at"]).toLocaleString()}`}
+                                leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Share} />}
+                                trailing={FormRow.Arrow}
+                                onPress={function () {
+                                    Clipboard.setString(`discord.gg/${invite["code"]}`); // copy the invite to clipboard
+                                    clipboard_toast(`the invite discord.gg/${invite["code"]}`);
+                                }}
+                                onLongPress={function () {
+                                    Dialog.show({
+                                        title: "Revoke friend invites",
+                                        body: "Would you like to revoke all friend invites?\nThis action is permanent and cannot be undone.",
+                                        confirmText: "Revoke",
+                                        cancelText: "Cancel",
+                                        onConfirm: () => {
+                                            getByKeyword("friendinvite").revokeFriendInvites().then(() => {
+                                                getByKeyword("friendinvite").getAllFriendInvites().then((inviteLinks: any) => {
+                                                    if (!inviteLinks || inviteLinks.length == 0) {
+                                                        Toasts.open({ content: "Friends invites have been revoked", source: Icons.Settings.Toasts.Settings });
+                                                        return
+                                                    } else {
+                                                        console.log("[ revokeFriendInvites Response ]", inviteLinks);
+                                                        Toasts.open({ content: "Something went wrong. Invite list sent to console", source: Icons.Failed });
+                                                    }
+                                                }).catch((err: any) => {
+                                                    console.log("[ revokeFriendInvites Response ]", err);
+                                                    Toasts.open({ content: "Something went wrong. Details sent to console", source: Icons.Failed });
+                                                })
+                                            });
+                                        }
+                                    });
+                                }}
+                            />
+                        })
+                    }
+                </>) || (<>
+                    <FormRow
+                        key={Math.floor(Math.random() * 1001)}
+                        label="Create a friend invite"
+                        subLabel="You do not have any friend invites! Try creating one."
+                        leading={<FormRow.Icon style={styles.icon} source={Icons.Add} />}
+                        trailing={FormRow.Arrow}
+                        onPress={function () {
+                            getByKeyword("friendinvite").createFriendInvite().then((invite: object) => {
+                                if (!invite) {
+                                    console.log("[ createFriendInvite Response ]", invite);
+                                    Toasts.open({ content: "Something went wrong. Invite list sent to console", source: Icons.Failed });
+                                } else {
+                                    Clipboard.setString(`discord.gg/${invite["code"]}`); // copy the invite to clipboard
+                                    clipboard_toast(`the invite discord.gg/${invite["code"]}`);
+                                }
+                            }).catch((err: any) => {
+                                console.log("[ createFriendInvite Response ]", err);
+                                Toasts.open({ content: "Something went wrong. Details sent to console", source: Icons.Failed });
                             })
-                        }
-                    </>) || (<>
-                        <FormRow
-                            key={Math.floor(Math.random() * 1001)}
-                            label="Create a friend invite"
-                            subLabel="You do not have any friend invites! Try creating one."
-                            leading={<FormRow.Icon style={styles.icon} source={Icons.Add} />}
-                            trailing={FormRow.Arrow}
-                            onPress={function () {
-                                getByKeyword("friendinvite").createFriendInvite().then((invite: object) => {
-                                    if (!invite) {
-                                        console.log("[ createFriendInvite Response ]", invite);
-                                        Toasts.open({ content: "Something went wrong. Invite list sent to console", source: Icons.Failed });
-                                    } else {
-                                        Clipboard.setString(`discord.gg/${invite["code"]}`); // copy the invite to clipboard
-                                        clipboard_toast(`the invite discord.gg/${invite["code"]}`);
-                                    }
-                                }).catch((err: any) => {
-                                    console.log("[ createFriendInvite Response ]", err);
-                                    Toasts.open({ content: "Something went wrong. Details sent to console", source: Icons.Failed });
-                                })
-                            }}
-                        />
-                    </>)}
-                </FormSection >
-                <FormDivider />
-            </>
-        } commands={commands} />;
+                        }}
+                    />
+                </>)}
+            </FormSection >
+            <FormDivider />
+        </SettingsPage>
     },
 };
 

@@ -45,20 +45,26 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: { 
       }}>
         <Review item={item} onSubmit={null} />
 
-        <Button text="Copy Text" onPress={() => {
+        {!!item["comment"] && <Button text="Copy Text" onPress={() => {
           Clipboard.setString(item["comment"])
           Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
-        }} />
-        {canDeleteReview(item, currentUserID) ? <Button text="Delete Review" onPress={() => {
+          onConfirm()
+        }} />}
+        {!!item["id"] && <Button text="Copy ID" onPress={() => {
+          Clipboard.setString(item["id"].toString())
+          Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
+          onConfirm()
+        }} />}
+        {canDeleteReview?.(item, currentUserID) && <Button text="Delete Review" onPress={() => {
           deleteReview(item["id"]).then(() => {
             onConfirm()
           })
-        }} /> : null}
-        <Button text="Report Review" onPress={() => {
+        }} /> }
+        {item["id"] && <Button text="Report Review" onPress={() => {
           reportReview(item["id"]).then(() => {
             onConfirm()
           })
-        }} />
+        }} />}
       </View>
     </BottomSheetScrollView>
   </ActionSheet>

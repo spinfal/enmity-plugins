@@ -117,7 +117,7 @@ const Amongus: Plugin = {
     },
     patches: [],
     getSettingsPanel({ settings }): any {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={true} section={null} commands={null} />;
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={true} commands={null} />;
     },
 };
 

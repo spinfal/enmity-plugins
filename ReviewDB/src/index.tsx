@@ -51,27 +51,25 @@ const ReviewDB: Plugin = {
   },
   patches: [],
   getSettingsPanel({ settings }): any {
-    return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={
-      <>
-        <FormSection title="Plugin Settings">
-          <FormRow
-            label="Get ReviewDB Auth Token"
-            trailing={FormRow.Arrow}
-            leading={<FormRow.Icon source={Icons.Settings.Self} />}
-            onPress={() => {
-              Linking.openURL("https://discord.com/api/v9/oauth2/authorize?client_id=915703782174752809&response_type=code&redirect_uri=https%3A%2F%2Fmanti.vendicated.dev%2FURauth&scope=identify")
-            }}
-          />
-          <FormDivider />
-          <FormInput
-            placeholder="token"
-            value={get(manifest.name, "rdbToken", "")}
-            onChange={(value: string) => (/^[A-Za-z0-9]{30,32}$/.test(value) ? set(manifest.name, "rdbToken", value.trim()) : set(manifest.name, "rdbToken", ""))}
-            title="ReviewDB Auth Token"
-          />
-        </FormSection>
-      </>
-    } commands={null} />;
+    return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={null}>
+      <FormSection title="Plugin Settings">
+        <FormRow
+          label="Get ReviewDB Auth Token"
+          trailing={FormRow.Arrow}
+          leading={<FormRow.Icon source={Icons.Settings.Self} />}
+          onPress={() => {
+            Linking.openURL("https://discord.com/api/v9/oauth2/authorize?client_id=915703782174752809&response_type=code&redirect_uri=https%3A%2F%2Fmanti.vendicated.dev%2FURauth&scope=identify")
+          }}
+        />
+        <FormDivider />
+        <FormInput
+          placeholder="token"
+          value={get(manifest.name, "rdbToken", "")}
+          onChange={(value: string) => (/^[A-Za-z0-9]{30,32}$/.test(value) ? set(manifest.name, "rdbToken", value.trim()) : set(manifest.name, "rdbToken", ""))}
+          title="ReviewDB Auth Token"
+        />
+      </FormSection>
+    </SettingsPage>
   },
 };
 

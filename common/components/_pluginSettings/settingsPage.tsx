@@ -11,7 +11,7 @@ interface SettingsProps {
   settings: SettingsStore;
   manifest: object;
   hasToasts: boolean;
-  section: any;
+  children?: any;
   commands: any;
 }
 
@@ -24,7 +24,7 @@ const [
   filters.byProps('setString')
 );
 
-export default ({ manifest, settings, hasToasts, section, commands }: SettingsProps) => {
+export default ({ manifest, settings, hasToasts, children, commands }: SettingsProps) => {
   // icon and styles
   const styles = StyleSheet.createThemedStyleSheet({
     bottom_padding: {
@@ -65,7 +65,7 @@ export default ({ manifest, settings, hasToasts, section, commands }: SettingsPr
       }}
     >
       <Credits manifest={manifest} /* main credits gui, created from scratch exclusively for dislate */ />
-      {section}
+      {children}
       {commands && <FormSection title="Plugin Commands">
         {commands.map((command: any) => <FormRow
           label={`/${command['name']}`}

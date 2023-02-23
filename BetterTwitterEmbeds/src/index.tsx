@@ -35,7 +35,7 @@ const BTE: Plugin = {
     },
     patches: [],
     getSettingsPanel({ settings }: SettingsProps) {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={null}>
             <FormSection title="Plugin Settings">
                 <FormRow
                     label="Use vxtwitter.com instead of fxtwitter.com"
@@ -68,8 +68,7 @@ const BTE: Plugin = {
                     }
                 />
             </FormSection>
-        } commands={null}
-        />;
+        </SettingsPage>
     },
 };
 

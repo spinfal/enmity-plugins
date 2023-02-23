@@ -141,7 +141,7 @@ export default ({ manifest }: Props) => {
                                 fontFamily: Constants.Fonts.DISPLAY_BOLD
                             }]}
                         >
-                            {"Acquite <3"}
+                            {"Rosie<3"}
                         </Text>
                     </TouchableOpacity>
                 </View>

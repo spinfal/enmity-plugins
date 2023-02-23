@@ -13,7 +13,6 @@ const styles = StyleSheet.createThemedStyleSheet({
     lineHeight: 16,
     fontFamily: Constants.Fonts.PRIMARY_BOLD,
     color: Constants.ThemeColorMap.TEXT_NORMAL,
-    mixBlendMode: "difference",
     marginBottom: 10
   },
   innerContainer: {
@@ -79,7 +78,6 @@ const styles = StyleSheet.createThemedStyleSheet({
     fontSize: 18,
     letterSpacing: 0.25,
     paddingBottom: 4,
-    mixBlendMode: "difference",
   },
   reviewHeader: {
     display: "flex",
@@ -97,6 +95,7 @@ const styles = StyleSheet.createThemedStyleSheet({
   avatarContainer: {
     alignSelf: "start",
     justifySelf: "start",
+    marginTop: 5
   },
   authorAvatar: {
     width: 40,
@@ -105,9 +104,9 @@ const styles = StyleSheet.createThemedStyleSheet({
   },
   messageContent: {
     color: Constants.ThemeColorMap.TEXT_NORMAL,
+    fontFamily: Constants.Fonts.DISPLAY_NORMAL,
     opacity: 0.985,
     fontSize: 16,
-    mixBlendMode: "difference",
   },
   textContainer: {
     display: "flex",

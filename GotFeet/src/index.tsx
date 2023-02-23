@@ -1,5 +1,5 @@
 import { get, set } from "enmity/api/settings";
-import { disablePlugin, Plugin, registerPlugin } from 'enmity/managers/plugins';
+import { Plugin, registerPlugin } from 'enmity/managers/plugins';
 import { Dialog, React } from "enmity/metro/common";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import manifest from '../manifest.json';
@@ -16,7 +16,9 @@ const GotFeet: Plugin = {
                 cancelText: "I'm under 18",
 
                 onConfirm: () => { set("_age", "_confirmed", true) },
-                onCancel: () => { disablePlugin("GotFeet") },
+
+                // @ts-ignore 
+                onCancel: () => { window.enmity.plugins.disablePlugin("GotFeet") },
             });
         }
         this.commands = commands

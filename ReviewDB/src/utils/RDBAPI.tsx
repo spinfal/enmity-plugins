@@ -1,5 +1,4 @@
 import { get } from 'enmity/api/settings';
-import { getByKeyword } from 'enmity/metro';
 import { Dialog, Linking, Toasts } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import manifest from "../../manifest.json";

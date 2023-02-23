@@ -32,50 +32,54 @@ export default ({ userID, currentUserID }: { userID: string, currentUserID: stri
       <Text style={styles.eyebrow}>
         User Reviews
       </Text>
-      {reviews && reviews.length > 0 ? reviews.map((item: object) =>
-        <Review
-          item={item}
-          onSubmit={() => renderActionSheet(() => {
-            /**
-             * This closes the current ActionSheet.
-             * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
-             */
-            LazyActionSheet.hideActionSheet();
-          }, item, currentUserID)}
-        />
-      ) : <Text style={[styles.text, styles.content]}>
-        No reviews yet. You could be the first!
-      </Text>}
     </View>
-    <View style={styles.addReview}>
-      <FormInput
-        id="reviewTextbox"
-        placeholder={JSON.stringify(reviews).includes(currentUserID) ? "Tap here to update your review..." : "Tap here to leave a review..."}
-        value={input}
-        onChange={(value: string) => {
-          setInput(value)
-        }}
-      />
-      <Button text="Submit" onPress={() => {
-        if (input) {
-          addReview({
-            "userid": userID,
-            "comment": input.trim(),
-            "star": -1,
-            "token": get(manifest.name, "rdbToken", "")
-          }).then(() => {
-            getReviews(userID).then((reviews: any) => {
-              setReviews(reviews)
-            });
-            setInput("")
-          })
-        } else {
-          Toasts.open({
-            content: "Please enter a review before submitting.",
-            source: Icons.Failed,
-          })
-        }
-      }} />
+    <View style={styles.reviewWindow}>
+      <View style={styles.container}>
+        {reviews && reviews.length > 0 ? reviews.map((item: object) =>
+          <Review
+            item={item}
+            onSubmit={() => renderActionSheet(() => {
+              /**
+               * This closes the current ActionSheet.
+               * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
+               */
+              LazyActionSheet.hideActionSheet();
+            }, item, currentUserID)}
+          />
+        ) : <Text style={[styles.text, styles.content]}>
+          No reviews yet. You could be the first!
+        </Text>}
+      </View>
+      <View style={styles.addReview}>
+        <FormInput
+          id="reviewTextbox"
+          placeholder={JSON.stringify(reviews).includes(currentUserID) ? "Tap here to update your review..." : "Tap here to leave a review..."}
+          value={input}
+          onChange={(value: string) => {
+            setInput(value)
+          }}
+        />
+        <Button text="Submit" onPress={() => {
+          if (input) {
+            addReview({
+              "userid": userID,
+              "comment": input.trim(),
+              "star": -1,
+              "token": get(manifest.name, "rdbToken", "")
+            }).then(() => {
+              getReviews(userID).then((reviews: any) => {
+                setReviews(reviews)
+              });
+              setInput("")
+            })
+          } else {
+            Toasts.open({
+              content: "Please enter a review before submitting.",
+              source: Icons.Failed,
+            })
+          }
+        }} />
+      </View>
     </View>
   </>
 }

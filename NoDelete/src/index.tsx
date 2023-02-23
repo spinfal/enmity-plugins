@@ -197,155 +197,153 @@ const NoDelete: Plugin = {
             }
         });
 
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={
-            <>
-                <FormSection title="Message Logs">
-                    <FormRow
-                        label="View Message Logs"
-                        subLabel="Tap on an item to copy to clipboard"
-                        leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Debug} />}
-                        onPress={() => {
-                            Navigation.push(Page, { component: Logs, name: "NoDelete Message Logs" }) // opens custom page with logs
-                        }}
-                    />
-                </FormSection>
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={commands}>
+            <FormSection title="Message Logs">
+                <FormRow
+                    label="View Message Logs"
+                    subLabel="Tap on an item to copy to clipboard"
+                    leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Debug} />}
+                    onPress={() => {
+                        Navigation.push(Page, { component: Logs, name: "NoDelete Message Logs" }) // opens custom page with logs
+                    }}
+                />
+            </FormSection>
+            <FormDivider />
+            <FormSection title="Plugin Settings">
+                <FormRow
+                    label="Log bot messages"
+                    subLabel="Whether or not bot message events should be logged"
+                    leading={<FormRow.Icon source={Icons.Settings.Robot} />}
+                    trailing={
+                        <FormSwitch
+                            value={settings.getBoolean("_nodelete_logBots", false)}
+                            onValueChange={() => {
+                                try {
+                                    settings.toggle("_nodelete_logBots", false);
+                                    if (settings.getBoolean("_nodelete_logBots", false)) {
+                                        set("_nodelete", "_logBots", true);
+                                    } else {
+                                        set("_nodelete", "_logBots", false);
+                                    }
+                                    Toasts.open({
+                                        content: `Log self-events has been set to: ${get("_nodelete", "_logBots", false)}.`,
+                                        source: Icons.Settings.Toasts.Settings,
+                                    });
+                                } catch (err) {
+                                    console.log("[ NoDelete Toggle Error ]", err);
+
+                                    Toasts.open({
+                                        content: "An error has occurred. Check debug logs for more info.",
+                                        source: Icons.Failed,
+                                    });
+                                }
+                            }}
+                        />
+                    }
+                />
                 <FormDivider />
-                <FormSection title="Plugin Settings">
-                    <FormRow
-                        label="Log bot messages"
-                        subLabel="Whether or not bot message events should be logged"
-                        leading={<FormRow.Icon source={Icons.Settings.Robot} />}
-                        trailing={
-                            <FormSwitch
-                                value={settings.getBoolean("_nodelete_logBots", false)}
-                                onValueChange={() => {
-                                    try {
-                                        settings.toggle("_nodelete_logBots", false);
-                                        if (settings.getBoolean("_nodelete_logBots", false)) {
-                                            set("_nodelete", "_logBots", true);
-                                        } else {
-                                            set("_nodelete", "_logBots", false);
-                                        }
-                                        Toasts.open({
-                                            content: `Log self-events has been set to: ${get("_nodelete", "_logBots", false)}.`,
-                                            source: Icons.Settings.Toasts.Settings,
-                                        });
-                                    } catch (err) {
-                                        console.log("[ NoDelete Toggle Error ]", err);
-
-                                        Toasts.open({
-                                            content: "An error has occurred. Check debug logs for more info.",
-                                            source: Icons.Failed,
-                                        });
+                <FormRow
+                    label="Log my own messages"
+                    subLabel="Whether or not your own edits and deleted messages will be logged"
+                    leading={<FormRow.Icon source={Icons.Settings.Self} />}
+                    trailing={
+                        <FormSwitch
+                            value={settings.getBoolean("_nodelete_logSelf", false)}
+                            onValueChange={() => {
+                                try {
+                                    settings.toggle("_nodelete_logSelf", false);
+                                    if (settings.getBoolean("_nodelete_logSelf", false)) {
+                                        set("_nodelete", "_logSelf", true);
+                                    } else {
+                                        set("_nodelete", "_logSelf", false);
                                     }
-                                }}
-                            />
-                        }
-                    />
-                    <FormDivider />
-                    <FormRow
-                        label="Log my own messages"
-                        subLabel="Whether or not your own edits and deleted messages will be logged"
-                        leading={<FormRow.Icon source={Icons.Settings.Self} />}
-                        trailing={
-                            <FormSwitch
-                                value={settings.getBoolean("_nodelete_logSelf", false)}
-                                onValueChange={() => {
-                                    try {
-                                        settings.toggle("_nodelete_logSelf", false);
-                                        if (settings.getBoolean("_nodelete_logSelf", false)) {
-                                            set("_nodelete", "_logSelf", true);
-                                        } else {
-                                            set("_nodelete", "_logSelf", false);
-                                        }
-                                        Toasts.open({
-                                            content: `Log self-events has been set to: ${get("_nodelete", "_logSelf", false)}.`,
-                                            source: Icons.Settings.Toasts.Settings,
-                                        });
-                                    } catch (err) {
-                                        console.log("[ NoDelete Toggle Error ]", err);
+                                    Toasts.open({
+                                        content: `Log self-events has been set to: ${get("_nodelete", "_logSelf", false)}.`,
+                                        source: Icons.Settings.Toasts.Settings,
+                                    });
+                                } catch (err) {
+                                    console.log("[ NoDelete Toggle Error ]", err);
 
-                                        Toasts.open({
-                                            content: "An error has occurred. Check debug logs for more info.",
-                                            source: Icons.Failed,
-                                        });
+                                    Toasts.open({
+                                        content: "An error has occurred. Check debug logs for more info.",
+                                        source: Icons.Failed,
+                                    });
+                                }
+                            }}
+                        />
+                    }
+                />
+                <FormDivider />
+                <FormRow
+                    label="Only log to Storage"
+                    subLabel="Message logs will not show in chat, only in Storage"
+                    leading={<FormRow.Icon source={Icons.Pencil} />}
+                    trailing={
+                        <FormSwitch
+                            value={settings.getBoolean("_nodelete", false)}
+                            onValueChange={() => {
+                                try {
+                                    settings.toggle("_nodelete", false);
+                                    if (settings.getBoolean("_nodelete", false)) {
+                                        set("_nodelete", "_storageLog", true);
+                                    } else {
+                                        set("_nodelete", "_storageLog", false);
                                     }
-                                }}
-                            />
-                        }
-                    />
-                    <FormDivider />
-                    <FormRow
-                        label="Only log to Storage"
-                        subLabel="Message logs will not show in chat, only in Storage"
-                        leading={<FormRow.Icon source={Icons.Pencil} />}
-                        trailing={
-                            <FormSwitch
-                                value={settings.getBoolean("_nodelete", false)}
-                                onValueChange={() => {
-                                    try {
-                                        settings.toggle("_nodelete", false);
-                                        if (settings.getBoolean("_nodelete", false)) {
-                                            set("_nodelete", "_storageLog", true);
-                                        } else {
-                                            set("_nodelete", "_storageLog", false);
-                                        }
-                                        Toasts.open({
-                                            content: `Storage-only log has been set to: ${get("_nodelete", "_storageLog", false)}.`,
-                                            source: Icons.Settings.Toasts.Settings,
-                                        });
-                                    } catch (err) {
-                                        console.log("[ NoDelete Toggle Error ]", err);
+                                    Toasts.open({
+                                        content: `Storage-only log has been set to: ${get("_nodelete", "_storageLog", false)}.`,
+                                        source: Icons.Settings.Toasts.Settings,
+                                    });
+                                } catch (err) {
+                                    console.log("[ NoDelete Toggle Error ]", err);
 
-                                        Toasts.open({
-                                            content: "An error has occurred. Check debug logs for more info.",
-                                            source: Icons.Failed,
-                                        });
+                                    Toasts.open({
+                                        content: "An error has occurred. Check debug logs for more info.",
+                                        source: Icons.Failed,
+                                    });
+                                }
+                            }}
+                        />
+                    }
+                />
+                <FormDivider />
+                <FormInput
+                    value={get("_nodelete", "maxLogs", "1000")}
+                    onChange={(value: string) => (/^\d+$/.test(value) ? set("_nodelete", "maxLogs", value.trim()) : set("_nodelete", "maxLogs", "1000"))}
+                    title="Max Logs to Store"
+                />
+                <FormRow
+                    label="Auto-clear logs"
+                    subLabel="Message logs will automatically clear after they have exceeded your max logs limit"
+                    leading={<FormRow.Icon source={Icons.Clear} />}
+                    trailing={
+                        <FormSwitch
+                            value={settings.getBoolean("_nodelete_autoClear", false)}
+                            onValueChange={() => {
+                                try {
+                                    settings.toggle("_nodelete_autoClear", false);
+                                    if (settings.getBoolean("_nodelete_autoClear", false)) {
+                                        set("_nodelete", "autoClear", true);
+                                    } else {
+                                        set("_nodelete", "autoClear", false);
                                     }
-                                }}
-                            />
-                        }
-                    />
-                    <FormDivider />
-                    <FormInput
-                        value={get("_nodelete", "maxLogs", "1000")}
-                        onChange={(value: string) => (/^\d+$/.test(value) ? set("_nodelete", "maxLogs", value.trim()) : set("_nodelete", "maxLogs", "1000"))}
-                        title="Max Logs to Store"
-                    />
-                    <FormRow
-                        label="Auto-clear logs"
-                        subLabel="Message logs will automatically clear after they have exceeded your max logs limit"
-                        leading={<FormRow.Icon source={Icons.Clear} />}
-                        trailing={
-                            <FormSwitch
-                                value={settings.getBoolean("_nodelete_autoClear", false)}
-                                onValueChange={() => {
-                                    try {
-                                        settings.toggle("_nodelete_autoClear", false);
-                                        if (settings.getBoolean("_nodelete_autoClear", false)) {
-                                            set("_nodelete", "autoClear", true);
-                                        } else {
-                                            set("_nodelete", "autoClear", false);
-                                        }
-                                        Toasts.open({
-                                            content: `Logs auto-clearing has been set to: ${get("_nodelete", "autoClear", false)}.`,
-                                            source: Icons.Settings.Toasts.Settings,
-                                        });
-                                    } catch (err) {
-                                        console.log("[ NoDelete Toggle Error ]", err);
+                                    Toasts.open({
+                                        content: `Logs auto-clearing has been set to: ${get("_nodelete", "autoClear", false)}.`,
+                                        source: Icons.Settings.Toasts.Settings,
+                                    });
+                                } catch (err) {
+                                    console.log("[ NoDelete Toggle Error ]", err);
 
-                                        Toasts.open({
-                                            content: "An error has occurred. Check debug logs for more info.",
-                                            source: Icons.Failed,
-                                        });
-                                    }
-                                }}
-                            />
-                        }
-                    />
-                </FormSection>
-            </>
-        } commands={commands} />;
+                                    Toasts.open({
+                                        content: "An error has occurred. Check debug logs for more info.",
+                                        source: Icons.Failed,
+                                    });
+                                }
+                            }}
+                        />
+                    }
+                />
+            </FormSection>
+        </SettingsPage>
     },
 };
 

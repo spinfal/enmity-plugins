@@ -26,7 +26,7 @@ const GotFeet: Plugin = {
     },
     patches: [],
     getSettingsPanel({ settings }): any {
-        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} section={null} commands={commands} />;
+        return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={commands} />;
     },
 };
 

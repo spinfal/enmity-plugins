@@ -21,7 +21,8 @@ import Review from './Review';
  */
 const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } }).default.render;
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;
-const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
+const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
+const Clipboard = getByProps("setString");
 
 export function renderActionSheet(onConfirm: Function, item: any, currentUserID: string) {
   /**
@@ -44,6 +45,10 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: { 
       }}>
         <Review item={item} onSubmit={null} />
 
+        <Button text="Copy Text" onPress={() => {
+          Clipboard.setString(item["comment"])
+          Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
+        }} />
         {canDeleteReview(item, currentUserID) ? <Button text="Delete Review" onPress={() => {
           deleteReview(item["id"]).then(() => {
             onConfirm()

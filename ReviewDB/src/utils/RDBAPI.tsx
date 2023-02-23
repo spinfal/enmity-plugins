@@ -82,7 +82,7 @@ export async function deleteReview(id: number) {
   const res = await r.json();
   Toasts.open({
     content: res?.message || "Response is empty",
-    source: Icons.Debug_Command.Sent,
+    source: Icons.Success,
   });
 }
 
@@ -102,7 +102,7 @@ export async function reportReview(id: number) {
   });
   Toasts.open({
     content: await res.text(),
-    source: Icons.Debug_Command.Sent,
+    source: Icons.Success,
   });
 }
 

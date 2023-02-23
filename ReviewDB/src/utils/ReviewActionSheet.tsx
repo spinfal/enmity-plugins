@@ -48,10 +48,12 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: { 
         {!!item["comment"] && <Button text="Copy Text" onPress={() => {
           Clipboard.setString(item["comment"])
           Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
+          onConfirm()
         }} />}
         {!!item["id"] && <Button text="Copy ID" onPress={() => {
           Clipboard.setString(item["id"].toString())
           Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
+          onConfirm()
         }} />}
         {canDeleteReview?.(item, currentUserID) && <Button text="Delete Review" onPress={() => {
           deleteReview(item["id"]).then(() => {

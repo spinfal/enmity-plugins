@@ -1,12 +1,4 @@
 // thank you again rosie :prayge:
-
-/**
- * Imports
- * @param { getByProps, getModule }: Functions used to filter and get modules from metro.
- * @param React: The main React implementation to do functions such as @arg React.useState or @arg React.useEffect
- *               This is required in all TSX components, or Dislate will crash.
- * @param Debug: The main Debug Info page.
- */
 import { View } from 'enmity/components';
 import { getByProps, getModule } from "enmity/metro";
 import { React, Toasts } from "enmity/metro/common";
@@ -15,56 +7,74 @@ import Button from "./Button";
 import { canDeleteReview, deleteReview, reportReview } from './RDBAPI';
 import Review from './Review';
 
-/**
- * @param ActionSheet: The main ActionSheet component. This renders any type of @arg ActionSheet, but I'm going to render an @arg BottomSheetScrollView
- * @param BottomSheetScrollView: A scrollview component which is rendered inside an @arg ActionSheet, and can render anything inside itself.
- */
 const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } }).default.render;
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;
 const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
 const Clipboard = getByProps("setString");
 
 export function renderActionSheet(onConfirm: Function, item: any, currentUserID: string) {
-  /**
-   * Opens an @arg ActionSheet to the user and passes an onConfirm and type of @arg Send because this is inside the Command, not Settings.
-   */
   ActionSheet
     ? LazyActionSheet.openLazy(new Promise(r => r({ default: ReviewActionSheet })), "ReviewActionSheet", { onConfirm, item, currentUserID })
     : Toasts.open({ content: "You cannot open ActionSheets on this version! Upgrade to 163+", source: Icons.Failed })
 }
 
-export default function ReviewActionSheet({ onConfirm, item, currentUserID }: { onConfirm: Function, item: any, currentUserID: string }) {
-  /**
-   * @returns @arg ActionSheet {scrollable}: Allows you to expand the actionsheet and scroll through it.
-   */
+interface ReviewActionSheetProps {
+  onConfirm: Function;
+  item: { [key: string]: string | number | undefined }
+  currentUserID: string;
+}
+
+export default function ReviewActionSheet({ onConfirm, item, currentUserID }: ReviewActionSheetProps) {
+  // it is not scrollable, meaning the height is not predefined, and takes up however much is required to render the content, up to half of the screen.
   return <ActionSheet>
     <BottomSheetScrollView contentContainerStyle={{ marginBottom: 10 }}>
       <View style={{
         flexDirection: "column",
-        padding: 15,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 14,
+        marginBottom: 14,
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
-        <Review item={item} onSubmit={null} />
+        <Review item={item} onSubmit={() => {}} />
 
-        {!!item["comment"] && <Button text="Copy Text" onPress={() => {
-          Clipboard.setString(item["comment"])
-          Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
-          onConfirm()
-        }} />}
-        {!!item["id"] && <Button text="Copy ID" onPress={() => {
-          Clipboard.setString(item["id"].toString())
-          Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
-          onConfirm()
-        }} />}
-        {canDeleteReview?.(item, currentUserID) && <Button text="Delete Review" onPress={() => {
-          deleteReview(item["id"]).then(() => {
+        {!!item["comment"] && <Button 
+          text="Copy Text" 
+          image="ic_message_copy"
+          onPress={() => {
+            Clipboard.setString(item["comment"])
+            Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
             onConfirm()
-          })
-        }} /> }
-        {item["id"] && <Button text="Report Review" onPress={() => {
-          reportReview(item["id"]).then(() => {
+          }}
+        />}
+        {!!item["id"] && <Button 
+          text="Copy ID" 
+          image="ic_copy_id"
+          onPress={() => {
+            Clipboard.setString((item["id"] as number).toString())
+            Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
             onConfirm()
-          })
-        }} />}
+          }}  
+        />}
+        {canDeleteReview(item, currentUserID) && <Button 
+          text="Delete Review"
+          image="ic_message_delete"
+          onPress={() => {
+            deleteReview(item["id"] as number).then(() => {
+              onConfirm()
+            })
+          }}  
+        />}
+        {item["id"] && <Button 
+          text="Report Review" 
+          image="ic_warning_24px"
+          onPress={() => {
+            reportReview(item["id"] as number).then(() => {
+              onConfirm()
+            })
+          }}  
+        />}
       </View>
     </BottomSheetScrollView>
   </ActionSheet>

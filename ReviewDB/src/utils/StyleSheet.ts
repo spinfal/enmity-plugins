@@ -1,5 +1,6 @@
 import { StyleSheet, Constants } from "enmity/metro/common";
 
+// the size of the author text, and the profile pictures, inside of a singular review. this is a constant so they all update simultaneously.
 const AUTHOR_SIZE = 18;
 
 const styles = StyleSheet.createThemedStyleSheet({
@@ -16,37 +17,30 @@ const styles = StyleSheet.createThemedStyleSheet({
     fontFamily: Constants.Fonts.PRIMARY_BOLD,
     color: Constants.ThemeColorMap.TEXT_NORMAL,
   },
-  innerContainer: {
-    backgroundColor: Constants.ThemeColorMap.BACKGROUND_MOBILE_PRIMARY,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Constants.ThemeColorMap.HEADER_PRIMARY,
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   button: {
-    width: '100%',
+    width: '98%',
     height: 40,
+    backgroundColor: Constants.ThemeColorMap.BACKGROUND_SECONDARY_ALT,
+    borderRadius: 8,
+    marginTop: 6,
+    marginBottom: 6,
+    flexDirection: "row",
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "#1e1f22",
-    borderRadius: 8,
-    marginTop: 10,
-    marginBottom: 12
   },
   buttonContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  circle: {
-    width: 12,
-    height: 12,
-    borderRadius: 12 / 2,
-    backgroundColor: Constants.ThemeColorMap.HEADER_PRIMARY,
-    marginLeft: 8,
-    marginRight: 6
+  reviewContainer: {
+    borderRadius: 9, 
+    padding: 1, 
+    marginBottom: 8,
+    width: "98%"
+  },
+  fallback: {
+    color: Constants.ThemeColorMap.BACKGROUND_SECONDARY_ALT
   },
   content: {
     fontSize: 14,
@@ -60,19 +54,11 @@ const styles = StyleSheet.createThemedStyleSheet({
   },
   buttonText: {
     fontSize: 16,
+    marginLeft: 4
   },
   mainText: {
     opacity: 0.975,
     letterSpacing: 0.25,
-  },
-  singleReviewContainer: {
-    padding: 8,
-    marginBottom: 8,
-    width: "98%",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Constants.ThemeColorMap.HEADER_PRIMARY,
-    backgroundColor: Constants.ThemeColorMap.BACKGROUND_MOBILE_PRIMARY,
   },
   authorName: {
     color: Constants.ThemeColorMap.HEADER_PRIMARY,
@@ -90,25 +76,24 @@ const styles = StyleSheet.createThemedStyleSheet({
     borderRadius: 100,
     marginTop: 4,
   },
-  reviewAuthor: {
-    marginLeft: 6,
-  },
   messageContent: {
     color: Constants.ThemeColorMap.TEXT_NORMAL,
     fontFamily: Constants.Fonts.DISPLAY_NORMAL,
     opacity: 0.985,
     fontSize: 16,
   },
-  addReview: {
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
   reviewWindow: {
     margin: 12,
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.25)",
-  }
+    borderColor: "rgba(120, 120, 120, 0.3)",
+  },
+  icon: {
+    color: Constants.ThemeColorMap.INTERACTIVE_NORMAL,
+    width: 16, 
+    height: 16, 
+    marginRight: 4,
+  },
 })
 
 export default styles;

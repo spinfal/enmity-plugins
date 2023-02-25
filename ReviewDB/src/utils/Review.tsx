@@ -5,15 +5,24 @@ import { Icons } from "../../../common/components/_pluginSettings/utils";
 import styles from "./StyleSheet";
 
 const [
-  GetProfile // used to get the user's profile
+  GetProfile, // used to get the user's profile
+  { ProfileGradientCard } // used to render a card with the external colors being the user's profile theme. requires padding tobe set as a result.
 ] = bulk(
-  filters.byProps("fetchProfile")
+  filters.byProps("fetchProfile"),
+  filters.byProps("ProfileGradientCard")
 );
 
-export default ({ item, onSubmit }) => {
-    return <React.Fragment key={item["id"].toString()}>
+interface ReviewProps {
+    item: { [key: string]: string | number | undefined }
+    onSubmit: Function
+}
+
+export default ({ item, onSubmit }: ReviewProps) => {
+    // This was a lot easier than i thought, it automatically uses the correct profile theme colors when rendered.
+    // if the user has no profile theme colors or this is not rendered inside of a profile, then the fallback color will be used.
+    return <ProfileGradientCard style={styles.reviewContainer} fallbackBackground={styles.fallback.color}>
         <TouchableOpacity onPress={onSubmit}>
-            <View style={styles.singleReviewContainer}>
+            <View style={{ padding: 8 }}>
                 <TouchableOpacity onPress={() => {
                     GetProfile.fetchProfile(item["senderdiscordid"]).then(() => {
                         Profiles.showUserProfile({ userId: item["senderdiscordid"] });
@@ -29,20 +38,18 @@ export default ({ item, onSubmit }) => {
                         loading="lazy"
                         style={styles.authorAvatar}
                         source={{
-                            uri: item["profile_photo"].replace("?size=128", "?size=96"),
+                            uri: (item["profile_photo"] as string).replace("?size=128", "?size=96"),
                     }}/>
-                    <View style={styles.reviewAuthor}>
+                    <View style={{ marginLeft: 6 }}>
                         <Text style={[styles.mainText, styles.authorName]}>
                             {item["username"]}
                         </Text>
                     </View>
                 </TouchableOpacity>
-                
-                    <Text style={styles.messageContent}>
-                        {item["comment"]}
-                    </Text>
-                
+                <Text style={styles.messageContent}>
+                    {item["comment"]}
+                </Text>
             </View>
         </TouchableOpacity>
-    </React.Fragment>
+    </ProfileGradientCard>
 }

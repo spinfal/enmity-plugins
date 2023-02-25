@@ -1,7 +1,7 @@
 import { get } from "enmity/api/settings";
-import { FormInput, Text, View } from 'enmity/components';
+import { Text, View } from 'enmity/components';
 import { getByProps } from "enmity/metro";
-import { React, Toasts } from "enmity/metro/common";
+import { React, Toasts, Users } from "enmity/metro/common";
 import { Icons } from "../../../common/components/_pluginSettings/utils";
 import manifest from "../../manifest.json";
 import Button from "./Button";
@@ -9,21 +9,24 @@ import { addReview, getReviews } from './RDBAPI';
 import Review from "./Review";
 import { renderActionSheet } from "./ReviewActionSheet";
 import styles from "./StyleSheet";
+import showAlert from "./Alert";
 
-const LazyActionSheet = getByProps("openLazy", "hideActionSheet")
+const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
 
-/**i
- * Main @Reviews component implementation.
- * @param userID: The ID of the user, passed as a string
- * @returns TSX Component
- */
-export default ({ userID, currentUserID }: { userID: string, currentUserID: string }) => {
-  const [input, setInput] = React.useState("");
-  const [reviews, setReviews] = React.useState([])
+interface ReviewsSectionProps {
+  userID: string;
+  currentUserID: string;
+}
+
+export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsSectionProps) => {
+  const [reviews, setReviews] = React.useState<Array<{ [key: string]: string | number }>>();
+
+  // this will update whenever this component is rerendered (as its not state or in a useEffect), aka when the reviews are set. therefore, this *should* display the correct info.
+  const existingReview = reviews?.find(review => review["senderdiscordid"] === currentUserID);
 
   React.useEffect(() => {
-    getReviews(userID).then(reviews => {
-      setReviews(reviews)
+    getReviews(userID).then(newReviews => {
+      setReviews(newReviews)
     });
   }, [])
 
@@ -35,8 +38,8 @@ export default ({ userID, currentUserID }: { userID: string, currentUserID: stri
     </View>
     <View style={styles.reviewWindow}>
       <View style={styles.container}>
-        {reviews && reviews.length > 0 ? reviews.map((item: object) =>
-          <Review
+        {reviews && reviews.length > 0 
+        ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
             item={item}
             onSubmit={() => renderActionSheet(() => {
               /**
@@ -45,41 +48,52 @@ export default ({ userID, currentUserID }: { userID: string, currentUserID: stri
                */
               LazyActionSheet.hideActionSheet();
             }, item, currentUserID)}
-          />
-        ) : <Text style={[styles.text, styles.content]}>
-          No reviews yet. You could be the first!
-        </Text>}
+          />) 
+        : <Text style={[
+            styles.text, 
+            styles.content, 
+            { alignSelf: "center" }
+          ]}>
+            No reviews yet. You could be the first!
+          </Text>}
       </View>
-      <View style={styles.addReview}>
-        <FormInput
-          id="reviewTextbox"
-          placeholder={JSON.stringify(reviews).includes(currentUserID) ? "Tap here to update your review..." : "Tap here to leave a review..."}
-          value={input}
-          onChange={(value: string) => {
-            setInput(value)
-          }}
-        />
-        <Button text="Submit" onPress={() => {
-          if (input) {
-            addReview({
-              "userid": userID,
-              "comment": input.trim(),
-              "star": -1,
-              "token": get(manifest.name, "rdbToken", "")
-            }).then(() => {
-              getReviews(userID).then((reviews: any) => {
-                setReviews(reviews)
-              });
-              setInput("")
-            })
-          } else {
-            Toasts.open({
-              content: "Please enter a review before submitting.",
-              source: Icons.Failed,
-            })
-          }
-        }} />
-      </View>
+      <Button 
+        text={existingReview ? "Update" : "Create"}
+        image={existingReview ? "ic_edit_24px" : "img_nitro_star"}
+        onPress={() => {
+          // this does not need to be a seperate function as its only used once, but it is cleaner this way.
+          // as this is now an alert which closes the profile, state is not required for this as the profile must be reopened, rendering the reviews anyways
+          // hence, setting the new reviews is not required either. the only thing required is to set the input to "" to clear its content from beforehand.
+          showAlert({
+            title: existingReview ? "Update" : "Create",
+            confirmText: existingReview ? "Update" : "Create",
+            placeholder: `Tap here to ${existingReview ? "update your existing review" : "create a new review"}...`,
+            onConfirm: (input: string, setInput: Function) => {
+              if (input) {
+                addReview({
+                  "userid": userID,
+                  "comment": input.trim(),
+                  "star": -1,
+                  "token": get(manifest.name, "rdbToken", "")
+                }).then(() => setInput(""));
+              } else {
+                Toasts.open({
+                  content: "Please enter a review before submitting.",
+                  source: Icons.Failed,
+                });
+              }
+            },
+            userID,
+            existing: existingReview ? existingReview?.comment as string : undefined,
+          });
+        }} 
+        style={{
+          paddingLeft: 12,
+          paddingRight: 12,
+          paddingTop: 6,
+          paddingBottom: 6
+        }} 
+      />
     </View>
   </>
 }

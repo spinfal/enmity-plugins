@@ -4,12 +4,12 @@ import { getByProps } from "enmity/metro";
 import { React, Toasts, Users } from "enmity/metro/common";
 import { Icons } from "../../../common/components/_pluginSettings/utils";
 import manifest from "../../manifest.json";
+import showAlert from "./Alert";
 import Button from "./Button";
 import { addReview, getReviews } from './RDBAPI';
 import Review from "./Review";
 import { renderActionSheet } from "./ReviewActionSheet";
 import styles from "./StyleSheet";
-import showAlert from "./Alert";
 
 const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
 
@@ -22,7 +22,7 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
   const [reviews, setReviews] = React.useState<Array<{ [key: string]: string | number }>>();
 
   // this will update whenever this component is rerendered (as its not state or in a useEffect), aka when the reviews are set. therefore, this *should* display the correct info.
-  const existingReview = reviews?.find(review => review["senderdiscordid"] === currentUserID);
+  const existingReview = reviews?.find((review: object) => review["senderdiscordid"] === currentUserID);
 
   React.useEffect(() => {
     getReviews(userID).then(newReviews => {
@@ -38,8 +38,8 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
     </View>
     <View style={styles.reviewWindow}>
       <View style={styles.container}>
-        {reviews && reviews.length > 0 
-        ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
+        {reviews && reviews.length > 0
+          ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
             item={item}
             onSubmit={() => renderActionSheet(() => {
               /**
@@ -48,16 +48,16 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
                */
               LazyActionSheet.hideActionSheet();
             }, item, currentUserID)}
-          />) 
-        : <Text style={[
-            styles.text, 
-            styles.content, 
+          />)
+          : <Text style={[
+            styles.text,
+            styles.content,
             { alignSelf: "center" }
           ]}>
             No reviews yet. You could be the first!
           </Text>}
       </View>
-      <Button 
+      <Button
         text={existingReview ? "Update" : "Create"}
         image={existingReview ? "ic_edit_24px" : "img_nitro_star"}
         onPress={() => {
@@ -65,15 +65,14 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
           // as this is now an alert which closes the profile, state is not required for this as the profile must be reopened, rendering the reviews anyways
           // hence, setting the new reviews is not required either. the only thing required is to set the input to "" to clear its content from beforehand.
           showAlert({
-            title: existingReview ? "Update" : "Create",
-            confirmText: existingReview ? "Update" : "Create",
+            title: existingReview ? "Update Review" : "Create Review",
+            confirmText: existingReview ? "Update Review" : "Create Review",
             placeholder: `Tap here to ${existingReview ? "update your existing review" : "create a new review"}...`,
             onConfirm: (input: string, setInput: Function) => {
               if (input) {
                 addReview({
                   "userid": userID,
                   "comment": input.trim(),
-                  "star": -1,
                   "token": get(manifest.name, "rdbToken", "")
                 }).then(() => setInput(""));
               } else {
@@ -86,13 +85,13 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
             userID,
             existing: existingReview ? existingReview?.comment as string : undefined,
           });
-        }} 
+        }}
         style={{
-          paddingLeft: 12,
-          paddingRight: 12,
+          paddingLeft: 9,
+          paddingRight: 9,
           paddingTop: 6,
           paddingBottom: 6
-        }} 
+        }}
       />
     </View>
   </>

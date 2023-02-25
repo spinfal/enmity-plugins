@@ -37,10 +37,10 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Review item={item} onSubmit={() => {}} />
+        <Review item={item} onSubmit={() => { }} />
 
-        {!!item["comment"] && <Button 
-          text="Copy Text" 
+        {!!item["comment"] && <Button
+          text="Copy Text"
           image="ic_message_copy"
           onPress={() => {
             Clipboard.setString(item["comment"])
@@ -48,32 +48,32 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
             onConfirm()
           }}
         />}
-        {!!item["id"] && <Button 
-          text="Copy ID" 
+        {!!item["id"] && <Button
+          text="Copy ID"
           image="ic_copy_id"
           onPress={() => {
             Clipboard.setString((item["id"] as number).toString())
             Toasts.open({ content: "Copied to clipboard!", source: Icons.Success })
             onConfirm()
-          }}  
+          }}
         />}
-        {canDeleteReview(item, currentUserID) && <Button 
+        {canDeleteReview(item, currentUserID) && <Button
           text="Delete Review"
           image="ic_message_delete"
           onPress={() => {
             deleteReview(item["id"] as number).then(() => {
               onConfirm()
             })
-          }}  
+          }}
         />}
-        {item["id"] && <Button 
-          text="Report Review" 
+        {item["id"] && <Button
+          text="Report Review"
           image="ic_warning_24px"
           onPress={() => {
             reportReview(item["id"] as number).then(() => {
               onConfirm()
             })
-          }}  
+          }}
         />}
       </View>
     </BottomSheetScrollView>

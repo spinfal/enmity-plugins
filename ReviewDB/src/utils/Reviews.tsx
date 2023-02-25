@@ -58,7 +58,7 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
           </Text>}
       </View>
       <Button
-        text={existingReview ? "Update" : "Create"}
+        text={existingReview ? "Update Review" : "Create Review"}
         image={existingReview ? "ic_edit_24px" : "img_nitro_star"}
         onPress={() => {
           // this does not need to be a seperate function as its only used once, but it is cleaner this way.
@@ -66,7 +66,7 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
           // hence, setting the new reviews is not required either. the only thing required is to set the input to "" to clear its content from beforehand.
           showAlert({
             title: existingReview ? "Update Review" : "Create Review",
-            confirmText: existingReview ? "Update Review" : "Create Review",
+            confirmText: existingReview ? "Update" : "Create",
             placeholder: `Tap here to ${existingReview ? "update your existing review" : "create a new review"}...`,
             onConfirm: (input: string, setInput: Function) => {
               if (input) {

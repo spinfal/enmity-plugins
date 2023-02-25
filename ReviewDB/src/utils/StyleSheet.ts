@@ -1,5 +1,8 @@
 import { StyleSheet, Constants } from "enmity/metro/common";
 
+// the size of the author text, and the profile pictures, inside of a singular review. this is a constant so they all update simultaneously.
+const AUTHOR_SIZE = 18;
+
 const styles = StyleSheet.createThemedStyleSheet({
   container: {
     marginTop: 12,
@@ -13,39 +16,31 @@ const styles = StyleSheet.createThemedStyleSheet({
     lineHeight: 16,
     fontFamily: Constants.Fonts.PRIMARY_BOLD,
     color: Constants.ThemeColorMap.TEXT_NORMAL,
-    marginBottom: 10
-  },
-  innerContainer: {
-    backgroundColor: Constants.ThemeColorMap.BACKGROUND_MOBILE_PRIMARY,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Constants.ThemeColorMap.HEADER_PRIMARY,
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   button: {
-    width: '100%',
+    width: '98%',
     height: 40,
+    backgroundColor: Constants.ThemeColorMap.BACKGROUND_SECONDARY_ALT,
+    borderRadius: 8,
+    marginTop: 6,
+    marginBottom: 6,
+    flexDirection: "row",
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "#1e1f22",
-    borderRadius: 8,
-    marginTop: 10,
-    marginBottom: 5
   },
   buttonContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  circle: {
-    width: 12,
-    height: 12,
-    borderRadius: 12 / 2,
-    backgroundColor: Constants.ThemeColorMap.HEADER_PRIMARY,
-    marginLeft: 8,
-    marginRight: 6
+  reviewContainer: {
+    borderRadius: 9, 
+    padding: 1, 
+    marginBottom: 8,
+    width: "98%"
+  },
+  fallback: {
+    color: Constants.ThemeColorMap.BACKGROUND_SECONDARY_ALT
   },
   content: {
     fontSize: 14,
@@ -59,48 +54,27 @@ const styles = StyleSheet.createThemedStyleSheet({
   },
   buttonText: {
     fontSize: 16,
+    marginLeft: 4
   },
   mainText: {
     opacity: 0.975,
     letterSpacing: 0.25,
   },
-  itemContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingTop: 6,
-    paddingBottom: 6,
-    width: "95%",
-  },
   authorName: {
     color: Constants.ThemeColorMap.HEADER_PRIMARY,
     fontFamily: Constants.Fonts.DISPLAY_BOLD,
-    fontSize: 18,
+    fontSize: AUTHOR_SIZE,
     letterSpacing: 0.25,
-    paddingBottom: 4,
-  },
-  reviewHeader: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    maxWidth: "90%",
-  },
-  reviewSubHeader: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    maxWidth: "65%",
   },
   avatarContainer: {
-    alignSelf: "start",
-    justifySelf: "start",
-    marginTop: 5
+    display: "flex",
+    flexDirection: "row"
   },
   authorAvatar: {
-    width: 40,
-    height: 40,
+    width: AUTHOR_SIZE,
+    height: AUTHOR_SIZE,
     borderRadius: 100,
+    marginTop: 4,
   },
   messageContent: {
     color: Constants.ThemeColorMap.TEXT_NORMAL,
@@ -108,17 +82,18 @@ const styles = StyleSheet.createThemedStyleSheet({
     opacity: 0.985,
     fontSize: 16,
   },
-  textContainer: {
-    display: "flex",
-    flexDirection: "column",
-    paddingBottom: 4,
-    paddingLeft: 8,
-    width: "90%",
+  reviewWindow: {
+    margin: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "rgba(120, 120, 120, 0.3)",
   },
-  addReview: {
-    paddingLeft: 10,
-    paddingRight: 10,
-  }
+  icon: {
+    color: Constants.ThemeColorMap.INTERACTIVE_NORMAL,
+    width: 16, 
+    height: 16, 
+    marginRight: 4,
+  },
 })
 
 export default styles;

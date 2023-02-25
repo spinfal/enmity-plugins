@@ -1,0 +1,8 @@
+{
+   "ignore": [
+      "dist/*",
+      "dist"
+   ],
+   "exec": "clear && yarn build",
+   "ext": "*.*"
+}

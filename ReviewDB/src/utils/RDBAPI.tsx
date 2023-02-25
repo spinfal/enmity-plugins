@@ -1,5 +1,4 @@
 import { get } from 'enmity/api/settings';
-import { getByKeyword } from 'enmity/metro';
 import { Dialog, Linking, Toasts } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import manifest from "../../manifest.json";
@@ -59,7 +58,7 @@ export async function addReview(review: any) {
   });
   const res = await r.text();
   res && Toasts.open({
-    content: res,
+    content: res + "!",
     source: Icons.Pencil,
   });
   return console.log("[ReviewDB]", Response[res] ?? Response.error);
@@ -81,7 +80,7 @@ export async function deleteReview(id: number) {
   });
   const res = await r.json();
   Toasts.open({
-    content: res?.message || "Response is empty",
+    content: (res?.message || "Response is empty") + "!",
     source: Icons.Success,
   });
 }
@@ -101,7 +100,7 @@ export async function reportReview(id: number) {
     })
   });
   Toasts.open({
-    content: await res.text(),
+    content: (await res.text()) + "!",
     source: Icons.Success,
   });
 }

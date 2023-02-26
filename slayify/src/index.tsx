@@ -36,7 +36,7 @@ const sarpGaveMeAnImageAndIhadToWriteAllOfTheseByHand = [
 
 const Patcher = create(manifest.name);
 
-const sarpify: Plugin = {
+const slayify: Plugin = {
   ...manifest,
   onStart() {
     try {
@@ -124,4 +124,4 @@ const sarpify: Plugin = {
   },
 };
 
-registerPlugin(sarpify);
+registerPlugin(slayify);

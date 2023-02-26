@@ -73,7 +73,7 @@ Join the [Official Enmity Discord server](https://out.spin.rip/enmity)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/sarp)
 
-## [sarpify](https://cdn.spin.rip/r/DiscordDevelopment_1735973088.png)
-[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/sarpify.js)
+## [slayify](https://cdn.spin.rip/r/DiscordDevelopment_1735973088.png)
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/slayify.js)
 
-[Source](https://github.com/spinfal/enmity-plugins/tree/master/sarpify)
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/slayify)

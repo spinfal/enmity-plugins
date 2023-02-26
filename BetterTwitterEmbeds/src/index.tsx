@@ -53,7 +53,7 @@ const BTE: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Switched to ${get("_twitter", "_type", false)}.`,
-                                        source: Icons.Settings.Toasts.Settings,
+                                        source: Icons.Success,
                                     });
                                 } catch (err) {
                                     console.log("[ BetterTwitterEmbeds Error ]", err);

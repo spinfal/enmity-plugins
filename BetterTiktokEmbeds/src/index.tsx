@@ -53,7 +53,7 @@ const BTE: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Switched to ${get("_tiktok", "_type", false)}.`,
-                                        source: Icons.Settings.Toasts.Settings,
+                                        source: Icons.Success,
                                     });
                                 } catch (err) {
                                     console.log("[ BetterTiktokEmbeds Error ]", err);

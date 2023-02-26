@@ -151,7 +151,7 @@ const NoDelete: Plugin = {
                 console.log(`${manifest.name} delayed start successful.`);
                 enableToasts ? Toasts.open({
                     content: `[${manifest.name}] start successful.`,
-                    source: Icons.Settings.Toasts.Settings,
+                    source: Icons.Success,
                 }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
             } catch (err) {
                 console.log(`[${manifest.name} Plugin Error]`, err);
@@ -227,7 +227,7 @@ const NoDelete: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Log self-events has been set to: ${get("_nodelete", "_logBots", false)}.`,
-                                        source: Icons.Settings.Toasts.Settings,
+                                        source: Icons.Success,
                                     });
                                 } catch (err) {
                                     console.log("[ NoDelete Toggle Error ]", err);
@@ -259,7 +259,7 @@ const NoDelete: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Log self-events has been set to: ${get("_nodelete", "_logSelf", false)}.`,
-                                        source: Icons.Settings.Toasts.Settings,
+                                        source: Icons.Success,
                                     });
                                 } catch (err) {
                                     console.log("[ NoDelete Toggle Error ]", err);
@@ -291,7 +291,7 @@ const NoDelete: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Storage-only log has been set to: ${get("_nodelete", "_storageLog", false)}.`,
-                                        source: Icons.Settings.Toasts.Settings,
+                                        source: Icons.Success,
                                     });
                                 } catch (err) {
                                     console.log("[ NoDelete Toggle Error ]", err);
@@ -328,7 +328,7 @@ const NoDelete: Plugin = {
                                     }
                                     Toasts.open({
                                         content: `Logs auto-clearing has been set to: ${get("_nodelete", "autoClear", false)}.`,
-                                        source: Icons.Settings.Toasts.Settings,
+                                        source: Icons.Success,
                                     });
                                 } catch (err) {
                                     console.log("[ NoDelete Toggle Error ]", err);

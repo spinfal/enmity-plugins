@@ -68,7 +68,7 @@ const FriendInvites: Plugin = {
                                             getByKeyword("friendinvite").revokeFriendInvites().then(() => {
                                                 getByKeyword("friendinvite").getAllFriendInvites().then((inviteLinks: any) => {
                                                     if (!inviteLinks || inviteLinks.length == 0) {
-                                                        Toasts.open({ content: "Friends invites have been revoked", source: Icons.Settings.Toasts.Settings });
+                                                        Toasts.open({ content: "Friends invites have been revoked", source: Icons.Success });
                                                         return
                                                     } else {
                                                         console.log("[ revokeFriendInvites Response ]", inviteLinks);

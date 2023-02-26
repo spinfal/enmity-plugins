@@ -87,7 +87,7 @@ const Amongus: Plugin = {
                 console.log(`${manifest.name} delayed start successful.`);
                 enableToasts ? Toasts.open({
                     content: `${manifest.name} start successful.`,
-                    source: Icons.Settings.Toasts.Settings,
+                    source: Icons.Success,
                 }) : "https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html"
             } catch {
                 if (attempt < attempts) {

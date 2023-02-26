@@ -91,7 +91,7 @@ export default ({ manifest, settings, hasToasts, children, commands }: SettingsP
                   settings.toggle(`${manifest['name']}-toastEnable`, false)
                   Toasts.open({
                     content: `Successfully ${settings.getBoolean(`${manifest['name']}-toastEnable`, false) ? 'enabled' : 'disabled'} initialization toasts.`,
-                    source: Icons.Settings.Toasts.Settings
+                    source: Icons.Success
                   }); // overwrites it with the opposite
                 }
                 }
@@ -121,7 +121,7 @@ export default ({ manifest, settings, hasToasts, children, commands }: SettingsP
             await Storage.removeItem('device_list') // removes the item and waits for promise resolve
             Toasts.open({
               content: `Cleared device list storage.`,
-              source: Icons.Settings.Toasts.Settings
+              source: Icons.Success
             }); // declares success
           }}
         />

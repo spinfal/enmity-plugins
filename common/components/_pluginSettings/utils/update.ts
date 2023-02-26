@@ -32,12 +32,12 @@ async function check_for_updates({ manifest }: Props) {
     external_version = external_version[0]
     external_build = external_build[0]
 
-    /* 
+    /*
     i dont need to match specific parts of the version, here are some tests~
         -> version 1.1.6, latest is 1.1.9 (not the same so update)
         -> version 1.1.7 latest is 1.3.2 (not the same so update)
         -> version 1.2.5 latest is 1.2.5 (is the same so no update)
-    ~ theres no need to match for if the latest is higher than the current 
+    ~ theres no need to match for if the latest is higher than the current
         because the latest will always be larger or equal to the current version
     */
 
@@ -77,7 +77,7 @@ const show_update_dialog = (url: string, version: string, build: string, manifes
 const no_updates = (name: string, type: string) => {
     // logs the fact that youre on the latest version with both a toast a
     console.log(`[${name}] Plugin is on the latest version, which is ${type}`)
-    Toasts.open({ content: `${name} is on latest version (${type})`, source: Icons.Settings.Toasts.Settings });
+    Toasts.open({ content: `${name} is on latest version (${type})`, source: Icons.Success });
 }
 
 /**

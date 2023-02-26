@@ -179,7 +179,7 @@ export default () => {
                 if (res === "[]") {
                     Toasts.open({
                         content: `Auto-cleared ${shortenStr(logs.length, 10)} logs.`,
-                        source: Icons.Settings.Toasts.Settings,
+                        source: Icons.Success,
                     });
                 } else {
                     Toasts.open({

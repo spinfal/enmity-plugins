@@ -2,6 +2,7 @@ import { get } from 'enmity/api/settings';
 import { Dialog, Linking, Toasts, Users } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import manifest from "../../manifest.json";
+import { getByProps } from 'enmity/metro';
 
 const getRdbToken = () => get(manifest.name, "rdbToken", "");
 
@@ -105,13 +106,32 @@ export async function reportReview(id: number) {
   });
 }
 
+const ProfileFetcher = getByProps("fetchProfile");
 export let userMap = {};
 
-export const getConditionalCachedUser = (userId: string) => {
+export async function getConditionalCachedUser(userId: string) {
+  // first return the userId if it exists in my custom map
   if (userMap[userId]) return userMap[userId];
 
-  Object.assign(userMap, { [userId]: Users.getUser(userId) })
-  return userMap[userId] ?? Users.getUser(userId)
+  // otherwise see if getUser has the user cached already, if so assign that to the map and return it
+  if (Users.getUser(userId)) {
+    Object.assign(userMap, { [userId]: Users.getUser(userId) })
+    return userMap[userId] ?? Users.getUser(userId)
+  }
+  
+  // otherwise, the user has not been fetched and cached yet, and needs to be fetched now.
+  const user = await ProfileFetcher.getUser(userId);
+  if (!user) {
+    Toasts.open({
+      content: `Failed to fetch profile for ${userId}!`,
+      source: Icons.Failed
+    })
+    return console.error(`[ReviewDB] Error when fetching ${userId}. Returned undefined when getting from both Map, UserStore, and Fetcher.`)
+  }
+ 
+  // finally, set the user to the map to not need to be fetched again a second time. the map takes priority over UserStore, which would now also have it cached.
+  Object.assign(userMap, { [userId]: user });
+  return userMap[userId];
 }
 
 export const clearUserMap = () => {

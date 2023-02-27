@@ -1,9 +1,7 @@
 import { Image, Text, TouchableOpacity, View } from "enmity/components";
 import { bulk, filters } from "enmity/metro";
-import { Profiles, React, Toasts } from 'enmity/metro/common';
-import { Icons } from "../../../common/components/_pluginSettings/utils";
+import { Profiles, React } from 'enmity/metro/common';
 import styles from "./StyleSheet";
-import { Users } from 'enmity/metro/common';
 import { getConditionalCachedUser } from './RDBAPI';
 
 const [
@@ -24,8 +22,8 @@ export default ({ reviewerID, comment, onSubmit }: ReviewProps) => {
     const [reviewerState, setReviewerState] = React.useState<{ [key: string]: any}>()
 
     React.useEffect(() => {
-        setReviewerState(getConditionalCachedUser(reviewerID))
-    })
+        getConditionalCachedUser(reviewerID).then(state => { setReviewerState(state) })
+    }, [])
 
     // This was a lot easier than i thought, it automatically uses the correct profile theme colors when rendered.
     // if the user has no profile theme colors or this is not rendered inside of a profile, then the fallback color will be used.
@@ -33,17 +31,17 @@ export default ({ reviewerID, comment, onSubmit }: ReviewProps) => {
         <TouchableOpacity onPress={onSubmit}>
             <View style={{ padding: 8 }}>
                 <TouchableOpacity onPress={() => {
-                    Profiles.showUserProfile({ userId: reviewerState?.id });
+                    Profiles?.showUserProfile({ userId: reviewerState?.id });
                 }} style={styles.avatarContainer}>
                     <Image
                         loading="lazy"
                         style={styles.authorAvatar}
                         source={{
-                            uri: (reviewerState?.getAvatarURL() as string).replace("?size=128", "?size=96"),
+                            uri: (reviewerState?.getAvatarURL() as string).replace(/\?size=(\d+)/, "?size=96"),
                     }}/>
                     <View style={{ marginLeft: 6 }}>
                         <Text style={[styles.mainText, styles.authorName]}>
-                            {reviewerState?.username}
+                            {reviewerState?.username}#{reviewerState?.discriminator}
                         </Text>
                     </View>
                 </TouchableOpacity>

@@ -19,7 +19,7 @@ const ReviewDB: Plugin = {
   onStart() {
     let currentUserID = get(manifest.name, "currentUser", undefined) as string | undefined;
     let currentUserAttempts = 0;
-    
+
     const ensureCurrentUserInitialized = () => {
       if (currentUserID || currentUserAttempts >= 3) return;
       currentUserAttempts++;
@@ -76,9 +76,7 @@ const ReviewDB: Plugin = {
           onChange={(value: string) => (/^[A-Za-z0-9]{30,32}$/.test(value) ? set(manifest.name, "rdbToken", value.trim()) : set(manifest.name, "rdbToken", ""))}
           title="ReviewDB Auth Token"
         />
-      </FormSection>
-      {/* @ts-ignore */}
-      <FormSection title="Clear Cache">
+        <FormDivider />
         <FormRow
           // @ts-ignore
           label="Clear cached users"

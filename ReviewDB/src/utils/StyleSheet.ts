@@ -68,7 +68,9 @@ const styles = StyleSheet.createThemedStyleSheet({
   },
   avatarContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    flex: 0, 
+    alignSelf: 'flex-start' 
   },
   authorAvatar: {
     width: AUTHOR_SIZE,

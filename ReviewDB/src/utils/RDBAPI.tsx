@@ -1,5 +1,5 @@
 import { get } from 'enmity/api/settings';
-import { Dialog, Linking, Toasts } from 'enmity/metro/common';
+import { Dialog, Linking, Toasts, Users } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import manifest from "../../manifest.json";
 
@@ -105,6 +105,24 @@ export async function reportReview(id: number) {
   });
 }
 
+export let userMap = {};
+
+export const getConditionalCachedUser = (userId: string) => {
+  if (userMap[userId]) return userMap[userId];
+
+  Object.assign(userMap, { [userId]: Users.getUser(userId) })
+  return userMap[userId] ?? Users.getUser(userId)
+}
+
+export const clearUserMap = () => {
+  userMap = {};
+
+  Toasts.open({
+    content: "Successfully cleared user cache!",
+    source: Icons.Success
+  })
+}
+
 /**
  * coming to an update near you: new review notifications
  * eta? idk
@@ -115,4 +133,4 @@ export async function reportReview(id: number) {
 //     .then(Number);
 // }
 
-export function canDeleteReview(review: any, currentUserID: string) { return review.senderdiscordid == currentUserID };
+export const canDeleteReview = (review: { [key: string]: string | number | undefined }, currentUserID: string) => review["senderdiscordid"] == currentUserID;

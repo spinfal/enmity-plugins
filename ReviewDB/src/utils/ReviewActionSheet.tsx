@@ -37,7 +37,11 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Review item={item} onSubmit={() => { }} />
+        <Review 
+          reviewerID={item["senderdiscordid"] as string} 
+          comment={item["comment"] as string} 
+          onSubmit={() => {}} 
+        />
 
         {!!item["comment"] && <Button
           text="Copy Text"

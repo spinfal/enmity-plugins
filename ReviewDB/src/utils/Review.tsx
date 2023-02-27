@@ -3,6 +3,8 @@ import { bulk, filters } from "enmity/metro";
 import { Profiles, React, Toasts } from 'enmity/metro/common';
 import { Icons } from "../../../common/components/_pluginSettings/utils";
 import styles from "./StyleSheet";
+import { Users } from 'enmity/metro/common';
+import { getConditionalCachedUser } from './RDBAPI';
 
 const [
   GetProfile, // used to get the user's profile
@@ -13,43 +15,42 @@ const [
 );
 
 interface ReviewProps {
-  item: { [key: string]: string | number | undefined }
-  onSubmit: Function
+    reviewerID: string;
+    comment: string;
+    onSubmit: Function;
 }
 
-export default ({ item, onSubmit }: ReviewProps) => {
-  // This was a lot easier than i thought, it automatically uses the correct profile theme colors when rendered.
-  // if the user has no profile theme colors or this is not rendered inside of a profile, then the fallback color will be used.
-  return <ProfileGradientCard style={styles.reviewContainer} fallbackBackground={styles.fallback.color}>
-    <TouchableOpacity onPress={onSubmit}>
-      <View style={{ padding: 8 }}>
-        <TouchableOpacity onPress={() => {
-          GetProfile.fetchProfile(item["senderdiscordid"]).then(() => {
-            Profiles.showUserProfile({ userId: item["senderdiscordid"] });
-          }).catch((err: any) => {
-            Toasts.open({
-              content: "Could not fetch user. Check logs for more info.",
-              source: Icons.Failed,
-            })
-            console.log("[ReviewDB User Fetch Error]", err)
-          })
-        }} style={styles.avatarContainer}>
-          <Image
-            loading="lazy"
-            style={styles.authorAvatar}
-            source={{
-              uri: (item["profile_photo"] as string).replace("?size=128", "?size=48"),
-            }} />
-          <View style={{ marginLeft: 6 }}>
-            <Text style={[styles.mainText, styles.authorName]}>
-              {item["username"]}
-            </Text>
-          </View>
+export default ({ reviewerID, comment, onSubmit }: ReviewProps) => {
+    const [reviewerState, setReviewerState] = React.useState<{ [key: string]: any}>()
+
+    React.useEffect(() => {
+        setReviewerState(getConditionalCachedUser(reviewerID))
+    })
+
+    // This was a lot easier than i thought, it automatically uses the correct profile theme colors when rendered.
+    // if the user has no profile theme colors or this is not rendered inside of a profile, then the fallback color will be used.
+    return reviewerState ? <ProfileGradientCard style={styles.reviewContainer} fallbackBackground={styles.fallback.color}>
+        <TouchableOpacity onPress={onSubmit}>
+            <View style={{ padding: 8 }}>
+                <TouchableOpacity onPress={() => {
+                    Profiles.showUserProfile({ userId: reviewerState?.id });
+                }} style={styles.avatarContainer}>
+                    <Image
+                        loading="lazy"
+                        style={styles.authorAvatar}
+                        source={{
+                            uri: (reviewerState?.getAvatarURL() as string).replace("?size=128", "?size=96"),
+                    }}/>
+                    <View style={{ marginLeft: 6 }}>
+                        <Text style={[styles.mainText, styles.authorName]}>
+                            {reviewerState?.username}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                <Text style={styles.messageContent}>
+                    {comment}
+                </Text>
+            </View>
         </TouchableOpacity>
-        <Text style={styles.messageContent}>
-          {item["comment"]}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  </ProfileGradientCard>
+    </ProfileGradientCard> : <></>
 }

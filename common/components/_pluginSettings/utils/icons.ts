@@ -14,6 +14,7 @@ export const Icons = {
   Copy: getIDByName('toast_copy_link'),
   Open: getIDByName('ic_leave_stage'),
   Clipboard: getIDByName('pending-alert'),
+  Initial: getIDByName('coffee'),
 
   Debug_Command: {
     Sent: getIDByName('ic_application_command_24px'),

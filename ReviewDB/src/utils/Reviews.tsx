@@ -38,9 +38,10 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
     </View>
     <View style={styles.reviewWindow}>
       <View style={styles.container}>
-        {reviews && reviews.length > 0
-          ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
-            item={item}
+        {reviews && reviews.length > 0 
+        ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
+            reviewerID={item["senderdiscordid"] as string}
+            comment={item["comment"] as string}
             onSubmit={() => renderActionSheet(() => {
               /**
                * This closes the current ActionSheet.

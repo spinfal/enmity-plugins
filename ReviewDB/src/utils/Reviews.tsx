@@ -25,8 +25,8 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
   const existingReview = reviews?.find((review: object) => review["senderdiscordid"] === currentUserID);
 
   React.useEffect(() => {
-    getReviews(userID).then(newReviews => {
-      setReviews(newReviews)
+    getReviews(userID).then(state => {
+      setReviews(state)
     });
   }, [])
 
@@ -42,13 +42,9 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
         ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
             reviewerID={item["senderdiscordid"] as string}
             comment={item["comment"] as string}
-            onSubmit={() => renderActionSheet(() => {
-              /**
-               * This closes the current ActionSheet.
-               * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
-               */
-              LazyActionSheet.hideActionSheet();
-            }, item, currentUserID)}
+            onSubmit={() => renderActionSheet(
+              () => LazyActionSheet?.hideActionSheet(), 
+              item, currentUserID)}
           />)
           : <Text style={[
             styles.text,
@@ -75,7 +71,7 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
                   "userid": userID,
                   "comment": input.trim(),
                   "token": get(manifest.name, "rdbToken", "")
-                }).then(() => setInput(""));
+                }).then(() => setInput?.(""));
               } else {
                 Toasts.open({
                   content: "Please enter a review before submitting.",

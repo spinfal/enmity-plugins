@@ -9,7 +9,6 @@ import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import { Icons } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
 import Reviews from "./utils/Reviews";
-import { clearUserMap } from './utils/RDBAPI';
 
 const Patcher = create(manifest.name);
 const UserProfile = getByProps("PRIMARY_INFO_TOP_OFFSET", "SECONDARY_INFO_TOP_MARGIN", "SIDE_PADDING");
@@ -75,16 +74,6 @@ const ReviewDB: Plugin = {
           value={get(manifest.name, "rdbToken", "")}
           onChange={(value: string) => (/^[A-Za-z0-9]{30,32}$/.test(value) ? set(manifest.name, "rdbToken", value.trim()) : set(manifest.name, "rdbToken", ""))}
           title="ReviewDB Auth Token"
-        />
-        <FormDivider />
-        <FormRow
-          // @ts-ignore
-          label="Clear cached users"
-          subLabel="Fully remove cached reviewers' user data."
-          trailing={FormRow.Arrow}
-          // @ts-ignore
-          leading={<FormRow.Icon source={Icons.Initial} />}
-          onPress={() => clearUserMap()}
         />
       </FormSection>
     </SettingsPage>

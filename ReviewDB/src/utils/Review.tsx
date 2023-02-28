@@ -2,8 +2,7 @@ import { Image, Text, TouchableOpacity, View } from "enmity/components";
 import { bulk, filters } from "enmity/metro";
 import { Profiles, React } from 'enmity/metro/common';
 import styles from "./StyleSheet";
-import { getConditionalCachedUser } from './RDBAPI';
-import { Users } from 'enmity/metro/common';
+import { ReviewContentProps } from "./types";
 
 const [
   { ProfileGradientCard } // used to render a card with the external colors being the user's profile theme. requires padding tobe set as a result.
@@ -12,46 +11,37 @@ const [
 );
 
 interface ReviewProps {
-    reviewerID: string;
-    comment: string;
+    item: ReviewContentProps;
     onSubmit: Function;
 }
 
-export default ({ reviewerID, comment, onSubmit }: ReviewProps) => {
-    const [reviewerState, setReviewerState] = React.useState<{ [key: string]: any}>()
-
-    React.useEffect(() => {
-        getConditionalCachedUser(reviewerID).then(state => { 
-            setReviewerState(state) 
-        })
-    }, [])
-
+export default ({ item, onSubmit }: ReviewProps) => {
     // This was a lot easier than i thought, it automatically uses the correct profile theme colors when rendered.
     // if the user has no profile theme colors or this is not rendered inside of a profile, then the fallback color will be used.
-    return reviewerState ? <ProfileGradientCard style={styles.reviewContainer} fallbackBackground={styles.fallback.color}>
+    return <ProfileGradientCard style={styles.reviewContainer} fallbackBackground={styles.fallback.color}>
         <TouchableOpacity onPress={onSubmit}>
             <View style={{ padding: 8 }}>
                 <TouchableOpacity 
-                    onPress={() => Profiles?.showUserProfile({ userId: reviewerState?.id })} 
+                    onPress={() => Profiles?.showUserProfile({ userId: item?.["senderdiscordid"] })} 
                     style={styles.avatarContainer}
                 >
                     <Image
                         loading="lazy"
                         style={styles.authorAvatar}
                         source={{
-                            uri: reviewerState?.getAvatarURL(),
+                            uri: (item["profile_photo"] as string)?.replace("?size=128", "?size=48"),
                         }}
                     />
                     <View style={{ marginLeft: 6 }}>
                         <Text style={[styles.mainText, styles.authorName]}>
-                            {reviewerState?.username}{"#"}{reviewerState?.discriminator}
+                            {item["username"]}
                         </Text>
                     </View>
                 </TouchableOpacity>
                 <Text style={styles.messageContent}>
-                    {comment ?? "Invalid message content."}
+                    {item["comment"] ?? "Invalid message content."}
                 </Text>
             </View>
         </TouchableOpacity>
-    </ProfileGradientCard> : <></>
+    </ProfileGradientCard>
 }

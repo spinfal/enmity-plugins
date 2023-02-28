@@ -10,6 +10,7 @@ import { addReview, getReviews } from './RDBAPI';
 import Review from "./Review";
 import { renderActionSheet } from "./ReviewActionSheet";
 import styles from "./StyleSheet";
+import { ReviewContentProps } from './types';
 
 const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
 
@@ -19,7 +20,7 @@ interface ReviewsSectionProps {
 }
 
 export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsSectionProps) => {
-  const [reviews, setReviews] = React.useState<Array<{ [key: string]: string | number }>>();
+  const [reviews, setReviews] = React.useState<Array<ReviewContentProps>>();
 
   // this will update whenever this component is rerendered (as its not state or in a useEffect), aka when the reviews are set. therefore, this *should* display the correct info.
   const existingReview = reviews?.find((review: object) => review["senderdiscordid"] === currentUserID);
@@ -39,9 +40,8 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
     <View style={styles.reviewWindow}>
       <View style={styles.container}>
         {reviews && reviews.length > 0 
-        ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
-            reviewerID={item["senderdiscordid"] as string}
-            comment={item["comment"] as string}
+        ? reviews.map((item: ReviewContentProps) => <Review
+            item={item}
             onSubmit={() => renderActionSheet(
               () => LazyActionSheet?.hideActionSheet(), 
               item, currentUserID)}

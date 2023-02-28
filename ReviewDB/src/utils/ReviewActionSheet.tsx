@@ -6,6 +6,7 @@ import { Icons } from "../../../common/components/_pluginSettings/utils";
 import Button from "./Button";
 import { canDeleteReview, deleteReview, reportReview } from './RDBAPI';
 import Review from './Review';
+import { ReviewContentProps } from './types';
 
 const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } }).default.render;
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;
@@ -20,7 +21,7 @@ export function renderActionSheet(onConfirm: Function, item: any, currentUserID:
 
 interface ReviewActionSheetProps {
   onConfirm: Function;
-  item: { [key: string]: string | number | undefined }
+  item: ReviewContentProps;
   currentUserID: string;
 }
 
@@ -38,8 +39,7 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
         justifyContent: 'center',
       }}>
         <Review 
-          reviewerID={item["senderdiscordid"] as string} 
-          comment={item["comment"] as string} 
+          item={item}
           onSubmit={() => {}} 
         />
 

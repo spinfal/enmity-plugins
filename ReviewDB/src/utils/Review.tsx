@@ -5,9 +5,11 @@ import styles from "./StyleSheet";
 import { ReviewContentProps } from "./types";
 
 const [
-  { ProfileGradientCard } // used to render a card with the external colors being the user's profile theme. requires padding tobe set as a result.
+  { ProfileGradientCard }, // used to render a card with the external colors being the user's profile theme. requires padding tobe set as a result.
+  ProfileFetcher
 ] = bulk(
-  filters.byProps("ProfileGradientCard")
+  filters.byProps("ProfileGradientCard"),
+  filters.byProps("fetchProfile")
 );
 
 interface ReviewProps {
@@ -22,7 +24,7 @@ export default ({ item, onSubmit }: ReviewProps) => {
         <TouchableOpacity onPress={onSubmit}>
             <View style={{ padding: 8 }}>
                 <TouchableOpacity 
-                    onPress={() => Profiles?.showUserProfile({ userId: item?.["senderdiscordid"] })} 
+                    onPress={() => ProfileFetcher.getUser(item["senderdiscordid"]).then(() => Profiles.showUserProfile({ userId: item["senderdiscordid"] }))} 
                     style={styles.avatarContainer}
                 >
                     <Image

@@ -3,6 +3,7 @@ import { bulk, filters } from "enmity/metro";
 import { Profiles, React } from 'enmity/metro/common';
 import styles from "./StyleSheet";
 import { ReviewContentProps } from "./types";
+import { Users } from 'enmity/metro/common';
 
 const [
   { ProfileGradientCard }, // used to render a card with the external colors being the user's profile theme. requires padding tobe set as a result.
@@ -24,7 +25,11 @@ export default ({ item, onSubmit }: ReviewProps) => {
         <TouchableOpacity onPress={onSubmit}>
             <View style={{ padding: 8 }}>
                 <TouchableOpacity 
-                    onPress={() => ProfileFetcher.getUser(item["senderdiscordid"]).then(() => Profiles.showUserProfile({ userId: item["senderdiscordid"] }))} 
+                    onPress={() => {
+                        Users.getUser(item["senderdiscordid"])
+                            ? Profiles.showUserProfile({ userId: item["senderdiscordid"]})
+                            : ProfileFetcher.getUser(item["senderdiscordid"]).then(() => Profiles.showUserProfile({ userId: item["senderdiscordid"] }))
+                    }} 
                     style={styles.avatarContainer}
                 >
                     <Image

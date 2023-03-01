@@ -69,14 +69,20 @@ const styles = StyleSheet.createThemedStyleSheet({
   avatarContainer: {
     display: "flex",
     flexDirection: "row",
-    flex: 0, 
-    alignSelf: 'flex-start' 
+    flex: 0,
+    alignSelf: 'flex-start'
   },
   authorAvatar: {
     width: AUTHOR_SIZE,
     height: AUTHOR_SIZE,
     borderRadius: 100,
-    marginTop: 4,
+    marginTop: 1,
+  },
+  rdbBadge: {
+    width: AUTHOR_SIZE,
+    height: AUTHOR_SIZE,
+    marginTop: 1,
+    marginLeft: 4,
   },
   messageContent: {
     color: Constants.ThemeColorMap.TEXT_NORMAL,

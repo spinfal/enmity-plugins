@@ -39,11 +39,11 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
     </View>
     <View style={styles.reviewWindow}>
       <View style={styles.container}>
-        {reviews && reviews.length > 0 
+        {reviews && reviews.length > 0
         ? reviews.map((item: ReviewContentProps) => <Review
             item={item}
             onSubmit={() => renderActionSheet(
-              () => LazyActionSheet?.hideActionSheet(), 
+              () => LazyActionSheet?.hideActionSheet(),
               item, currentUserID)}
           />)
           : <Text style={[

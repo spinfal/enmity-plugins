@@ -88,7 +88,7 @@ const styles = StyleSheet.createThemedStyleSheet({
     margin: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(120, 120, 120, 0.3)",
+    borderColor: "rgba(75, 75, 75, 0.7)",
   },
   icon: {
     color: Constants.ThemeColorMap.INTERACTIVE_NORMAL,

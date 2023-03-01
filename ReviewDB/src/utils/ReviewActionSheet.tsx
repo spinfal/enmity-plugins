@@ -6,6 +6,7 @@ import { Icons } from "../../../common/components/_pluginSettings/utils";
 import Button from "./Button";
 import { canDeleteReview, deleteReview, reportReview } from './RDBAPI';
 import Review from './Review';
+import { ReviewContentProps } from './types';
 
 const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } }).default.render;
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;
@@ -14,13 +15,13 @@ const Clipboard = getByProps("setString");
 
 export function renderActionSheet(onConfirm: Function, item: any, currentUserID: string) {
   ActionSheet
-    ? LazyActionSheet.openLazy(new Promise(r => r({ default: ReviewActionSheet })), "ReviewActionSheet", { onConfirm, item, currentUserID })
+    ? LazyActionSheet?.openLazy(new Promise(r => r({ default: ReviewActionSheet })), "ReviewActionSheet", { onConfirm, item, currentUserID })
     : Toasts.open({ content: "You cannot open ActionSheets on this version! Upgrade to 163+", source: Icons.Failed })
 }
 
 interface ReviewActionSheetProps {
   onConfirm: Function;
-  item: { [key: string]: string | number | undefined }
+  item: ReviewContentProps;
   currentUserID: string;
 }
 
@@ -37,7 +38,10 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Review item={item} onSubmit={() => { }} />
+        <Review 
+          item={item}
+          onSubmit={() => {}} 
+        />
 
         {!!item["comment"] && <Button
           text="Copy Text"

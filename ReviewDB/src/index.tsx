@@ -18,6 +18,7 @@ const ReviewDB: Plugin = {
   onStart() {
     let currentUserID = get(manifest.name, "currentUser", undefined) as string | undefined;
     let currentUserAttempts = 0;
+
     const ensureCurrentUserInitialized = () => {
       if (currentUserID || currentUserAttempts >= 3) return;
       currentUserAttempts++;
@@ -38,16 +39,16 @@ const ReviewDB: Plugin = {
       const profileCardSection = findInReactTree(res, r =>
         r?.props?.children.find((res: any) => typeof res?.props?.displayProfile?.userId === "string")
         && r?.type?.displayName === "View"
-        && Array.isArray(r?.props?.style)
-      )
+        && Array?.isArray(r?.props?.style)
+      )?.props?.children
 
       if (!profileCardSection) return res;
 
-      const { userId } = profileCardSection.props.children?.find((r: any) => typeof r?.props?.displayProfile?.userId === "string")?.props?.displayProfile ?? {};
+      const { userId } = profileCardSection?.find((r: any) => typeof r?.props?.displayProfile?.userId === "string")?.props?.displayProfile ?? {};
 
       if (!userId) return res
 
-      profileCardSection.props.children.push(<Reviews userID={userId} currentUserID={currentUserID as string} />)
+      profileCardSection?.push(<Reviews userID={userId} currentUserID={currentUserID as string} />)
     });
   },
   onStop() {

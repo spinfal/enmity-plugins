@@ -10,6 +10,7 @@ import { addReview, getReviews } from './RDBAPI';
 import Review from "./Review";
 import { renderActionSheet } from "./ReviewActionSheet";
 import styles from "./StyleSheet";
+import { ReviewContentProps } from './types';
 
 const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
 
@@ -19,14 +20,14 @@ interface ReviewsSectionProps {
 }
 
 export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsSectionProps) => {
-  const [reviews, setReviews] = React.useState<Array<{ [key: string]: string | number }>>();
+  const [reviews, setReviews] = React.useState<Array<ReviewContentProps>>();
 
   // this will update whenever this component is rerendered (as its not state or in a useEffect), aka when the reviews are set. therefore, this *should* display the correct info.
   const existingReview = reviews?.find((review: object) => review["senderdiscordid"] === currentUserID);
 
   React.useEffect(() => {
-    getReviews(userID).then(newReviews => {
-      setReviews(newReviews)
+    getReviews(userID).then(state => {
+      setReviews(state)
     });
   }, [])
 
@@ -38,16 +39,12 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
     </View>
     <View style={styles.reviewWindow}>
       <View style={styles.container}>
-        {reviews && reviews.length > 0
-          ? reviews.map((item: { [key: string]: string | number | undefined }) => <Review
+        {reviews && reviews.length > 0 
+        ? reviews.map((item: ReviewContentProps) => <Review
             item={item}
-            onSubmit={() => renderActionSheet(() => {
-              /**
-               * This closes the current ActionSheet.
-               * @param LazyActionSheet.hideActionSheet: Removes the top level action sheet.
-               */
-              LazyActionSheet.hideActionSheet();
-            }, item, currentUserID)}
+            onSubmit={() => renderActionSheet(
+              () => LazyActionSheet?.hideActionSheet(), 
+              item, currentUserID)}
           />)
           : <Text style={[
             styles.text,
@@ -74,7 +71,7 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
                   "userid": userID,
                   "comment": input.trim(),
                   "token": get(manifest.name, "rdbToken", "")
-                }).then(() => setInput(""));
+                }).then(() => setInput?.(""));
               } else {
                 Toasts.open({
                   content: "Please enter a review before submitting.",

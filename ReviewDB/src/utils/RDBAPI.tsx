@@ -1,7 +1,8 @@
 import { get } from 'enmity/api/settings';
-import { Dialog, Linking, Toasts } from 'enmity/metro/common';
+import { Dialog, Linking, Toasts, Users } from 'enmity/metro/common';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import manifest from "../../manifest.json";
+import { getByProps } from 'enmity/metro';
 
 const getRdbToken = () => get(manifest.name, "rdbToken", "");
 
@@ -115,4 +116,4 @@ export async function reportReview(id: number) {
 //     .then(Number);
 // }
 
-export function canDeleteReview(review: any, currentUserID: string) { return review.senderdiscordid == currentUserID };
+export const canDeleteReview = (review: { [key: string]: string | number | undefined }, currentUserID: string) => review["senderdiscordid"] == currentUserID;

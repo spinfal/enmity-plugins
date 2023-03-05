@@ -20,7 +20,7 @@ export default () => {
         nodeResolve(),
         commonjs(),
         json(),
-        esbuild({ minify: true, target: "ES2019" }),
+        esbuild({ minify: true, target: "ES2020" }),
       ],
     });
   });

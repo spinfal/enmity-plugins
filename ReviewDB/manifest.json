@@ -1,7 +1,7 @@
 {
   "name": "ReviewDB",
-  "version": "1.7.8",
-  "build": "patch-1.1.4",
+  "version": "1.7.9",
+  "build": "patch-1.2.0",
   "description": "Review other users. These reviews are visible to anyone with this type of plugin on any platform.",
   "authors": [
     {

@@ -47,7 +47,8 @@ export default ({ manifest }: Props) => {
         // global text styling, shared between both header and subheader
         main_text: {
             opacity: 0.975,
-            letterSpacing: 0.25
+            letterSpacing: 0.25,
+            fontFamily: Constants.Fonts.DISPLAY_NORMAL
         },
         // main header styling
         header: {

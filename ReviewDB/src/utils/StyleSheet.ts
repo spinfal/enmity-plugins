@@ -96,6 +96,26 @@ const styles = StyleSheet.createThemedStyleSheet({
     height: 16,
     marginRight: 4,
   },
+  authContainer: {
+    backgroundColor: Constants.ThemeColorMap.BACKGROUND_MOBILE_SECONDARY,
+    flex: 0.5,
+  },
+  authCard: {
+    backgroundColor: Constants.ThemeColorMap.BACKGROUND_MOBILE_PRIMARY,
+    color: Constants.ThemeColorMap.TEXT_NORMAL
+  },
+  authHeader: {
+    backgroundColor: Constants.ThemeColorMap.BACKGROUND_MOBILE_SECONDARY,
+    shadowColor: 'transparent',
+    elevation: 0,
+  },
+  authText: {
+    color: Constants.ThemeColorMap.HEADER_PRIMARY,
+    fontFamily: Constants.Fonts.PRIMARY_NORMAL,
+    fontSize: 16,
+    marginLeft: 16,
+    backgroundColor: 'transparent'
+  }
 })
 
 export default styles;

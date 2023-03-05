@@ -8,7 +8,7 @@ import showAlert from "./Alert";
 import Button from "./Button";
 import { addReview, getReviews } from './RDBAPI';
 import Review from "./Review";
-import { renderActionSheet } from "./ReviewActionSheet";
+import ReviewActionSheet, { renderActionSheet } from "./ReviewActionSheet";
 import styles from "./StyleSheet";
 import { ReviewContentProps } from './types';
 
@@ -42,9 +42,10 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
         {reviews && reviews.length > 0 
         ? reviews.map((item: ReviewContentProps) => <Review
             item={item}
-            onSubmit={() => renderActionSheet(
-              () => LazyActionSheet?.hideActionSheet(), 
-              item, currentUserID)}
+            onSubmit={() => renderActionSheet(ReviewActionSheet, {
+                onConfirm: () => LazyActionSheet?.hideActionSheet(), 
+                item, currentUserID})
+            }
           />)
           : <Text style={[
             styles.text,

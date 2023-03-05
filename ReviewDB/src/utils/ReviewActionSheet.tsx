@@ -38,9 +38,9 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Review 
+        <Review
           item={item}
-          onSubmit={() => {}} 
+          onSubmit={() => {}}
         />
 
         {!!item["comment"] && <Button

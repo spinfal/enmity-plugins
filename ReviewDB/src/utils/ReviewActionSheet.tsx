@@ -13,9 +13,9 @@ const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScr
 const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
 const Clipboard = getByProps("setString");
 
-export function renderActionSheet(onConfirm: Function, item: any, currentUserID: string) {
+export function renderActionSheet(component: any, props: { [key: string]: any }) {
   ActionSheet
-    ? LazyActionSheet?.openLazy(new Promise(r => r({ default: ReviewActionSheet })), "ReviewActionSheet", { onConfirm, item, currentUserID })
+    ? LazyActionSheet?.openLazy(new Promise(r => r({ default: component })), "ReviewActionSheet", props)
     : Toasts.open({ content: "You cannot open ActionSheets on this version! Upgrade to 163+", source: Icons.Failed })
 }
 

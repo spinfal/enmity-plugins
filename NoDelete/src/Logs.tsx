@@ -23,6 +23,7 @@ const styles = StyleSheet.createThemedStyleSheet({
     main_text: {
         opacity: 0.975,
         letterSpacing: 0.25,
+        fontFamily: Constants.Fonts.DISPLAY_NORMAL,
     },
     item_container: {
         display: "flex",
@@ -239,10 +240,10 @@ export default () => {
                                 <View>
                                     {item["content"].length == 3 ? (
                                         <>
-                                            <Text style={styles.old_message}>
+                                            <Text style={[styles.main_text, styles.old_message]}>
                                                 {item["content"][1]}
                                             </Text>
-                                            <Text style={styles.message_content}>
+                                            <Text style={[styles.main_text, styles.message_content]}>
                                                 {item["content"][2]}
                                             </Text>
                                         </>

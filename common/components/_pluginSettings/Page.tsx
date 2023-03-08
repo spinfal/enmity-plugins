@@ -6,6 +6,29 @@ import { ColorMap, Navigation, NavigationNative, NavigationStack, React, StyleSh
 export const Settings = NavigationStack.createStackNavigator();
 
 const { ThemeColorMap } = ColorMap;
+
+const styles = StyleSheet.createThemedStyleSheet({
+  container: {
+    backgroundColor: ThemeColorMap.BACKGROUND_MOBILE_SECONDARY,
+    flex: 1,
+  },
+  cardStyle: {
+    backgroundColor: ThemeColorMap.BACKGROUND_MOBILE_PRIMARY,
+    color: ThemeColorMap.TEXT_NORMAL
+  },
+  header: {
+    backgroundColor: ThemeColorMap.BACKGROUND_MOBILE_SECONDARY,
+    shadowColor: "transparent",
+    elevation: 0,
+  },
+  headerTitleContainer: {
+    color: ThemeColorMap.HEADER_PRIMARY,
+  },
+  close: {
+    color: ThemeColorMap.HEADER_PRIMARY
+  }
+});
+
 export default ({
   name = "Page",
   component = View,
@@ -16,29 +39,7 @@ export default ({
     }
   },
 } = {}) => {
-  const styles = StyleSheet.createThemedStyleSheet({
-    container: {
-      backgroundColor: ThemeColorMap.BACKGROUND_MOBILE_SECONDARY,
-      flex: 1,
-    },
-    cardStyle: {
-      backgroundColor: ThemeColorMap.BACKGROUND_MOBILE_PRIMARY,
-      color: ThemeColorMap.TEXT_NORMAL
-    },
-    header: {
-      backgroundColor: ThemeColorMap.BACKGROUND_MOBILE_SECONDARY,
-      shadowColor: "transparent",
-      elevation: 0,
-    },
-    headerTitleContainer: {
-      color: ThemeColorMap.HEADER_PRIMARY,
-    },
-    close: {
-      color: ThemeColorMap.HEADER_PRIMARY
-    }
-  });
-
-  return <NavigationNative.NavigationContainer>
+  return <NavigationNative.NavigationContainer independent>
     <Settings.Navigator
       initialRouteName={name}
       style={styles.container}

@@ -6,10 +6,11 @@ import { FormDivider, FormRow, Image, ScrollView, Text, TouchableOpacity, View }
 import { bulk, filters, getByName } from "enmity/metro";
 import { Constants, Dialog, Navigation, Profiles, React, Storage, StyleSheet, Toasts } from "enmity/metro/common";
 import { clipboard_toast, Icons } from "../../common/components/_pluginSettings/utils";
+import { Users } from 'enmity/metro/common';
 
 const [
     Clipboard, // used to copy the dl link to keyboard
-    GetProfile // used to get the user's profile
+    UncachedUserManager // used to get the user's profile
 ] = bulk(
     filters.byProps("setString"),
     filters.byProps("fetchProfile")
@@ -18,87 +19,87 @@ const [
 // main search module and arrow
 const Search = getByName("StaticSearchBarContainer");
 
-export default () => {
-    const styles = StyleSheet.createThemedStyleSheet({
-        main_text: {
-            opacity: 0.975,
-            letterSpacing: 0.25,
-        },
-        item_container: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            paddingTop: 4,
-            paddingBottom: 4,
-            width: "100%",
-        },
-        author_name: {
-            color: Constants.ThemeColorMap.HEADER_PRIMARY,
-            fontFamily: Constants.Fonts.DISPLAY_BOLD,
-            fontSize: 18,
-            letterSpacing: 0.25,
-            paddingBottom: 4,
-        },
-        log_header: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            maxWidth: "95%",
-        },
-        log_sub_header: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            maxWidth: "50%",
-        },
-        log_time: {
-            color: Constants.ThemeColorMap.TEXT_MUTED,
-            opacity: 0.990,
-            fontSize: 13,
-            paddingLeft: 4,
-        },
-        log_type: {
-            color: Constants.ThemeColorMap.TEXT_MUTED,
-            opacity: 0.450,
-            fontSize: 16,
-            marginLeft: "auto",
-        },
-        avatar_container: {
-            alignSelf: "start",
-            justifySelf: "start",
-        },
-        author_avatar: {
-            width: 40,
-            height: 40,
-            borderRadius: 100,
-        },
-        old_message: {
-            color: Constants.ThemeColorMap.TEXT_MUTED,
-            opacity: 0.890,
-            fontSize: 16,
-        },
-        message_content: {
-            color: Constants.ThemeColorMap.TEXT_NORMAL,
-            opacity: 0.985,
-            fontSize: 16,
-        },
-        main_container: {
-            paddingLeft: 8,
-            paddingRight: 4,
-            paddingTop: 2,
-            paddingBottom: 16,
-            width: "95%",
-        },
-        text_container: {
-            display: "flex",
-            flexDirection: "column",
-            paddingBottom: 4,
-            paddingLeft: 8,
-            width: "95%",
-        },
-    });
+const styles = StyleSheet.createThemedStyleSheet({
+    main_text: {
+        opacity: 0.975,
+        letterSpacing: 0.25,
+    },
+    item_container: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        paddingTop: 4,
+        paddingBottom: 4,
+        width: "100%",
+    },
+    author_name: {
+        color: Constants.ThemeColorMap.HEADER_PRIMARY,
+        fontFamily: Constants.Fonts.DISPLAY_BOLD,
+        fontSize: 18,
+        letterSpacing: 0.25,
+        paddingBottom: 4,
+    },
+    log_header: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        maxWidth: "95%",
+    },
+    log_sub_header: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        maxWidth: "50%",
+    },
+    log_time: {
+        color: Constants.ThemeColorMap.TEXT_MUTED,
+        opacity: 0.990,
+        fontSize: 13,
+        paddingLeft: 4,
+    },
+    log_type: {
+        color: Constants.ThemeColorMap.TEXT_MUTED,
+        opacity: 0.450,
+        fontSize: 16,
+        marginLeft: "auto",
+    },
+    avatar_container: {
+        alignSelf: "start",
+        justifySelf: "start",
+    },
+    author_avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 100,
+    },
+    old_message: {
+        color: Constants.ThemeColorMap.TEXT_MUTED,
+        opacity: 0.890,
+        fontSize: 16,
+    },
+    message_content: {
+        color: Constants.ThemeColorMap.TEXT_NORMAL,
+        opacity: 0.985,
+        fontSize: 16,
+    },
+    main_container: {
+        paddingLeft: 8,
+        paddingRight: 4,
+        paddingTop: 2,
+        paddingBottom: 16,
+        width: "95%",
+    },
+    text_container: {
+        display: "flex",
+        flexDirection: "column",
+        paddingBottom: 4,
+        paddingLeft: 8,
+        width: "95%",
+    },
+});
 
+export default () => {
     // shorten string
     const shortenStr = (str: string, maxLen: number): string => {
         if (str.length > maxLen) {
@@ -210,15 +211,9 @@ export default () => {
                     <>
                         <View style={styles.item_container}>
                             <TouchableOpacity onPress={() => {
-                                GetProfile.fetchProfile(item["author"]["id"]).then(() => {
-                                    Profiles.showUserProfile({ userId: item["author"]["id"] });
-                                }).catch((err: any) => {
-                                    Toasts.open({
-                                        content: "Error while fetching user. Check logs for more info.",
-                                        source: Icons.Failed,
-                                    })
-                                    console.log("[NoDelete User Fetch Error]", err)
-                                })
+                                Users.getUser(item["author"]["id"])
+                                    ? Profiles.showUserProfile({ userId: item["author"]["id"] })
+                                    : UncachedUserManager.getUser(item["author"]["id"]).then(() => Profiles.showUserProfile({ userId: item["author"]["id"] }))
                             }} style={styles.avatar_container}>
                                 <Image
                                     style={styles.author_avatar}

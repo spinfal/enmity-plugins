@@ -7,19 +7,27 @@ import { get, getBoolean, set, SettingsStore } from "enmity/api/settings";
 import { FormDivider, FormInput, FormRow, FormSection, FormSwitch } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
 import { getByProps } from "enmity/metro";
-import { Constants, Navigation, React, Storage, StyleSheet, Toasts, Users } from "enmity/metro/common";
+import { Constants, React, Storage, StyleSheet, Toasts, Users } from "enmity/metro/common";
 import { create } from "enmity/patcher";
-import Page from "../../common/components/_pluginSettings/Page";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import { Icons } from "../../common/components/_pluginSettings/utils";
 import { updateLogStorage } from "../functions/updateLogStorage";
 import manifest from "../manifest.json";
 import { commands } from './commands';
-import Logs from "./Logs";
+import LogsToggle from "./LogsToggle";
 
 interface SettingsProps {
     settings: SettingsStore;
 }
+
+const styles = StyleSheet.createThemedStyleSheet({
+    icon: {
+        color: Constants.ThemeColorMap.INTERACTIVE_NORMAL
+    },
+    item: {
+        color: Constants.ThemeColorMap.TEXT_MUTED
+    }
+});
 
 let currentUserID
 const Patcher = create(manifest.name);
@@ -188,26 +196,8 @@ const NoDelete: Plugin = {
         this.commands = [];
     },
     getSettingsPanel({ settings }: SettingsProps): any {
-        const styles = StyleSheet.createThemedStyleSheet({
-            icon: {
-                color: Constants.ThemeColorMap.INTERACTIVE_NORMAL
-            },
-            item: {
-                color: Constants.ThemeColorMap.TEXT_MUTED
-            }
-        });
-
         return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={commands}>
-            <FormSection title="Message Logs">
-                <FormRow
-                    label="View Message Logs"
-                    subLabel="Tap on an item to copy to clipboard"
-                    leading={<FormRow.Icon style={styles.icon} source={Icons.Settings.Debug} />}
-                    onPress={() => {
-                        Navigation.push(Page, { component: Logs, name: "NoDelete Message Logs" }) // opens custom page with logs
-                    }}
-                />
-            </FormSection>
+            <LogsToggle styles={styles} />
             <FormDivider />
             <FormSection title="Plugin Settings">
                 <FormRow

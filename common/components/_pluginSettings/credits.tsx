@@ -22,49 +22,49 @@ const [
     filters.byProps('setString'),
 );
 
-export default ({ manifest }: Props) => {
-    const styles = StyleSheet.createThemedStyleSheet({
-        // main container styles with everything inside
-        container: {
-            paddingTop: 30,
-            paddingLeft: 20,
-            marginBottom: -5,
-            flexDirection: "row"
-        },
-        // styles for the container inside of the container, which has the main text elements
-        text_container: {
-            paddingLeft: 15,
-            paddingTop: 5,
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-        },
-        // main image styling
-        image: {
-            width: 75,
-            height: 75,
-            borderRadius: 10
-        },
-        // global text styling, shared between both header and subheader
-        main_text: {
-            opacity: 0.975,
-            letterSpacing: 0.25,
-            fontFamily: Constants.Fonts.DISPLAY_NORMAL
-        },
-        // main header styling
-        header: {
-            color: Constants.ThemeColorMap.HEADER_PRIMARY,
-            fontFamily: Constants.Fonts.DISPLAY_BOLD,
-            fontSize: 25,
-            letterSpacing: 0.25
-        },
-        // main subheader styling
-        sub_header: {
-            color: Constants.ThemeColorMap.HEADER_SECONDARY,
-            opacity: 0.975,
-            fontSize: 12.75,
-        }
-    }); // main stylesheet
+const styles = StyleSheet.createThemedStyleSheet({
+    // main container styles with everything inside
+    container: {
+        paddingTop: 30,
+        paddingLeft: 20,
+        marginBottom: -5,
+        flexDirection: "row"
+    },
+    // styles for the container inside of the container, which has the main text elements
+    text_container: {
+        paddingLeft: 15,
+        paddingTop: 5,
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+    },
+    // main image styling
+    image: {
+        width: 75,
+        height: 75,
+        borderRadius: 10
+    },
+    // global text styling, shared between both header and subheader
+    main_text: {
+        opacity: 0.975,
+        letterSpacing: 0.25,
+        fontFamily: Constants.Fonts.DISPLAY_NORMAL
+    },
+    // main header styling
+    header: {
+        color: Constants.ThemeColorMap.HEADER_PRIMARY,
+        fontFamily: Constants.Fonts.DISPLAY_BOLD,
+        fontSize: 25,
+        letterSpacing: 0.25
+    },
+    // main subheader styling
+    sub_header: {
+        color: Constants.ThemeColorMap.HEADER_SECONDARY,
+        opacity: 0.975,
+        fontSize: 12.75,
+    }
+}); // main stylesheet
 
+export default ({ manifest }: Props) => {
     // uses React.useRef() to bind the value to the button
     const animatedButtonScale = React.useRef(new Animated.Value(1)).current // no scale initially
 

@@ -68,6 +68,7 @@ const styles = StyleSheet.createThemedStyleSheet({
     avatar_container: {
         alignSelf: "start",
         justifySelf: "start",
+        marginTop: 5
     },
     author_avatar: {
         width: 40,

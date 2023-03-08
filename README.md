@@ -34,6 +34,10 @@ Join the [Official Enmity Discord server](https://out.spin.rip/enmity)
 
 # Spin's plugins
 
+## ReviewDB
+[Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/ReviewDB.js)
+
+[Source](https://github.com/spinfal/enmity-plugins/tree/master/ReviewDB)
 ## CustomSlowmode
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/CustomSlowmode.js)
 

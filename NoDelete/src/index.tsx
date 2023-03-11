@@ -183,9 +183,17 @@ const NoDelete: Plugin = {
             }
         };
 
-        setTimeout(() => {
-            currentUserID = Users.getCurrentUser().id
+        const mainLoop = () => {
+            if (!Users.getCurrentUser()) {
+                console.warn(`Current user hasn't initialized yet!: ${Users.getCurrentUser()}. Trying again in 25ms`)
+                return setTimeout(() => mainLoop(), 25);
+            }
+            currentUserID = Users.getCurrentUser().id;
             plugin();
+        }
+
+        setTimeout(() => {
+            mainLoop()
         }, 300); // give Flux some time to initialize -- 300ms should be more than enough
 
         this.commands = commands;

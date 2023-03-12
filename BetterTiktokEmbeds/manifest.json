@@ -1,7 +1,7 @@
 {
   "name": "BetterTiktokEmbeds",
   "version": "1.2.6",
-  "build": "patch-1.0.14",
+  "build": "patch-1.0.15",
   "description": "Convert TikTok links to vm.dstn.to links so the TikTok embed is better and can be played.",
   "authors": [
     {

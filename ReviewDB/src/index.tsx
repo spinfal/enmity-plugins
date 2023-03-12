@@ -23,13 +23,13 @@ const ReviewDB: Plugin = {
     let currentUserAttempts = 0;
 
     const ensureCurrentUserInitialized = () => {
-      if (currentUserID || currentUserAttempts >= 3) return;
+      if (currentUserID || currentUserAttempts >= 20) return;
       currentUserAttempts++;
       setTimeout(() => {
         currentUserID = Users.getCurrentUser().id;
         if (!currentUserID) return ensureCurrentUserInitialized();
         set(manifest.name, "currentUser", currentUserID);
-      }, 500);
+      }, 25);
     }
 
     ensureCurrentUserInitialized();

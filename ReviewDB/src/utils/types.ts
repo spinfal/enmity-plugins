@@ -1,4 +1,5 @@
 export interface ReviewContentProps {
+    timestamp: number,
     senderdiscordid: string,
     profile_photo: string,
     username: string;

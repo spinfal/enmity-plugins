@@ -1,6 +1,6 @@
 import { Image, Text, TouchableOpacity, View } from "enmity/components";
 import { bulk, filters } from "enmity/metro";
-import { Profiles, React, Toasts, Users } from 'enmity/metro/common';
+import { Constants, Profiles, React, Toasts, Users } from 'enmity/metro/common';
 import styles from "./StyleSheet";
 import { ReviewContentProps } from "./types";
 
@@ -18,6 +18,23 @@ interface ReviewProps {
 }
 
 export default ({ item, onSubmit }: ReviewProps) => {
+  const [formattedTime, setFormattedTime] = React.useState<string>();
+
+  React.useEffect(() => {
+    setFormattedTime(new Date(item["timestamp"] * 1000)
+        .toLocaleString(undefined, { 
+            hour: 'numeric', 
+            minute: 'numeric', 
+            day: 'numeric', 
+            month: 'numeric', 
+            year: 'numeric' })
+        .split(",")
+        .map(item => item.replace(/ /g, ""))
+        .reverse()
+        .join(" "))
+  })
+
+
   // This was a lot easier than i thought, it automatically uses the correct profile theme colors when rendered.
   // if the user has no profile theme colors or this is not rendered inside of a profile, then the fallback color will be used.
   return <ProfileGradientCard style={styles.reviewContainer} fallbackBackground={styles.fallback.color}>
@@ -50,6 +67,12 @@ export default ({ item, onSubmit }: ReviewProps) => {
               uri: item["badges"][0]["badge_icon"],
             }}
           />}
+          <Text style={{ 
+              ...styles.mainText, 
+              ...styles.timestamp
+            }}>
+              {formattedTime}
+            </Text>
         </TouchableOpacity>
         <Text style={styles.messageContent}>
           {item["comment"] ?? "Invalid message content."}

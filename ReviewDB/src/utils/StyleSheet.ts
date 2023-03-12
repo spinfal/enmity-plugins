@@ -65,6 +65,7 @@ const styles = StyleSheet.createThemedStyleSheet({
     fontFamily: Constants.Fonts.DISPLAY_BOLD,
     fontSize: AUTHOR_SIZE,
     letterSpacing: 0.25,
+    marginTop: -3
   },
   avatarContainer: {
     display: "flex",
@@ -121,6 +122,14 @@ const styles = StyleSheet.createThemedStyleSheet({
     fontSize: 16,
     marginLeft: 16,
     backgroundColor: 'transparent'
+  },
+  timestamp: {
+    color: Constants.ThemeColorMap.HEADER_PRIMARY,
+    fontFamily: Constants.Fonts.DISPLAY_NORMAL,
+    opacity: 0.985,
+    fontSize: 12,
+    marginLeft: 4,
+    marginTop: AUTHOR_SIZE/12
   }
 })
 

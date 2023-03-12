@@ -60,13 +60,13 @@ export default ({ item, onSubmit }: ReviewProps) => {
               {item["username"]}
             </Text>
           </View>
-          {item["badges"]?.[0]?.["badge_icon"] && <Image
+          {item["badges"].length > 0 && item["badges"].map(badge => <Image
             loading="lazy"
             style={styles.rdbBadge}
             source={{
-              uri: item["badges"][0]["badge_icon"],
+              uri: badge["badge_icon"],
             }}
-          />}
+          />)}
           <Text style={{ 
               ...styles.mainText, 
               ...styles.timestamp

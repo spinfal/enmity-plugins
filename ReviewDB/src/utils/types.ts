@@ -4,5 +4,5 @@ export interface ReviewContentProps {
     profile_photo: string,
     username: string;
     comment: string;
-    [key: string]: string | number | undefined
+    badges: any[];
 }

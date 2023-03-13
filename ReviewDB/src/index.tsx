@@ -9,16 +9,14 @@ import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
 import { Icons } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
 import Reviews from "./utils/Reviews";
-import { renderActionSheet } from './utils/ReviewActionSheet';
-import Page from "./utils/Page";
+import { showOAuth2Modal } from './utils/RDBAPI';
 
 const Patcher = create(manifest.name);
 const UserProfile = getByProps("PRIMARY_INFO_TOP_OFFSET", "SECONDARY_INFO_TOP_MARGIN", "SIDE_PADDING");
-const OAuth2AuthorizeModal = getByName("OAuth2AuthorizeModal");
 
 const ReviewDB: Plugin = {
   ...manifest,
-  onStart() {
+  async onStart() {
     let currentUserID = get(manifest.name, "currentUser", undefined) as string | undefined;
     let currentUserAttempts = 0;
 
@@ -33,6 +31,9 @@ const ReviewDB: Plugin = {
     }
 
     ensureCurrentUserInitialized();
+
+    const admins = await fetch(manifest.API_URL + "/admins")
+      .then(res => res.json())
 
     /*
       massive huge thanks to rosie. :3
@@ -51,7 +52,7 @@ const ReviewDB: Plugin = {
 
       if (!userId) return res
 
-      profileCardSection?.push(<Reviews userID={userId} currentUserID={currentUserID as string} />)
+      profileCardSection?.push(<Reviews userID={userId} currentUserID={currentUserID as string} admins={admins} />)
     });
   },
   onStop() {
@@ -68,43 +69,7 @@ const ReviewDB: Plugin = {
           trailing={FormRow.Arrow}
           // @ts-ignore
           leading={<FormRow.Icon source={Icons.Settings.Self} />}
-          onPress={() => {
-            get(manifest.name, "rdbToken", "") == "" ? Navigation.push(Page, {
-              component: () => <OAuth2AuthorizeModal 
-                clientId="915703782174752809"
-                redirectUri={manifest.API_URL + "/URauth"}
-                scopes={["identify"]}
-                responseType={"code"}
-                permissions={0n}
-                cancelCompletesFlow={false}
-                callback={async function({ location }) {
-                  try {
-                    const authURL = new URL(location);
-                    authURL.searchParams.append("returnType", "json");
-                    authURL.searchParams.append("clientMod", "enmity");
-
-                    const res = await fetch(authURL, { headers: { accept: "application/json" } });
-                    const { token, status } = await res.json();
-
-                    if (status === 0) {
-                      // success! we can set the token
-                      set(manifest.name, "rdbToken", token)
-                    } else {
-                      // failure :c
-                      throw new Error(`Status returned by backend was not OK: ${status}`);
-                    }
-                  } catch(e) {
-                    Navigation.pop();
-                    console.error(`[${manifest.name}] Error when authorizing account: ${e}`)
-                  }
-                }}
-                dismissOAuthModal={() => Navigation.pop()}
-              />
-            }) : Toasts.open({
-              content: "You already have a token set!",
-              source: Icons.Initial
-            })
-          }}
+          onPress={() => showOAuth2Modal()}
         />
         <FormDivider />
         <FormInput

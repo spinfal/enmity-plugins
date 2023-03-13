@@ -1,8 +1,8 @@
-import { React, Navigation, NavigationNative, NavigationStack, StyleSheet, Constants } from 'enmity/metro/common';
+import { React, Navigation, NavigationNative, NavigationStack, Constants } from 'enmity/metro/common';
 import { TouchableOpacity, Text, View } from 'enmity/components';
 import styles from './StyleSheet';
-
 const PageNavigator = NavigationStack.createStackNavigator();
+
 export default ({ component = View } = {}) => {
   return <NavigationNative.NavigationContainer independent>
     <PageNavigator.Navigator

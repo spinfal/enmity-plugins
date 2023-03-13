@@ -7,6 +7,7 @@ import Button from "./Button";
 import { canDeleteReview, deleteReview, reportReview } from './RDBAPI';
 import Review from './Review';
 import { ReviewContentProps } from './types';
+import { API_URL } from "../../manifest.json"
 
 const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } }).default.render;
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;
@@ -23,9 +24,10 @@ interface ReviewActionSheetProps {
   onConfirm: Function;
   item: ReviewContentProps;
   currentUserID: string;
+  admins: string[]
 }
 
-export default function ReviewActionSheet({ onConfirm, item, currentUserID }: ReviewActionSheetProps) {
+export default function ReviewActionSheet({ onConfirm, item, currentUserID, admins }: ReviewActionSheetProps) {
   // it is not scrollable, meaning the height is not predefined, and takes up however much is required to render the content, up to half of the screen.
   return <ActionSheet>
     <BottomSheetScrollView contentContainerStyle={{ marginBottom: 10 }}>
@@ -43,7 +45,7 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
           onSubmit={() => {}}
         />
 
-        {!!item["comment"] && <Button
+        {Boolean(item["comment"]) && <Button
           text="Copy Text"
           image="ic_message_copy"
           onPress={() => {
@@ -52,7 +54,7 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
             onConfirm()
           }}
         />}
-        {!!item["id"] && <Button
+        {Boolean(item["id"]) && <Button
           text="Copy ID"
           image="ic_copy_id"
           onPress={() => {
@@ -61,18 +63,20 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
             onConfirm()
           }}
         />}
-        {canDeleteReview(item, currentUserID) && <Button
+        {canDeleteReview(item, currentUserID, admins) && <Button
           text="Delete Review"
           image="ic_message_delete"
+          dangerous
           onPress={() => {
             deleteReview(item["id"] as number).then(() => {
               onConfirm()
             })
           }}
         />}
-        {item["id"] && <Button
+        {Boolean(item["id"]) && <Button
           text="Report Review"
           image="ic_warning_24px"
+          dangerous
           onPress={() => {
             reportReview(item["id"] as number).then(() => {
               onConfirm()

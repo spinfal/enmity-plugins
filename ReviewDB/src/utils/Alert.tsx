@@ -24,6 +24,7 @@ export const showAlert = ({ title, userID, confirmText = "Confirm", onConfirm, e
     children: <>
       <Text style={[
         styles.text,
+        styles.safeText,
         styles.mainText,
         styles.buttonText,
         { paddingTop: 10, marginLeft: 0 }

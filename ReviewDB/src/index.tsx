@@ -16,7 +16,7 @@ const UserProfile = getByProps("PRIMARY_INFO_TOP_OFFSET", "SECONDARY_INFO_TOP_MA
 
 const ReviewDB: Plugin = {
   ...manifest,
-  onStart() {
+  async onStart() {
     let currentUserID = get(manifest.name, "currentUser", undefined) as string | undefined;
     let currentUserAttempts = 0;
 
@@ -31,6 +31,9 @@ const ReviewDB: Plugin = {
     }
 
     ensureCurrentUserInitialized();
+
+    const admins = await fetch(manifest.API_URL + "/admins")
+      .then(res => res.json())
 
     /*
       massive huge thanks to rosie. :3
@@ -49,7 +52,7 @@ const ReviewDB: Plugin = {
 
       if (!userId) return res
 
-      profileCardSection?.push(<Reviews userID={userId} currentUserID={currentUserID as string} />)
+      profileCardSection?.push(<Reviews userID={userId} currentUserID={currentUserID as string} admins={admins} />)
     });
   },
   onStop() {

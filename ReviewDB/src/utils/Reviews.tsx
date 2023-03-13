@@ -17,9 +17,10 @@ const LazyActionSheet = getByProps("openLazy", "hideActionSheet");
 interface ReviewsSectionProps {
   userID: string;
   currentUserID: string;
+  admins: string[]
 }
 
-export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsSectionProps) => {
+export default ({ userID, currentUserID = Users.getCurrentUser()?.id, admins = [] }: ReviewsSectionProps) => {
   const [reviews, setReviews] = React.useState<Array<ReviewContentProps>>();
 
   // this will update whenever this component is rerendered (as its not state or in a useEffect), aka when the reviews are set. therefore, this *should* display the correct info.
@@ -44,7 +45,8 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
             item={item}
             onSubmit={() => renderActionSheet(ReviewActionSheet, {
                 onConfirm: () => LazyActionSheet?.hideActionSheet(), 
-                item, currentUserID})
+                item, currentUserID, admins
+              })
             }
           />)
           : <Text style={[

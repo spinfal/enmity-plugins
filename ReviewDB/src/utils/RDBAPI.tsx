@@ -158,6 +158,8 @@ export async function reportReview(id: number) {
 //     .then(Number);
 // }
 
-export const canDeleteReview = (review: ReviewContentProps, currentUserID: string) => 
-  Boolean(review['badges'].find(badge => badge["badge_name"] === "Admin"))
-    ?? review["senderdiscordid"] == currentUserID;
+export const canDeleteReview = (
+  review: ReviewContentProps, 
+  currentUserID: string, 
+  admins: string[]
+) => admins.includes(currentUserID) ?? review["senderdiscordid"] == currentUserID

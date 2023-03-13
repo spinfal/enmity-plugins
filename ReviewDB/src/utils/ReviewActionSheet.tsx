@@ -43,7 +43,7 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
           onSubmit={() => {}}
         />
 
-        {!!item["comment"] && <Button
+        {Boolean(item["comment"]) && <Button
           text="Copy Text"
           image="ic_message_copy"
           onPress={() => {
@@ -52,7 +52,7 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
             onConfirm()
           }}
         />}
-        {!!item["id"] && <Button
+        {Boolean(item["id"]) && <Button
           text="Copy ID"
           image="ic_copy_id"
           onPress={() => {
@@ -64,15 +64,17 @@ export default function ReviewActionSheet({ onConfirm, item, currentUserID }: Re
         {canDeleteReview(item, currentUserID) && <Button
           text="Delete Review"
           image="ic_message_delete"
+          dangerous
           onPress={() => {
             deleteReview(item["id"] as number).then(() => {
               onConfirm()
             })
           }}
         />}
-        {item["id"] && <Button
+        {Boolean(item["id"]) && <Button
           text="Report Review"
           image="ic_warning_24px"
+          dangerous
           onPress={() => {
             reportReview(item["id"] as number).then(() => {
               onConfirm()

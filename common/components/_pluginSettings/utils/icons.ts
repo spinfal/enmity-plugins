@@ -10,11 +10,13 @@ export const Icons = {
   Clear: getIDByName('ic_clear_all_24px'),
   Pencil: getIDByName('ic_pencil_24px'),
   Success: getIDByName('ic_selection_checked_24px'),
+  Warning: getIDByName('ic_warning_24px'),
 
   Copy: getIDByName('toast_copy_link'),
   Open: getIDByName('ic_leave_stage'),
   Clipboard: getIDByName('pending-alert'),
   Initial: getIDByName('coffee'),
+  Shield: getIDByName("ic_person_shield"),
 
   Debug_Command: {
     Sent: getIDByName('ic_application_command_24px'),

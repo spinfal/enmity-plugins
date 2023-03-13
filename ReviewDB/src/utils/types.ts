@@ -5,4 +5,5 @@ export interface ReviewContentProps {
     username: string;
     comment: string;
     badges: any[];
+    isSystemMessage: boolean;
 }

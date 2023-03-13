@@ -1,8 +1,10 @@
-import { Image, Text, TouchableOpacity, View } from "enmity/components";
+import { Image, Text, TouchableOpacity, View, FormRow } from "enmity/components";
 import { bulk, filters } from "enmity/metro";
-import { Constants, Profiles, React, Toasts, Users } from 'enmity/metro/common';
+import { Profiles, React, Users } from 'enmity/metro/common';
 import styles from "./StyleSheet";
 import { ReviewContentProps } from "./types";
+import { Toasts } from 'enmity/metro/common';
+import { Icons } from '../../../common/components/_pluginSettings/utils/icons';
 
 const [
   { ProfileGradientCard }, // used to render a card with the external colors being the user's profile theme. requires padding tobe set as a result.
@@ -21,7 +23,7 @@ export default ({ item, onSubmit }: ReviewProps) => {
   const [formattedTime, setFormattedTime] = React.useState<string>();
 
   React.useEffect(() => {
-    setFormattedTime(new Date(item["timestamp"] * 1000)
+    Boolean(item["timestamp"]) && setFormattedTime(new Date(item["timestamp"] * 1000)
         .toLocaleString(undefined, { 
             hour: 'numeric', 
             minute: 'numeric', 
@@ -48,31 +50,60 @@ export default ({ item, onSubmit }: ReviewProps) => {
           }}
           style={styles.avatarContainer}
         >
-          <Image
+          {Boolean(item["profile_photo"]) && <Image
             loading="lazy"
-            style={styles.authorAvatar}
+            style={styles.avatarAuthor}
             source={{
               uri: (item["profile_photo"] as string)?.replace("?size=128", "?size=48"),
             }}
-          />
-          <View style={{ marginLeft: 6 }}>
+          />}
+          {Boolean(item["username"]) && <View style={{ marginLeft: 6 }}>
             <Text style={[styles.mainText, styles.authorName]}>
               {item["username"]}
             </Text>
-          </View>
-          {item["badges"].length > 0 && item["badges"].map(badge => <Image
-            loading="lazy"
-            style={styles.rdbBadge}
-            source={{
-              uri: badge["badge_icon"],
-            }}
-          />)}
-          <Text style={{ 
+          </View>}
+          {item["isSystemMessage"] && <TouchableOpacity
+            style={styles.systemContainer}
+            onPress={() => Toasts.open({
+              source: Icons.Shield,
+              content: "This is an automated system review."
+            })}
+          >
+            {/* @ts-ignore */}
+            <FormRow.Icon source={Icons.Warning} style={[
+              styles.systemIcon, 
+              styles.dangerousIcon
+            ]} />
+            <Text style={[
+              styles.text,
+              styles.mainText, 
+              styles.dangerousText,
+              styles.systemText
+            ]}>
+              SYSTEM
+            </Text> 
+          </TouchableOpacity>}
+          {Boolean(item["badges"].length > 0) && item["badges"].map(badge => <TouchableOpacity
+            onPress={() => Toasts.open({
+              source: {
+                uri: badge["badge_icon"]
+              },
+              content: badge["badge_name"]
+          })}>
+            <Image
+              loading="lazy"
+              style={styles.rdbBadge}
+              source={{
+                uri: badge["badge_icon"],
+              }}
+            />
+          </TouchableOpacity>)}
+          {Boolean(item["timestamp"]) && <Text style={{ 
               ...styles.mainText, 
               ...styles.timestamp
-            }}>
-              {formattedTime}
-            </Text>
+          }}>
+            {formattedTime}
+          </Text>}
         </TouchableOpacity>
         <Text style={styles.messageContent}>
           {item["comment"] ?? "Invalid message content."}

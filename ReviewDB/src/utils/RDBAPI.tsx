@@ -1,10 +1,14 @@
-import { get } from 'enmity/api/settings';
-import { Dialog, Linking, Toasts } from 'enmity/metro/common';
+import { get, set } from 'enmity/api/settings';
+import { getByName } from 'enmity/metro';
+import { Dialog, Navigation, Toasts } from 'enmity/metro/common';
+import React from 'react';
 import { Icons } from '../../../common/components/_pluginSettings/utils';
 import manifest from "../../manifest.json";
+import Page from './Page';
 import { ReviewContentProps } from './types';
 
 const getRdbToken = () => get(manifest.name, "rdbToken", "");
+const OAuth2AuthorizeModal = getByName("OAuth2AuthorizeModal");
 
 let isShowing = false;
 const checkToken = (): boolean => {
@@ -20,7 +24,7 @@ const checkToken = (): boolean => {
 
       // run the install function
       onConfirm: () => {
-        Linking.openURL("https://discord.com/api/v9/oauth2/authorize?client_id=915703782174752809&response_type=code&redirect_uri=https%3A%2F%2Fmanti.vendicated.dev%2FURauth&scope=identify")
+        showOAuth2Modal();
         isShowing = false;
       },
 
@@ -33,6 +37,44 @@ const checkToken = (): boolean => {
 
   return true;
 }
+
+export const showOAuth2Modal = () => get(manifest.name, "rdbToken", "") == "" 
+  ? Navigation.push(Page, {
+    component: () => <OAuth2AuthorizeModal 
+      clientId="915703782174752809"
+      redirectUri={manifest.API_URL + "/URauth"}
+      scopes={["identify"]}
+      responseType={"code"}
+      permissions={0n}
+      cancelCompletesFlow={false}
+      callback={async function({ location }) {
+        try {
+          const authURL = new URL(location);
+          authURL.searchParams.append("returnType", "json");
+          authURL.searchParams.append("clientMod", "enmity");
+
+          const res = await fetch(authURL, { headers: { accept: "application/json" } });
+          const { token, status } = await res.json();
+
+          if (status === 0) {
+            // success! we can set the token
+            set(manifest.name, "rdbToken", token)
+          } else {
+            // failure :c
+            throw new Error(`Status returned by backend was not OK: ${status}`);
+          }
+        } catch(e) {
+          Navigation.pop();
+          console.error(`[${manifest.name}] Error when authorizing account: ${e}`)
+        }
+      }}
+      dismissOAuthModal={() => Navigation.pop()}
+    />
+  }) 
+  : Toasts.open({
+    content: "You already have a token set!",
+    source: Icons.Initial
+  })
 
 export async function getReviews(userID: string) {
   try {

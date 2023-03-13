@@ -4,6 +4,9 @@ export interface ReviewContentProps {
     profile_photo: string,
     username: string;
     comment: string;
-    badges: any[];
+    badges: Array<{ 
+        badge_name: string;
+        badge_icon: string;
+    }> | [];
     isSystemMessage: boolean;
 }

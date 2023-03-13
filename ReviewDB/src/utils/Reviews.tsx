@@ -49,6 +49,7 @@ export default ({ userID, currentUserID = Users.getCurrentUser()?.id }: ReviewsS
           />)
           : <Text style={[
             styles.text,
+            styles.safeText,
             styles.content,
             { alignSelf: "center" }
           ]}>

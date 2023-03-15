@@ -1,87 +1,51 @@
-import { get, set } from "enmity/api/settings";
-import { FormDivider, FormInput, FormRow, FormSection } from "enmity/components";
+import { reload } from "enmity/api/native";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { getByName, getByProps } from "enmity/metro";
-import { Navigation, React, Toasts, Users } from "enmity/metro/common";
-import { create } from "enmity/patcher";
-import { findInReactTree } from "enmity/utilities";
+import { Dialog, Linking, React } from "enmity/metro/common";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";
-import { Icons } from "../../common/components/_pluginSettings/utils";
 import manifest from "../manifest.json";
-import Reviews from "./utils/Reviews";
-import { showOAuth2Modal } from './utils/RDBAPI';
-
-const Patcher = create(manifest.name);
-const UserProfile = getByProps("PRIMARY_INFO_TOP_OFFSET", "SECONDARY_INFO_TOP_MARGIN", "SIDE_PADDING");
 
 const ReviewDB: Plugin = {
   ...manifest,
-  async onStart() {
-    let currentUserID = get(manifest.name, "currentUser", undefined) as string | undefined;
-    let currentUserAttempts = 0;
+  onStart() {
+    // @ts-ignore
+    window.enmity.plugins.disablePlugin(manifest.name)
 
-    const ensureCurrentUserInitialized = () => {
-      if (currentUserID || currentUserAttempts >= 20) return;
-      currentUserAttempts++;
-      setTimeout(() => {
-        currentUserID = Users.getCurrentUser().id;
-        if (!currentUserID) return ensureCurrentUserInitialized();
-        set(manifest.name, "currentUser", currentUserID);
-      }, 25);
-    }
+    Dialog.show({
+      title: "Oh no!",
+      body: "You have installed the old and deprecated version of ReviewDB. Please uninstall this plugin and install the new one.",
+      confirmText: "Get the new version",
+      cancelText: "Not now",
 
-    ensureCurrentUserInitialized();
-
-    const admins = await fetch(manifest.API_URL + "/admins")
-      .then(res => res.json())
-
-    /*
-      massive huge thanks to rosie. :3
-      https://github.com/acquitelol
-    */
-    Patcher.after(UserProfile.default, "type", (_, __, res) => {
-      const profileCardSection = findInReactTree(res, r =>
-        r?.props?.children.find((res: any) => typeof res?.props?.displayProfile?.userId === "string")
-        && r?.type?.displayName === "View"
-        && Array?.isArray(r?.props?.style)
-      )?.props?.children
-
-      if (!profileCardSection) return res;
-
-      const { userId } = profileCardSection?.find((r: any) => typeof r?.props?.displayProfile?.userId === "string")?.props?.displayProfile ?? {};
-
-      if (!userId) return res
-
-      profileCardSection?.push(<Reviews userID={userId} currentUserID={currentUserID as string} admins={admins} />)
+      onConfirm: () => {
+        // @ts-ignore
+        window.enmity.plugins.installPlugin("https://raw.githubusercontent.com/StupidityDB/EnmityPlugin/master/dist/ReviewDB.js", ({ data }) => {
+          // as a callback, waits for a success of "installed-plugin" or "overriden-plugin"
+          // before showing the dialog to reload discord
+          data == "installed_plugin" || data == "overridden_plugin"
+            ? Dialog.show({
+              title: "Upgrade successful!",
+              body: "The plugin has been successfully replaced. Would you like to reload Discord now?",
+              confirmText: "Yep!",
+              cancelText: "Not now",
+              // reload discord from native function
+              onConfirm: () => { reload() },
+            })
+            : Dialog.show({
+              title: "Error",
+              body: `Something went wrong while updating ${manifest['name']}.`,
+              confirmText: "Report this issue",
+              cancelText: "Cancel",
+              onConfirm: () => {
+                Linking.openURL(`https://github.com/spinfal/enmity-plugins/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D%20${manifest['name']}%20Upgrade%20Error%3A%20${manifest.version}`);
+              }
+            });
+        })
+      },
     });
   },
-  onStop() {
-    Patcher.unpatchAll();
-  },
+  onStop() { },
   getSettingsPanel({ settings }): any {
-    return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={null}>
-      {/* @ts-ignore */}
-      <FormSection title="Plugin Settings">
-        <FormRow
-          // @ts-ignore
-          label="Authenticate with ReviewDB"
-          subLabel="Open a modal to authenticate your account with the ReviewDB API."
-          trailing={FormRow.Arrow}
-          // @ts-ignore
-          leading={<FormRow.Icon source={Icons.Settings.Self} />}
-          onPress={() => showOAuth2Modal()}
-        />
-        <FormDivider />
-        <FormInput
-          placeholder="Your token goes here"
-          value={get(manifest.name, "rdbToken", "")}
-          onChange={(value: string) => (/^[A-Za-z0-9]{30,32}$/.test(value) 
-            ? set(manifest.name, "rdbToken", value.trim()) 
-            : set(manifest.name, "rdbToken", ""))}
-          title="ReviewDB Authentication Token"
-        />
-      </FormSection>
-    </SettingsPage>
+    return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={null}></SettingsPage>
   },
 };
 

@@ -1,8 +1,8 @@
 import { get, set } from "enmity/api/settings";
 import { FormDivider, FormInput, FormRow, FormSection } from "enmity/components";
 import { Plugin, registerPlugin } from "enmity/managers/plugins";
-import { getByName, getByProps } from "enmity/metro";
-import { Navigation, React, Toasts, Users } from "enmity/metro/common";
+import { getByProps } from "enmity/metro";
+import { React, Users } from "enmity/metro/common";
 import { create } from "enmity/patcher";
 import { findInReactTree } from "enmity/utilities";
 import SettingsPage from "../../common/components/_pluginSettings/settingsPage";

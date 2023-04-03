@@ -1,6 +1,6 @@
 {
   "name": "NoDelete",
-  "version": "3.5.14",
+  "version": "3.5.15",
   "build": "patch-1.0.12",
   "description": "Somewhat basic \"Message Logger\"",
   "authors": [

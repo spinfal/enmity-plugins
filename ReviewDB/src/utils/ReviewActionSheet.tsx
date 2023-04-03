@@ -7,7 +7,6 @@ import Button from "./Button";
 import { canDeleteReview, deleteReview, reportReview } from './RDBAPI';
 import Review from './Review';
 import { ReviewContentProps } from './types';
-import { API_URL } from "../../manifest.json"
 
 const ActionSheet = (getModule(x => x.default?.render?.name == "ActionSheet") ?? { default: { render: false } }).default.render;
 const BottomSheetScrollView = getByProps("BottomSheetScrollView").BottomSheetScrollView;

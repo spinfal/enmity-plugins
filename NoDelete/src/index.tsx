@@ -203,15 +203,9 @@ const NoDelete: Plugin = {
         Patcher.unpatchAll();
         this.commands = [];
     },
-    renderPage(_, { pageName, pagePanel }) {
-        Navigation.push("EnmityCustomPage", { 
-            pagePanel, 
-            pageName
-        }) // opens custom page with logs
-    },
     getSettingsPanel({ settings }: SettingsProps): any {
         return <SettingsPage manifest={manifest} settings={settings} hasToasts={false} commands={commands}>
-            <LogsToggle styles={styles} renderPage={NoDelete.renderPage} />
+            <LogsToggle styles={styles} />
             <FormDivider />
             <FormSection title="Plugin Settings">
                 <FormRow

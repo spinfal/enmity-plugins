@@ -2,7 +2,7 @@
 /* Modified by Spinfal aka Spin */
 /* "Why rewrite what is already written?" */
 import { ApplicationCommandInputType, ApplicationCommandType, Command } from "enmity/api/commands";
-import { Navigation } from "enmity/metro/common";
+import { Navigation, React } from "enmity/metro/common";
 import Page from "../../../common/components/_pluginSettings/Page";
 import Logs from "../Logs";
 import { sendReply } from "enmity/api/clyde";

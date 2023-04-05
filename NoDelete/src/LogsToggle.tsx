@@ -1,6 +1,6 @@
 
 import { FormRow, FormSection } from 'enmity/components';
-import { NavigationNative } from 'enmity/metro/common';
+import { NavigationNative, React } from 'enmity/metro/common';
 import { Icons } from '../../common/components/_pluginSettings/utils';
 import Logs from './Logs';
 

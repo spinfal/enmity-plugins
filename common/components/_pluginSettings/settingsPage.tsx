@@ -20,8 +20,8 @@ const [
   Router, // used to open a url externally
   Clipboard // used to copy the dl link to keyboard
 ] = bulk(
-  filters.byProps('transitionToGuild'),
-  filters.byProps('setString')
+  filters.byProps('transitionToGuild', "openURL"),
+  filters.byProps('setString', "getString")
 );
 
 // icon and styles

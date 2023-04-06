@@ -6,7 +6,7 @@
   "author": "spinfal",
   "scripts": {
     "debug": "cd ../enmity-debug && node .",
-    "http": "python -m http.server",
+    "server": "python -m http.server",
     "build": "rollup -c --configPlugin esbuild"
   },
   "devDependencies": {

@@ -3,7 +3,7 @@
 /* "Why rewrite what is already written?" */
 import { sendReply } from "enmity/api/clyde";
 import { ApplicationCommandInputType, ApplicationCommandOptionType, ApplicationCommandType, Command } from "enmity/api/commands";
-import { getByKeyword } from "enmity/metro";
+import { getByProps } from "enmity/metro";
 
 const listFriendInvites: Command = {
   id: "list-friend-invites",
@@ -32,7 +32,7 @@ const listFriendInvites: Command = {
     const whisper = args[args.findIndex(x => x.name === "whisper")];
 
     try {
-      const response = await getByKeyword("friendinvite").getAllFriendInvites()
+      const response = await getByProps("getAllFriendInvites").getAllFriendInvites();
 
       if (response) {
         const embed = {

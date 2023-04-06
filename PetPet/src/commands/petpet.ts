@@ -82,7 +82,7 @@ const petpet: Command = {
     if (!url && !user) return sendReply(message?.channel.id ?? "0", "No argument provided, nothing will happen. Here's a banana instead 🍌");
 
     try {
-      const response = await REST.get(`https://petpet-api.clit.repl.co/petpet?url=${url?.value ? url.value : getByProps("getUser").getUser(user?.value).getAvatarURL().split("?")[0].replace(/gif|webp/, "png")}&size=${size ? size.value : 100}&delay=${delay ? delay.value : 20}&version=${apiVersion}`).then(res => res.body);
+      const response = await REST.get(`https://petpet-api.clit.repl.co/petpet?url=${url?.value ? url.value : getByProps("getUser").getUser(user?.value).getAvatarURL().split("?")[0].replace(/gif|webp/, "png")}&size=${size ? size.value : 100}&delay=${delay ? delay.value : 20}&version=${apiVersion}`).then((res: any) => res.body);
 
       if (response.status == true) {
         const embed = {

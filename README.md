@@ -13,7 +13,7 @@ Join the [Official Enmity Discord server](https://out.spin.rip/enmity)
 # Marek's Enmity plugins, modified by [Spin](https://out.spin.rip/home)
 
 ## MessageSpoofer
-###### needs to be fixed?
+###### might work
 [Compiled](https://raw.githubusercontent.com/spinfal/enmity-plugins/master/dist/MessageSpoofer.js)
 
 [Source](https://github.com/spinfal/enmity-plugins/tree/master/MessageSpoofer)

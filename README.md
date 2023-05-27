@@ -1,5 +1,6 @@
 # READ THIS.
-Hello reader. Although yes I have changed the code to include my username and Discord ID, I do not claim any of Marek's plugins as mine. Marek created some of these plugins but they were accused of adding some RCE to one of their plugins. So I went ahead and removed all of the sus shit so these can be used again. **I cannot guarantee that I will maintain these if anything breaks**, sorry.
+Hello reader. Although yes I have changed the code to include my username and Discord ID, I do not claim any of Marek's plugins as mine. Marek created some of these plugins but they were accused of adding some RCE to one of their plugins. So I went ahead and removed all of the sus shit so these can be used again.\
+**I cannot guarantee that I will maintain these if anything breaks**, sorry.
 
 If I missed anything; feel free to open a pull request.
 ![Proof of token logger](https://cdn.spin.rip/r/DiscordDevelopment_7206243177.png)

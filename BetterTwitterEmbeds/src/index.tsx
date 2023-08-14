@@ -22,9 +22,9 @@ const BTE: Plugin = {
 
             Patcher.before(Messages, "sendMessage", (_self, args, _orig) => {
                 const content = args[1]["content"];
-                const twitterLinks = content.match(/http(s)?:\/\/twitter.com\/\w{4,15}\/status\/\d+/gim);
+                const twitterLinks = content.match(/http(s)?:\/\/(www\.)?(twitter\.com|x\.com)\/\w{4,15}\/status\/\d+/gim);
                 if (!twitterLinks) return;
-                args[1]["content"] = content.replace(/http(s)?:\/\/twitter.com/gim, `https://${get("_twitter", "_type", false)}.com`);
+                args[1]["content"] = content.replace(/http(s)?:\/\/(www\.)?(twitter\.com|x\.com)/gim, `https://${get("_twitter", "_type", false)}.com`);
             });
         } catch (err) {
             console.log("[ BetterTwitterEmbeds Error ]", err);

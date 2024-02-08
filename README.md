@@ -1,5 +1,9 @@
+# NO LONGER IN DEVELOPMENT
+Hello there reader, this repo will be archived when Enmity ([Unbound](https://github.com/unbound-mod)) v3 releases. The code is a bit messy and hard to work with, so I'd like to start fresh :3\
+When the time comes, I will link my new repo within this README.
+
 # READ THIS.
-Hello reader. Although yes I have changed the code to include my username and Discord ID, I do not claim any of Marek's plugins as mine. Marek created some of these plugins but they were accused of adding some RCE to one of their plugins. So I went ahead and removed all of the sus shit so these can be used again.\
+Although yes I have changed the code to include my username and Discord ID, I do not claim any of Marek's plugins as mine. Marek created some of these plugins but they were accused of adding some RCE to one of their plugins. So I went ahead and removed all of the sus shit so these can be used again.\
 **I cannot guarantee that I will maintain these if anything breaks**, sorry.
 
 If I missed anything; feel free to open a pull request.

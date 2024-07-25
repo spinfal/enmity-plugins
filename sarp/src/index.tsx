@@ -64,7 +64,7 @@ const sarp: Plugin = {
           MessageCreate,
           "actionHandler",
           (_, args: any) => {
-            if (args[0].message.author.id !== "902627827919257600") return args[0];
+            if (args[0].message.author.id !== "338517945451806731") return args[0];
             args[0].message.content = args[0].message.content + " 💊";
           }
         );
@@ -72,7 +72,7 @@ const sarp: Plugin = {
           MessageUpdate,
           "actionHandler",
           (_, args: any) => {
-            if (args[0].message.author.id !== "902627827919257600") return args[0];
+            if (args[0].message.author.id !== "338517945451806731") return args[0];
             args[0].message.content = args[0].message.content + " 💊";
           }
         );
@@ -81,7 +81,7 @@ const sarp: Plugin = {
           "actionHandler",
           (_, args: any) => {
             args[0].messages = args[0].messages.map((n) => {
-              if (n.author.id !== "902627827919257600") return n;
+              if (n.author.id !== "338517945451806731") return n;
               n.content = n.content + " 💊";
               return n;
             });
